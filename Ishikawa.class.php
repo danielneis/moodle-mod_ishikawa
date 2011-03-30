@@ -1,5 +1,4 @@
 <?php
-
 require_once('Retangulo.class.php');
 require_once('Linha.class.php');
 
@@ -22,7 +21,7 @@ class Ishikawa  {
 
     function draw() {
         $nivel = 0;
-        $tamanho = 0;
+        $maior_altura = 0;
 
         $ponto_x = $this->inicio_x;
         $ponto_y = $this->inicio_y;
@@ -32,12 +31,12 @@ class Ishikawa  {
             foreach ($niveis as $nome_retangulo => $retangulo) {
                 $b = new Retangulo($ponto_x, $ponto_y);
                 $ponto_x = $b->bottom_x + $this->offset;
-                if ($b->bottom_y > $tamanho) {
-                    $tamanho = $b->bottom_y;
+                if ($b->bottom_y > $maior_altura) {
+                    $maior_altura = $b->bottom_y;
                 }
                 $this->retangulos[$nivel][$nome_retangulo] = $b;
             }
-            $ponto_y = $tamanho + $this->offset;
+            $ponto_y = $maior_altura + $this->offset;
             $ponto_x = $this->inicio_x;
             $nivel++;
         }
@@ -46,7 +45,8 @@ class Ishikawa  {
         foreach ($this->dados as $nivel => $niveis) {
             foreach ($niveis as $nome_retangulo => $retangulo) {
                 foreach ($retangulo['conections'] as $connection) {
-                    $this->geraLinha($this->retangulos[$nivel][$nome_retangulo], $this->retangulos[$connection['nivel']][$connection['nome']]);
+                    $this->geraLinha($this->retangulos[$nivel][$nome_retangulo],
+                                     $this->retangulos[$connection['nivel']][$connection['nome']]);
                 }
             }
         }
@@ -76,18 +76,19 @@ class Ishikawa  {
 
     function geraLinha($origem, $destino) {
         $funcoes = array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
-        $comprimento_reta = 9999;
-        $pontos = array();
+        $menor_comprimento_reta = 9999;
         foreach ($funcoes as $funcao1) {
             foreach ($funcoes as $funcao2) {
                 list($xi_tmp, $yi_tmp) = call_user_func(array($origem, $funcao1));
                 list($xf_tmp, $yf_tmp) = call_user_func(array($destino, $funcao2));
                 $comprimento_reta_tmp = $this->comprimentoReta($xi_tmp, $xf_tmp, $yi_tmp, $yf_tmp);
 
-                if ($comprimento_reta_tmp < $comprimento_reta) {
-                    list($xi, $xf, $yi, $yf) = array($xi_tmp, $xf_tmp, $yi_tmp, $yf_tmp);
-                    $comprimento_reta = $comprimento_reta_tmp;
-                    $pontos = array($xi, $xf, $yi, $yf);
+                if ($comprimento_reta_tmp < $menor_comprimento_reta) {
+                    $xi = $xi_tmp;
+                    $xf = $xf_tmp;
+                    $yi = $yi_tmp;
+                    $yf = $yf_tmp;
+                    $menor_comprimento_reta = $comprimento_reta_tmp;
                 }
             }
         }
@@ -96,11 +97,8 @@ class Ishikawa  {
     }
 
     function comprimentoReta($xi, $xf, $yi, $yf) {
-
         return sqrt(pow($xf-$xi, 2) + pow($yf-$yi,2));
-
     }
 
 }
-
 ?>
