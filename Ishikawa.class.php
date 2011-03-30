@@ -5,7 +5,7 @@ require_once('Linha.class.php');
 
 class Ishikawa  {
 
-    var $blocos = array();
+    var $retangulos = array();
 
     var $linhas = array();
 
@@ -14,7 +14,7 @@ class Ishikawa  {
     var $inicio_x = 10;
     var $inicio_y = 10;
 
-    var $offset = 30;
+    var $offset = 50;
 
     function __construct($dados) {
         $this->dados = $dados;
@@ -27,15 +27,15 @@ class Ishikawa  {
         $ponto_x = $this->inicio_x;
         $ponto_y = $this->inicio_y;
 
-        // Cria blocos
+        // Cria retangulos
         foreach ($this->dados as $niveis) {
-            foreach ($niveis as $nome_bloco => $bloco) {
+            foreach ($niveis as $nome_retangulo => $retangulo) {
                 $b = new Retangulo($ponto_x, $ponto_y);
                 $ponto_x = $b->bottom_x + $this->offset;
                 if ($b->bottom_y > $tamanho) {
                     $tamanho = $b->bottom_y;
                 }
-                $this->blocos[$nivel][$nome_bloco] = $b;
+                $this->retangulos[$nivel][$nome_retangulo] = $b;
             }
             $ponto_y = $tamanho + $this->offset;
             $ponto_x = $this->inicio_x;
@@ -44,23 +44,23 @@ class Ishikawa  {
 
         // Gera conexões
         foreach ($this->dados as $nivel => $niveis) {
-            foreach ($niveis as $nome_bloco => $bloco) {
-                foreach ($bloco['conections'] as $connection) {
-                    $this->geraLinha($this->blocos[$nivel][$nome_bloco], $this->blocos[$connection['nivel']][$connection['nome']]);
+            foreach ($niveis as $nome_retangulo => $retangulo) {
+                foreach ($retangulo['conections'] as $connection) {
+                    $this->geraLinha($this->retangulos[$nivel][$nome_retangulo], $this->retangulos[$connection['nivel']][$connection['nome']]);
                 }
             }
         }
 
-        $this->printBlocos();
+        $this->printIshikawa();
     }
 
-    function printBlocos() {
+    function printIshikawa() {
         $img = imagecreatetruecolor(800, 800);
         $green = imagecolorallocate($img, 132, 135, 28);
 
-        foreach ($this->blocos as $niveis) {
-            foreach ($niveis as $bloco) {
-                imagerectangle($img, $bloco->upper_x, $bloco->upper_y, $bloco->bottom_x, $bloco->bottom_y, $green);
+        foreach ($this->retangulos as $niveis) {
+            foreach ($niveis as $retangulo) {
+                imagerectangle($img, $retangulo->upper_x, $retangulo->upper_y, $retangulo->bottom_x, $retangulo->bottom_y, $green);
             }
         }
 
@@ -77,20 +77,16 @@ class Ishikawa  {
     function geraLinha($origem, $destino) {
         $funcoes = array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
         $comprimento_reta = 9999;
-        $func1 = '';
-        $func2 = '';
         $pontos = array();
         foreach ($funcoes as $funcao1) {
             foreach ($funcoes as $funcao2) {
                 list($xi_tmp, $yi_tmp) = call_user_func(array($origem, $funcao1));
                 list($xf_tmp, $yf_tmp) = call_user_func(array($destino, $funcao2));
-                $comprimento_reta_temp = $this->comprimentoReta($xi_tmp, $xf_tmp, $yi_tmp, $yf_tmp);
+                $comprimento_reta_tmp = $this->comprimentoReta($xi_tmp, $xf_tmp, $yi_tmp, $yf_tmp);
 
-                if ($comprimento_reta_temp < $comprimento_reta) {
+                if ($comprimento_reta_tmp < $comprimento_reta) {
                     list($xi, $xf, $yi, $yf) = array($xi_tmp, $xf_tmp, $yi_tmp, $yf_tmp);
-                    $comprimento_reta = $comprimento_reta_temp;
-                    $func1 = $funcao1;
-                    $func2 = $funcao2;
+                    $comprimento_reta = $comprimento_reta_tmp;
                     $pontos = array($xi, $xf, $yi, $yf);
                 }
             }

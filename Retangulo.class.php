@@ -4,14 +4,14 @@ class Retangulo {
 
     var $upper_x, $upper_y, $bottom_x, $bottom_y;
 
-    var $largura = 100;
+    var $largura = 150;
     var $altura = 50;
 
     function __construct($x, $y) {
         $this->upper_x = $x;
         $this->upper_y = $y;
-        $this->bottom_x = $x + $this->largura;
-        $this->bottom_y = $y + $this->altura;
+        $this->bottom_x = $x + $this->largura + rand(0,50);
+        $this->bottom_y = $y + $this->altura + rand(0,50);
     }
 
     function pontoMedioTopo() {
