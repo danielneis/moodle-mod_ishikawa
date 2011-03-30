@@ -15,8 +15,19 @@ class Ishikawa  {
 
     var $offset = 50;
 
+    var $im;
+    var $draw;
+
     function __construct($dados) {
         $this->dados = $dados;
+
+        $this->im = new Imagick();
+        $this->draw = new ImagickDraw();    //Create a new drawing class (?)
+
+        $this->im->newImage( 800, 800, new ImagickPixel( 'lightgray' ) );
+
+        $this->draw->setFillColor('wheat');    // Set up some colors to use for fill and outline:w
+        $this->draw->setStrokeColor( new ImagickPixel( 'green' ) );
     }
 
     function draw() {
@@ -29,7 +40,8 @@ class Ishikawa  {
         // Cria retangulos
         foreach ($this->dados as $niveis) {
             foreach ($niveis as $nome_retangulo => $retangulo) {
-                $b = new Retangulo($ponto_x, $ponto_y, "AAAAA BBBBB CCCC DDDD EEE EFFF GGAAAAA BBBBB CCCC DDDD EEE");
+                $text = "Oi, tudo bom? Na! hahashc Vamo lá vamo lá! To achando tudo isso mt loco!";
+                $b = new Retangulo($ponto_x, $ponto_y, $text, $this->draw, $this->im);
                 $ponto_x = $b->bottom_x + $this->offset;
                 if ($b->bottom_y > $maior_altura) {
                     $maior_altura = $b->bottom_y;
@@ -55,52 +67,22 @@ class Ishikawa  {
     }
 
     function printIshikawa() {
-        $im = new Imagick();
-
-        $width = 800;
-        $height = 800;
-        $im->newImage( $width, $height, new ImagickPixel( 'lightgray' ) );
-
-        $draw = new ImagickDraw();    //Create a new drawing class (?)
-
-        $draw->setFillColor('wheat');    // Set up some colors to use for fill and outline:w
-        $draw->setStrokeColor( new ImagickPixel( 'green' ) );
 
         foreach ($this->retangulos as $niveis) {
             foreach ($niveis as $retangulo) {
-                $draw->rectangle($retangulo->upper_x, $retangulo->upper_y, $retangulo->bottom_x, $retangulo->bottom_y);
+                $retangulo->draw();
             }
         }
 
         foreach ($this->linhas as $linha) {
-            $draw->line($linha->xi, $linha->yi, $linha->xf, $linha->yf);
+            $this->draw->line($linha->xi, $linha->yi, $linha->xf, $linha->yf);
         }
 
-        $im->drawImage( $draw );    // Apply the stuff from the draw class to the image canvas
-        $im->setImageFormat('jpg');    // Give the image a format
+        $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
+        $this->im->setImageFormat('jpg');    // Give the image a format
 
         header('Content-type: image/jpeg');     // Prepare the web browser to display an image
-        echo $im;                // Publish it to the world!
-    }
-
-    function printGD() {
-        $img = imagecreatetruecolor(800, 800);
-        $green = imagecolorallocate($img, 132, 135, 28);
-
-        foreach ($this->retangulos as $niveis) {
-            foreach ($niveis as $retangulo) {
-                imagerectangle($img, $retangulo->upper_x, $retangulo->upper_y, $retangulo->bottom_x, $retangulo->bottom_y, $green);
-            }
-        }
-
-        foreach ($this->linhas as $linha) {
-            imageline($img, $linha->xi, $linha->yi, $linha->xf, $linha->yf, $green);
-        }
-
-        header('Content-Type: image/jpeg');
-
-        imagejpeg($img);
-        imagedestroy($img);
+        echo $this->im;                // Publish it to the world!
     }
 
     function geraLinha($origem, $destino) {

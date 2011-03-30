@@ -7,23 +7,42 @@ class Retangulo {
     var $largura = 150;
     var $altura;
 
-    var $text_lines;
+    var $im;
+    var $draw;
 
-    function __construct($x, $y, $text) {
+    private $text_lines;
+    private $padding_h = 10;
+    private $padding_v = 17;
+    private $line_height;
+    private $line_spacing = 2;
+
+    function __construct($x, $y, $text, $draw, $im) {
+
+        $this->draw = $draw;
+        $this->im = $im;
 
         $this->text_lines = $this->str_in_lines($text, $this->largura);
 
-        $im = new Imagick;
-        $draw = new ImagickDraw;
-        $metrics =  $im->queryfontmetrics($draw, $text);
+        $metrics =  $im->queryfontmetrics($this->draw, $text);
+        $this->line_height = $metrics['textHeight'];
 
-        $this->altura = count($this->text_lines) * $metrics['textHeight'];
-        $this->altura += 5; // total espacamento entre linhas
+        $this->altura = count($this->text_lines) * ($this->line_height + $this->line_spacing);
 
         $this->upper_x = $x;
         $this->upper_y = $y;
-        $this->bottom_x = $x + $this->largura;
-        $this->bottom_y = $y + $this->altura;
+        $this->bottom_x = $x + $this->largura + 2 * $this->padding_h;
+        $this->bottom_y = $y + $this->altura + $this->padding_v;
+    }
+
+    function draw() {
+        $this->draw->rectangle($this->upper_x, $this->upper_y, $this->bottom_x, $this->bottom_y);
+
+        $x = $this->upper_x + $this->padding_h;
+        $y = $this->upper_y + $this->padding_v;
+        foreach ($this->text_lines as $l) {
+            $this->draw->annotation($x, $y, $l);
+            $y += $this->line_height + $this->line_spacing;
+        }
     }
 
     function pontoMedioTopo() {
@@ -42,10 +61,7 @@ class Retangulo {
         return array($this->upper_x, ($this->upper_y + $this->bottom_y)/2);
     }
 
-    function str_in_lines($text, $max_width) {
-
-        $im = new Imagick();
-        $draw = new ImagickDraw();
+    private function str_in_lines($text, $max_width) {
 
         $words = explode(" ", $text);
         $lines = array();
@@ -68,7 +84,7 @@ class Retangulo {
 
                 //messure size of line + next word
                 $linePreview = $line." ".$words[$i];
-                $metrics = $im->queryFontMetrics($draw, $linePreview);
+                $metrics = $this->im->queryFontMetrics($this->draw, $linePreview);
             } while($metrics["textWidth"] <= $max_width);
 
             $lines[] = $line;
