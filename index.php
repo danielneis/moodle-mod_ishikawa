@@ -16,9 +16,9 @@ $blocos = array(
         ),
     array(
         'b1' => array('text' => 'texto', 'color' => 'red',
-                      'conections' => array(array('nivel' => 0, 'nome' => 'a2'), array('nivel' => 0, 'nome' => 'a1'))),
-        'b2' => array('text' => 'texto', 'color' => 'red',
                       'conections' => array(array('nivel' => 0, 'nome' => 'a1'))),
+        'b2' => array('text' => 'texto', 'color' => 'red',
+                      'conections' => array(array('nivel' => 0, 'nome' => 'a2'))),
         'b3' => array('text' => 'texto', 'color' => 'red',
                       'conections' => array(array('nivel' => 0, 'nome' => 'a2'))),
         ),

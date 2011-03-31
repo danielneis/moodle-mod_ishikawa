@@ -1,12 +1,12 @@
 <?php
 require_once('Retangulo.class.php');
-require_once('Linha.class.php');
+require_once('seta.class.php');
 
 class Ishikawa  {
 
     var $retangulos = array();
 
-    var $linhas = array();
+    var $setas = array();
 
     var $dados;
 
@@ -24,10 +24,10 @@ class Ishikawa  {
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();    //Create a new drawing class (?)
 
-        $this->im->newImage( 800, 800, new ImagickPixel( 'lightgray' ) );
+        $this->im->newImage(700, 700, new ImagickPixel('lightgray'));
 
-        $this->draw->setFillColor('wheat');    // Set up some colors to use for fill and outline:w
-        $this->draw->setStrokeColor( new ImagickPixel( 'green' ) );
+        $this->draw->setFillColor('white');    // Set up some colors to use for fill and outline:w
+        $this->draw->setStrokeColor( new ImagickPixel('black'));
     }
 
     function draw() {
@@ -57,7 +57,7 @@ class Ishikawa  {
         foreach ($this->dados as $nivel => $niveis) {
             foreach ($niveis as $nome_retangulo => $retangulo) {
                 foreach ($retangulo['conections'] as $connection) {
-                    $this->geraLinha($this->retangulos[$nivel][$nome_retangulo],
+                    $this->geraSeta($this->retangulos[$nivel][$nome_retangulo],
                                      $this->retangulos[$connection['nivel']][$connection['nome']]);
                 }
             }
@@ -74,8 +74,8 @@ class Ishikawa  {
             }
         }
 
-        foreach ($this->linhas as $linha) {
-            $this->draw->line($linha->xi, $linha->yi, $linha->xf, $linha->yf);
+        foreach ($this->setas as $seta) {
+            $seta->draw();
         }
 
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
@@ -85,7 +85,7 @@ class Ishikawa  {
         echo $this->im;                // Publish it to the world!
     }
 
-    function geraLinha($origem, $destino) {
+    function geraSeta($origem, $destino) {
         $funcoes = array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
         $menor_comprimento_reta = 9999;
         foreach ($funcoes as $funcao1) {
@@ -104,7 +104,7 @@ class Ishikawa  {
             }
         }
 
-        $this->linhas[] = new Linha($xi, $xf, $yi, $yf);
+        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->draw);
     }
 
     function comprimentoReta($xi, $xf, $yi, $yf) {
