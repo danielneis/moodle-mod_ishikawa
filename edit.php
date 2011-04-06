@@ -1,9 +1,10 @@
-<?php  // $Id$
+<?php
 
-    require_once("../../config.php");
-    require_once("lib.php");
+    require_once('../../config.php');
+    require_once('lib.php');
 
     $id = required_param('id', PARAM_INT);  // Course Module ID
+
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
@@ -20,32 +21,22 @@
     require_login($course, true, $cm);
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    require_capability('mod/ishikawa:view', $context);
+    require_capability('mod/ishikawa:submit', $context);
 
-    add_to_log($course->id, "ishikawa", "view", "view.php?id={$cm->id}", $ishikawa->id, $cm->id);
-
-    /// Print the page header
+    //$submission = ishikawa_get_submission();
 
     /// Some capability checks.
     if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
         notice(get_string("activityiscurrentlyhidden"));
     }
 
-    $submission = ishikawa_get_submission();
-
-    $buttontext = '';
     $strishikawa = get_string('modulename', 'ishikawa');
-    $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
+
     $navigation = build_navigation('', $cm);
-    print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
+    print_header_simple($ishikawa->name, "", $navigation, "", "", true, '',navmenu($course, $cm));
 
-/// Finish the page
-    print_box(format_text($ishikawa->description), 'generalbox', 'intro');
-
-    ishikawa_view_dates($ishikawa);
-
-    // TODO testar duedate e timeavailable
-    echo "<a href='edit.php?id={$id}'>Editar diagrama</a>";
+    echo "AQUI A COISA PEGA!";
 
     print_footer($course);
+
 ?>
