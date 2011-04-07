@@ -13,11 +13,18 @@ function ishikawa_update_instance($ishi) {
 }
 
 function ishikawa_get_submission($userid, $ishikawaid) {
-    return get_records('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
+    return get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }
 
 function ishikawa_blocks_from_submission($subid) {
-    return get_records("ishikawa_blocks", 'submissionid', $subid);
+    $raw_blocks = get_records("ishikawa_blocks", 'submissionid', $subid);
+
+    $blocks = array();
+
+    foreach ($raw_blocks as $block) {
+        $blocks[$block->nivel_y][$block->nivel_x] = $block;
+    }
+    return $blocks;
 }
 
 function ishikawa_edit_blocks($cmid, $blocks = array(), $subid = 0) {

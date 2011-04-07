@@ -26,7 +26,6 @@ $subid = optional_param('subid', 0, PARAM_INT);
 if (!$subid) {
     // create submission
     if ($data = data_submitted()) {
-        var_dump($data);
 
         $submission = new stdclass();
         $submission->ishikawaid = $ishikawa->id;
@@ -49,6 +48,7 @@ if (!$subid) {
                 }
             }
         }
+        redirect('createconnections.php?id='.$cm->id);
 
     } else {
         print_error('no_data_submitted');
