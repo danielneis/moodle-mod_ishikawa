@@ -31,7 +31,7 @@
         notice(get_string("activityiscurrentlyhidden"));
     }
 
-    $submission = ishikawa_get_submission();
+    $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
 
     $buttontext = '';
     $strishikawa = get_string('modulename', 'ishikawa');
