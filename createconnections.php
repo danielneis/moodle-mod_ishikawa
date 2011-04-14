@@ -36,7 +36,9 @@
     $navigation = build_navigation('', $cm);
     print_header_simple($ishikawa->name, "", $navigation, "", "", true, '',navmenu($course, $cm));
 
-    $blocks = ishikawa_blocks_from_submission($submission->id);
+    $blocks = ishikawa_blocks_from_submission($submission);
+
+
 
     // AQUI A MÁGICA ACONTECE
 
