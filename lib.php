@@ -82,79 +82,69 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
            '</td>',
          '<td>',
          '<table id="ishikawa_center">',
-            '<tr>',
-            '<td><table>';
-            // START CAUSES
-            echo '<tr>',
-                  '<td colspan="4"><h3>Causas</h3></td>',
-                  '</tr>',
-                  '<tr>',
-                    '<td class="add_column"><a href="#">+coluna</a></td>',
-                    '<td colspan="3" class="add_line"><a href="#">+ linha</a></td>',
-                    '<td class="add_column"><a href="#">+coluna</a></td>',
-                  '</tr>';
+    // START CAUSES
+         '<tr><td><table>',
+           '<tr><td colspan="4"><h3>Causas</h3></td></tr>',
+           '<tr>',
+             '<td class="add_column"><a href="#">+coluna</a></td>',
+             '<td colspan="3" class="add_line"><a href="#">+ linha</a></td>',
+             '<td class="add_column"><a href="#">+coluna</a></td>',
+           '</tr>';
 
-            foreach ($blocks['causes'] as $nivel_y => $causes) {
-                echo '<tr><td class="add_column"></td>';
-                foreach ($causes as $nivel_x => $b) {
-                    echo '<td>',
-                         '<textarea name="causes[',$nivel_y, '][',$nivel_x,']" rows="',$rows,'" cols="',$cols,'">',
-                         $b->texto,
-                         '</textarea>',
-                         '</td>';
-                }
-                echo '</tr>';
-            }
-            echo '<tr>',
-                   '<td colspan="5" class="add_line"><a href="#">+ linha</a></td>',
-                 '</tr>';
+    foreach ($blocks['causes'] as $nivel_y => $causes) {
+        echo '<tr><td class="add_column"></td>';
+        foreach ($causes as $nivel_x => $b) {
+            echo '<td>',
+                 '<textarea name="causes[',$nivel_y, '][',$nivel_x,']" rows="',$rows,'" cols="',$cols,'">',
+                 $b->texto,
+                 '</textarea>',
+                 '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '<tr><td colspan="5" class="add_line"><a href="#">+ linha</a></td></tr>',
+         '</table></td></tr>';
 
-            // END CAUSES - START AXIS
-            echo '</table></td></tr>',
-                 '<tr id="axis">',
-                  '<td>',
-                  '<h3>Eixo</h3>',
-                  '<a href="#">+ coluna</a>';
-            foreach ($blocks['axis'] as $nivel_x => $b) {
-                echo '<textarea name="axis[',$nivel_x,']" rows="',$rows,'" cols="',$cols,'">',
-                     $b->texto,
-                     '</textarea>';
-            }
-            echo '<a href="#">+ coluna</a>',
-                 '</td></tr>',
-                 '<tr>',
-                 '<td><table>';
+    // END CAUSES - START AXIS
+    echo '<tr id="axis"><td>',
+          '<h3>Eixo</h3>',
+          '<a href="#">+ coluna</a>';
+    foreach ($blocks['axis'] as $nivel_x => $b) {
+        echo '<textarea name="axis[',$nivel_x,']" rows="',$rows,'" cols="',$cols,'">',
+             $b->texto,
+             '</textarea>';
+    }
+    echo '<a href="#">+ coluna</a>',
+         '</td></tr>';
 
-            // END AXIS - START CONSEQUENCES
-                echo '<tr>',
-                       '<td colspan="4"><h3>Consequências</h3></td>',
-                     '</tr>',
-                     '<tr>',
-                      '<td class="add_column"><a href="#">+coluna</a></td>',
-                      '<td colspan="3" class="add_line"><a href="#">+ linha</a></td>',
-                      '<td class="add_column"><a href="#">+coluna</a></td>',
-                    '</tr>';
-                foreach ($blocks['consequences'] as $nivel_y => $consequences) {
-                    echo '<tr><td class="add_column"></td>';
-                    foreach ($consequences as $nivel_x => $b) {
-                        echo '<td>',
-                             '<textarea name="consequences[',$nivel_y, '][',$nivel_x,']" rows="',$rows,'" cols="',$cols,'">',
-                             $b->texto,
-                             '</textarea>',
-                             '</td>';
-                    }
-                    echo '</tr>';
-                }
-                echo '<tr>',
-                      '<td colspan="5" class="add_line"><a href="#">+ linha</a></td>',
-                      '</tr>';
-        echo '</table></td></tr>',
-             '</table>',
-             '</td>',
-             '<td class="extremos">',
+    // END AXIS - START CONSEQUENCES
+    echo '<tr><td><table>',
+           '<tr><td colspan="4"><h3>Consequências</h3></td></tr>',
+           '<tr>',
+             '<td class="add_column"><a href="#">+coluna</a></td>',
+             '<td colspan="3" class="add_line"><a href="#">+ linha</a></td>',
+             '<td class="add_column"><a href="#">+coluna</a></td>',
+           '</tr>';
+    foreach ($blocks['consequences'] as $nivel_y => $consequences) {
+        echo '<tr><td class="add_column"></td>';
+        foreach ($consequences as $nivel_x => $b) {
+            echo '<td>',
+                 '<textarea name="consequences[',$nivel_y, '][',$nivel_x,']" rows="',$rows,'" cols="',$cols,'">',
+                 $b->texto,
+                 '</textarea>',
+                 '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '<tr><td colspan="5" class="add_line"><a href="#">+ linha</a></td></tr>',
+         '</table></td></tr>',
+         // END CONSEQUENCES
+         '</table>',
+         '</td>',
+         '<td class="extremos">',
              '<h2>', get_string('head', 'ishikawa'), '</h2>',
              '<textarea name="head_text" id="ishikawa_head" cols="25" rows="25">',$blocks['head_text'],'</textarea>',
-           '</td>',
+         '</td>',
          '</tr>',
          '</table>';
 
