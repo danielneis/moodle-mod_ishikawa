@@ -1,0 +1,37 @@
+#ishikawa_head,
+#ishikawa_tail  {
+ height: 100%;
+ margin: 0;
+ overflow: auto;
+}
+
+.extremos {
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+}
+
+#ishikawa_center  {
+    width: 100%;
+}
+
+.add_column {
+    width: 3em;
+    padding:0;
+}
+
+.add_line {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+    margin-right: 3em;
+}
+
+textarea {
+    margin: 0;
+}
+
+h3 {
+}

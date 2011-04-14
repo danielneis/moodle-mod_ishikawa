@@ -31,14 +31,11 @@
     $strishikawa = get_string('modulename', 'ishikawa');
 
     $navigation = build_navigation('', $cm);
-    print_header_simple($ishikawa->name, "", $navigation, "", "", true, '',navmenu($course, $cm));
+    $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
+    print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 
-    if ($submission = ishikawa_get_submission($USER->id, $ishikawa->id)) {
-        // recuperar e imprimir um diagrama para edicao
-        ishikawa_edit_blocks($cm->id, ishikawa_blocks_from_submission($submission->id), $submission->id);
-    } else {
-        ishikawa_edit_blocks($cm->id);
-    }
+    $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
+    ishikawa_edit_blocks($cm->id, ishikawa_blocks_from_submission($submission), $submission);
 
     print_footer($course);
 
