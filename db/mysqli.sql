@@ -3,6 +3,7 @@ CREATE TABLE ishikawa (
     course BIGINT(10) UNSIGNED NOT NULL,
     name  VARCHAR(255) NOT NULL,
     description TEXT,
+    maxchar BIGINT(10) NOT NULL,
     timedue BIGINT(10) UNSIGNED NOT NULL,
     timeavailable BIGINT(10) UNSIGNED NOT NULL,
     timemodified BIGINT(10) UNSIGNED NOT NULL,
