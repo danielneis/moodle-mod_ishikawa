@@ -40,35 +40,35 @@ if (!$subid) {
         }
 
         foreach ($data->causes as $nivel_y => $blocks) {
-            foreach ($blocks as $nivel_x => $text) {
+            foreach ($blocks as $nivel_x => $block) {
                 $b = new stdclass();
                 $b->submissionid = $submissionid;
                 $b->nivel_x = $nivel_x;
                 $b->nivel_y = $nivel_y;
-                $b->texto = $text;
+                $b->texto = $block['texto'];
                 if (!insert_record('ishikawa_causes_blocks', $b)) {
                     print_error('cant_insert_cause');
                 }
             }
         }
 
-        foreach ($data->axis as $nivel_x => $text) {
+        foreach ($data->axis as $nivel_x => $block) {
             $b = new stdclass();
             $b->submissionid = $submissionid;
             $b->nivel_x = $nivel_x;
-            $b->texto = $text;
+            $b->texto = $block['texto'];
             if (!insert_record('ishikawa_axis_blocks', $b)) {
                 print_error('cant_insert_axis');
             }
         }
 
         foreach ($data->consequences as $nivel_y => $blocks) {
-            foreach ($blocks as $nivel_x => $text) {
+            foreach ($blocks as $nivel_x => $block) {
                 $b = new stdclass();
                 $b->submissionid = $submissionid;
                 $b->nivel_x = $nivel_x;
                 $b->nivel_y = $nivel_y;
-                $b->texto = $text;
+                $b->texto = $block['texto'];
                 if (!insert_record('ishikawa_consequences_blocks', $b)) {
                     print_error('cant_insert_consequence');
                 }
@@ -80,7 +80,51 @@ if (!$subid) {
         print_error('no_data_submitted');
     }
 } else {
-   //  update_submission
-}
 
+    if ($data = data_submitted()) {
+
+        $submission = new stdclass();
+        $submission->id = $subid;
+        $submission->timemodified = time();
+        $submission->tail_text = $data->tail_text;
+        $submission->head_text = $data->head_text;
+        if (!update_record('ishikawa_submissions', $submission)) {
+            print_error('cant_insert_submit_record');
+        }
+
+        foreach ($data->causes as $nivel_y => $blocks) {
+            foreach ($blocks as $nivel_x => $block) {
+                $b = new stdclass();
+                $b->id = $block['id'];
+                $b->texto = $block['texto'];
+                if (!update_record('ishikawa_causes_blocks', $b)) {
+                    print_error('cant_insert_cause');
+                }
+            }
+        }
+
+        foreach ($data->axis as $nivel_x => $block) {
+            $b = new stdclass();
+            $b->id = $block['id'];
+            $b->texto = $block['texto'];
+            if (!update_record('ishikawa_axis_blocks', $b)) {
+                print_error('cant_insert_axis');
+            }
+        }
+
+        foreach ($data->consequences as $nivel_y => $blocks) {
+            foreach ($blocks as $nivel_x => $block) {
+                $b = new stdclass();
+                $b->id = $block['id'];
+                $b->texto = $block['texto'];
+                if (!update_record('ishikawa_consequences_blocks', $b)) {
+                    print_error('cant_insert_consequence');
+                }
+            }
+        }
+        redirect('createconnections.php?id='.$cm->id);
+    } else {
+        print_error('no_data_submitted');
+    }
+}
 ?>

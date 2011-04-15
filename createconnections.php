@@ -61,7 +61,8 @@
         $strishikawa = get_string('modulename', 'ishikawa');
 
         $navigation = build_navigation('', $cm);
-        print_header_simple($ishikawa->name, "", $navigation, "", "", true, '',navmenu($course, $cm));
+        $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
+        print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 
         ishikawa_edit_links($cm->id, ishikawa_blocks_from_submission($submission), $submission, $src, $dst);
 

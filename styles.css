@@ -13,6 +13,7 @@
 
 #ishikawa_center  {
     width: 100%;
+    padding: 0;
 }
 
 .add_column {
@@ -29,9 +30,14 @@
     margin-right: 3em;
 }
 
-textarea {
-    margin: 0;
+td.block {
+    border: 1px solid black;
+    padding: 1em;
+    border-collapse: collapse;
 }
 
-h3 {
+table {
+    width: 80%;
+    margin: 0;
+    padding: 0;
 }
