@@ -37,10 +37,10 @@ CREATE TABLE ishikawa_causes_blocks (
 
 CREATE TABLE ishikawa_causes_blocks_connections (
     id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    cause_source_id BIGINT(10) UNSIGNED NOT NULL,
-    cause_destination_id BIGINT(10) UNSIGNED NOT NULL,
+    source_id BIGINT(10) UNSIGNED NOT NULL,
+    destination_id BIGINT(10) UNSIGNED NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE INDEX uniq_ishicausesblocks_srcdst (cause_source_id, cause_destination_id)
+    UNIQUE INDEX uniq_ishicausesblocks_srcdst (source_id, destination_id)
 );
 
 CREATE TABLE ishikawa_axis_blocks (
@@ -56,10 +56,10 @@ CREATE TABLE ishikawa_axis_blocks (
 
 CREATE TABLE ishikawa_axis_blocks_connections (
     id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    axis_source_id BIGINT(10) UNSIGNED NOT NULL,
-    axis_destination_id BIGINT(10) UNSIGNED NOT NULL,
+    source_id BIGINT(10) UNSIGNED NOT NULL,
+    destination_id BIGINT(10) UNSIGNED NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE INDEX uniq_ishiaxisblocks_srcdst (axis_source_id, axis_destination_id)
+    UNIQUE INDEX uniq_ishiaxisblocks_srcdst (source_id, destination_id)
 );
 
 CREATE TABLE ishikawa_consequences_blocks (
@@ -76,8 +76,8 @@ CREATE TABLE ishikawa_consequences_blocks (
 
 CREATE TABLE ishikawa_consequences_blocks_connections (
     id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    consequence_source_id BIGINT(10) UNSIGNED NOT NULL,
-    consequence_destination_id BIGINT(10) UNSIGNED NOT NULL,
+    source_id BIGINT(10) UNSIGNED NOT NULL,
+    destination_id BIGINT(10) UNSIGNED NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE INDEX uniq_ishiconsequencesblocks_srcdst (consequence_source_id, consequence_destination_id)
+    UNIQUE INDEX uniq_ishiconsequencesblocks_srcdst (source_id, destination_id)
 );

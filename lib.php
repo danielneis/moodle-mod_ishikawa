@@ -18,7 +18,6 @@ function ishikawa_get_submission($userid, $ishikawaid) {
 
 function ishikawa_blocks_from_submission($submission = false) {
 
-
     $blocks = array();
     $blocks['causes'] = array();
     $blocks['axis'] = array();
@@ -181,6 +180,99 @@ function ishikawa_view_dates($ishikawa) {
     }
     echo '</table>';
     print_simple_box_end();
+}
+
+function ishikawa_get_link_to_block($block, $cmid,$src, $src_type, $dst, $dst_type) {
+    global $CFG;
+
+    $link = $CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cmid;
+
+    if ($src) {
+        $src_type = required_param('src_type', PARAM_ALPHA);
+        $link .= '&src='.$src.'&dst='.$block->id.'&src_type='.$src_type.'&dst_type='.$dst_type;
+        $nome = 'Destino';
+    } else {
+        $link .= '&src='.$block->id.'&src_type='.$src_type;
+        $nome = 'Origem';
+    }
+
+    return '<a href="'.$link.'">'.$nome.'</a>';
+}
+
+function ishikawa_edit_links($cmid, $blocks, $submission, $src, $dst) {
+
+    $rows = 3;
+    $cols = 15;
+
+    echo '<form action="saveblocks.php" method="post">',
+         '<p><input type="hidden" name="cmid" value="',$cmid,'" /></p>',
+         '<table class="generaltable">',
+         '<tr>',
+           '<td class="extremos">',
+             '<h2>', get_string('tail', 'ishikawa'), '</h2>',
+             $blocks['tail_text'],
+           '</td>',
+         '<td>',
+         '<table id="ishikawa_center">',
+    // START CAUSES
+         '<tr><td><table>',
+           '<tr><td colspan="4"><h3>Causas</h3></td></tr>';
+    foreach ($blocks['causes'] as $nivel_y => $causes) {
+        echo '<tr><td class="add_column"></td>';
+        foreach ($causes as $nivel_x => $b) {
+            echo '<td>',
+                 '<p>', $b->texto, '</p>',
+                 ishikawa_get_link_to_block($b, $cmid, $src, 'causes', $dst, 'causes'),
+                 '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '</table></td></tr>';
+
+    // END CAUSES - START AXIS
+    echo '<tr id="axis"><td><table>',
+         '<tr>',
+           '<td><h3>Eixo</h3></td>',
+         '</tr>',
+         '<tr>';
+        foreach ($blocks['axis'] as $nivel_x => $b) {
+            echo '<td>',
+                 '<p>', $b->texto, '</p>',
+                 ishikawa_get_link_to_block($b, $cmid, $src, 'axis', $dst, 'axis'),
+                 '</td>';
+        }
+    echo '</tr></table></td></tr>';
+
+    // END AXIS - START CONSEQUENCES
+    echo '<tr><td><table>',
+           '<tr><td colspan="4"><h3>Consequências</h3></td></tr>';
+    foreach ($blocks['consequences'] as $nivel_y => $consequences) {
+        echo '<tr><td class="add_column"></td>';
+        foreach ($consequences as $nivel_x => $b) {
+            echo '<td>',
+                 '<p>', $b->texto, '</p>',
+                 ishikawa_get_link_to_block($b, $cmid, $src, 'consequences', $dst, 'consequences'),
+                 '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '</table></td></tr>',
+         // END CONSEQUENCES
+         '</table>',
+         '</td>',
+         '<td class="extremos">',
+             '<h2>', get_string('head', 'ishikawa'), '</h2>',
+             '<p>',$blocks['head_text'],'</p>',
+         '</td>',
+         '</tr>',
+         '</table>';
+
+    if ($submission) {
+        echo "<p><input type='hidden' name='subid' value='{$submission->id}' /></p>";
+    }
+
+    echo '<p><input type="submit" value="Salvar"/></p>',
+         '</form>';
 }
 
 ?>

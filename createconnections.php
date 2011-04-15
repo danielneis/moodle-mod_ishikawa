@@ -4,6 +4,8 @@
     require_once('lib.php');
 
     $id = required_param('id', PARAM_INT);  // Course Module ID
+    $src = optional_param('src', 0, PARAM_INT);
+    $dst = optional_param('dst', 0, PARAM_INT);
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
@@ -31,16 +33,39 @@
         notice(get_string("activityiscurrentlyhidden"));
     }
 
-    $strishikawa = get_string('modulename', 'ishikawa');
+    if ($src && $dst) {
+        $src_type = required_param('src_type', PARAM_ALPHA);
+        $dst_type = required_param('dst_type', PARAM_ALPHA);
 
-    $navigation = build_navigation('', $cm);
-    print_header_simple($ishikawa->name, "", $navigation, "", "", true, '',navmenu($course, $cm));
+        if ($src_type != $dst_type) {
+            print_error('src_type_differ_from_dst_type');
+            // arrumar redirect para voltar para a edição de links
+        }
 
-    $blocks = ishikawa_blocks_from_submission($submission);
+        if (!in_array($src_type, array('causes', 'consequences', 'axis'))) {
+            print_error('invalid_src_type');
+        }
 
+        $table = 'ishikawa_'.$src_type.'_blocks_connections';
 
+        $connection = new stdClass();
+        $connection->source_id = $src;
+        $connection->destination_id = $dst;
+        if (!insert_record($table, $connection)) {
+            var_dump($table, $connection);
+            print_error('cannot_add_connection');
+        }
+        redirect($CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cm->id);
+    } else {
 
-    // AQUI A MÁGICA ACONTECE
+        $strishikawa = get_string('modulename', 'ishikawa');
 
-    print_footer($course);
+        $navigation = build_navigation('', $cm);
+        print_header_simple($ishikawa->name, "", $navigation, "", "", true, '',navmenu($course, $cm));
+
+        ishikawa_edit_links($cm->id, ishikawa_blocks_from_submission($submission), $submission, $src, $dst);
+
+        print_footer($course);
+    }
+
 ?>
