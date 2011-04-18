@@ -18,8 +18,10 @@ class Ishikawa  {
     var $im;
     var $draw;
 
-    function __construct($blocks) {
+    function __construct($blocks, $connections) {
+
         $this->blocks = $blocks;
+        $this->connections = $connections;
 
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();    //Create a new drawing class (?)
@@ -111,30 +113,12 @@ class Ishikawa  {
     }
 
     private function generate_head() {
-
-        $block =  $this->blocks['head'];
-
-        $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
-
-        if ($retangulo->bottom_y > $maior_altura) {
-            $maior_altura = $retangulo->bottom_y;
-        }
-
-        $this->retangulos['head'][$block->id] = $retangulo;
-        $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
+        $this->retangulos['head'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['head_text'], $this->draw, $this->im);
+        $this->ponto_x_atual = $this->retangulos['head']->bottom_x + $this->offset;
     }
 
     private function generate_tail() {
-
-        $block =  $this->blocks['tail'];
-
-        $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
-
-        if ($retangulo->bottom_y > $maior_altura) {
-            $maior_altura = $retangulo->bottom_y;
-        }
-
-        $this->retangulos['tail'][$block->id] = $retangulo;
+        $this->retangulos['tail'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['tail_text'], $this->draw, $this->im);
         $this->ponto_x_tail = $this->ponto_x_atual;
     }
 

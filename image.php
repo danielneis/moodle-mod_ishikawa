@@ -1,9 +1,11 @@
 <?php
 
     require_once("../../config.php");
+    require_once("Ishikawa.class.php");
     require_once("lib.php");
 
     $id = required_param('id', PARAM_INT);  // Course Module ID
+    $userid = required_param('userid', PARAM_INT); // user id to get submission
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
@@ -24,26 +26,13 @@
 
     add_to_log($course->id, "ishikawa", "view", "view.php?id={$cm->id}", $ishikawa->id, $cm->id);
 
+    $submission = ishikawa_get_submission($userid, $ishikawa->id);
+
     /// Print the page header
-
-    /// Some capability checks.
-    if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
-        notice(get_string("activityiscurrentlyhidden"));
-    }
-
-    $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
-
-    $buttontext = '';
-    $strishikawa = get_string('modulename', 'ishikawa');
-    $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
-    $navigation = build_navigation('', $cm);
-    print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
-
     $blocks = ishikawa_blocks_from_submission($submission);
+
+    $connections = array();
 
     $ishikawa = new Ishikawa($blocks, $connections);
     $ishikawa->draw();
-
-    print_footer($course);
-
 ?>

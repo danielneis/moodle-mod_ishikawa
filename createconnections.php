@@ -70,8 +70,7 @@
 
         $connections = array();
 
-        $ishikawa = new Ishikawa($blocks, $connections);
-        $ishikawa->draw();
+        echo '<img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" />';
 
         print_footer($course);
     }
