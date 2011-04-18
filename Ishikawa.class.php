@@ -26,7 +26,7 @@ class Ishikawa  {
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();    //Create a new drawing class (?)
 
-        $this->im->newImage(700, 700, new ImagickPixel('lightgray'));
+        $this->im->newImage(1700, 1700, new ImagickPixel('lightgray'));
 
         $this->draw->setFillColor('white');    // Set up some colors to use for fill and outline:w
         $this->draw->setStrokeColor( new ImagickPixel('black'));
@@ -64,7 +64,7 @@ class Ishikawa  {
 
     private function printme() {
 
-        $this->retangulos['head']->draw();
+        $this->retangulos['tail']->draw();
 
         $parts = array('causes', 'axis', 'consequences');
         foreach ($parts as $p) {
@@ -73,7 +73,7 @@ class Ishikawa  {
             }
         }
 
-        $this->retangulos['tail']->draw();
+        $this->retangulos['head']->draw();
 
         foreach ($this->setas as $seta) {
             $seta->draw();
@@ -113,12 +113,15 @@ class Ishikawa  {
     }
 
     private function generate_head() {
+        $this->ponto_y_atual = $this->inicio_y;
+        $this->ponto_x_atual = $this->ponto_x_head;
         $this->retangulos['head'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['head_text'], $this->draw, $this->im);
         $this->ponto_x_atual = $this->retangulos['head']->bottom_x + $this->offset;
     }
 
     private function generate_tail() {
         $this->retangulos['tail'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['tail_text'], $this->draw, $this->im);
+        $this->ponto_x_atual += $this->retangulos['tail']->bottom_x + $this->offset;
         $this->ponto_x_tail = $this->ponto_x_atual;
     }
 
@@ -137,6 +140,7 @@ class Ishikawa  {
                 $this->retangulos[$multinivel][$block->id] = $retangulo;
             }
             $this->ponto_y_atual = $maior_altura + $this->offset;
+            $this->ponto_x_head = $this->ponto_x_atual;
             $this->ponto_x_atual = $this->ponto_x_tail;
         }
     }
@@ -144,17 +148,18 @@ class Ishikawa  {
     private function generate_axis() {
         $maior_altura = 0;
         foreach ($this->blocks['axis'] as $nivel_x => $block) {
+
             $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
             $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
             if ($retangulo->bottom_y > $maior_altura) {
                 $maior_altura = $retangulo->bottom_y;
             }
-            $this->retangulos['axis'][$block->id] = $retangulo;
 
-            $this->ponto_y_atual = $maior_altura + $this->offset;
-            $this->ponto_x_atual = $this->ponto_x_tail;
+            $this->retangulos['axis'][$block->id] = $retangulo;
         }
+        $this->ponto_x_atual = $this->ponto_x_tail;
+        $this->ponto_y_atual = $maior_altura + $this->offset;
     }
 }
 ?>
