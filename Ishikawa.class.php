@@ -8,7 +8,7 @@ class Ishikawa  {
 
     var $setas = array();
 
-    var $dados;
+    var $blocks;
 
     var $inicio_x = 10;
     var $inicio_y = 10;
@@ -18,8 +18,8 @@ class Ishikawa  {
     var $im;
     var $draw;
 
-    function __construct($dados) {
-        $this->dados = $dados;
+    function __construct($blocks) {
+        $this->blocks = $blocks;
 
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();    //Create a new drawing class (?)
@@ -30,31 +30,24 @@ class Ishikawa  {
         $this->draw->setStrokeColor( new ImagickPixel('black'));
     }
 
+
     function draw() {
-        $nivel = 0;
-        $maior_altura = 0;
+        $this->ponto_x_atual = $this->inicio_x;
+        $this->ponto_y_atual = $this->inicio_y;
 
-        $ponto_x = $this->inicio_x;
-        $ponto_y = $this->inicio_y;
+        $this->generate_tail();
 
-        // Cria retangulos
-        foreach ($this->dados as $niveis) {
-            foreach ($niveis as $nome_retangulo => $retangulo) {
-                $text = "Oi, tudo bom? Na! hahashc Vamo lá vamo lá! To achando tudo isso mt loco!";
-                $b = new Retangulo($ponto_x, $ponto_y, $text, $this->draw, $this->im);
-                $ponto_x = $b->bottom_x + $this->offset;
-                if ($b->bottom_y > $maior_altura) {
-                    $maior_altura = $b->bottom_y;
-                }
-                $this->retangulos[$nivel][$nome_retangulo] = $b;
-            }
-            $ponto_y = $maior_altura + $this->offset;
-            $ponto_x = $this->inicio_x;
-            $nivel++;
-        }
+        $this->generate_multinivel('causes');
+
+        $this->generate_axis();
+
+        $this->generate_multinivel('consequences');
+
+        $this->generate_head();
 
         // Gera conexões
-        foreach ($this->dados as $nivel => $niveis) {
+        /*
+        foreach ($this->blocks as $nivel => $niveis) {
             foreach ($niveis as $nome_retangulo => $retangulo) {
                 foreach ($retangulo['conections'] as $connection) {
                     $this->geraSeta($this->retangulos[$nivel][$nome_retangulo],
@@ -62,17 +55,23 @@ class Ishikawa  {
                 }
             }
         }
+        */
 
-        $this->printIshikawa();
+        $this->printme();
     }
 
-    function printIshikawa() {
+    private function printme() {
 
-        foreach ($this->retangulos as $niveis) {
-            foreach ($niveis as $retangulo) {
+        $this->retangulos['head']->draw();
+
+        $parts = array('causes', 'axis', 'consequences');
+        foreach ($parts as $p) {
+            foreach($this->retangulos[$p] as $retangulo) {
                 $retangulo->draw();
             }
         }
+
+        $this->retangulos['tail']->draw();
 
         foreach ($this->setas as $seta) {
             $seta->draw();
@@ -85,7 +84,7 @@ class Ishikawa  {
         echo $this->im;                // Publish it to the world!
     }
 
-    function geraSeta($origem, $destino) {
+    private function geraSeta($origem, $destino) {
         $funcoes = array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
         $menor_comprimento_reta = 9999;
         foreach ($funcoes as $funcao1) {
@@ -107,9 +106,71 @@ class Ishikawa  {
         $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->draw);
     }
 
-    function comprimentoReta($xi, $xf, $yi, $yf) {
+    private function comprimentoReta($xi, $xf, $yi, $yf) {
         return sqrt(pow($xf-$xi, 2) + pow($yf-$yi,2));
     }
 
+    private function generate_head() {
+
+        $block =  $this->blocks['head'];
+
+        $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+
+        if ($retangulo->bottom_y > $maior_altura) {
+            $maior_altura = $retangulo->bottom_y;
+        }
+
+        $this->retangulos['head'][$block->id] = $retangulo;
+        $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
+    }
+
+    private function generate_tail() {
+
+        $block =  $this->blocks['tail'];
+
+        $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+
+        if ($retangulo->bottom_y > $maior_altura) {
+            $maior_altura = $retangulo->bottom_y;
+        }
+
+        $this->retangulos['tail'][$block->id] = $retangulo;
+        $this->ponto_x_tail = $this->ponto_x_atual;
+    }
+
+    private function generate_multinivel($multinivel) {
+        $maior_altura = 0;
+        foreach ($this->blocks[$multinivel] as $nivel_y => $bls) {
+            foreach ($bls as $nivel_x => $block) {
+
+                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+                $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
+
+                if ($retangulo->bottom_y > $maior_altura) {
+                    $maior_altura = $retangulo->bottom_y;
+                }
+
+                $this->retangulos[$multinivel][$block->id] = $retangulo;
+            }
+            $this->ponto_y_atual = $maior_altura + $this->offset;
+            $this->ponto_x_atual = $this->ponto_x_tail;
+        }
+    }
+
+    private function generate_axis() {
+        $maior_altura = 0;
+        foreach ($this->blocks['axis'] as $nivel_x => $block) {
+            $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+            $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
+
+            if ($retangulo->bottom_y > $maior_altura) {
+                $maior_altura = $retangulo->bottom_y;
+            }
+            $this->retangulos['axis'][$block->id] = $retangulo;
+
+            $this->ponto_y_atual = $maior_altura + $this->offset;
+            $this->ponto_x_atual = $this->ponto_x_tail;
+        }
+    }
 }
 ?>
