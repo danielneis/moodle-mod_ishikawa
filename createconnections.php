@@ -64,7 +64,14 @@
         $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
         print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 
-        ishikawa_edit_links($cm->id, ishikawa_blocks_from_submission($submission), $submission, $src, $dst);
+        $blocks = ishikawa_blocks_from_submission($submission);
+
+        ishikawa_edit_links($cm->id, $blocks, $submission, $src, $dst);
+
+        $connections = array();
+
+        $ishikawa = new Ishikawa($blocks, $connections);
+        $ishikawa->draw();
 
         print_footer($course);
     }
