@@ -22,6 +22,14 @@ class mod_ishikawa_mod_form extends moodleform_mod {
         $mform->addRule('maxchar', null, 'required', null, 'client');
         $mform->setDefault('maxchar', 500);
 
+        $mform->addElement('text', 'maxlines', get_string('diagrammaxlines', 'ishikawa'), array('size'=>'5'));
+        $mform->addRule('maxlines', null, 'required', null, 'client');
+        $mform->setDefault('maxlines', 3);
+
+        $mform->addElement('text', 'maxcolumns', get_string('diagrammaxcolumns', 'ishikawa'), array('size'=>'5'));
+        $mform->addRule('maxcolumns', null, 'required', null, 'client');
+        $mform->setDefault('maxcolumns', 4);
+
         $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'assignment'), array('optional'=>true));
         $mform->setDefault('timeavailable', time());
         $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'assignment'), array('optional'=>true));

@@ -16,7 +16,7 @@ function ishikawa_get_submission($userid, $ishikawaid) {
     return get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }
 
-function ishikawa_blocks_from_submission($submission = false) {
+function ishikawa_blocks_from_submission($submission = false, $ishikawa = false) {
 
     $blocks = array();
     $blocks['causes'] = array();
@@ -26,20 +26,24 @@ function ishikawa_blocks_from_submission($submission = false) {
     $blocks['head_text'] = '';
 
     if (!$submission){
+        if (!$ishikawa) {
+            print_error('code-error.please, contact the vendors of this module.');
+        }
+
         $null_block = new stdClass();
         $null_block->submission_id = 0;
         $null_block->texto = '';
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < $ishikawa->maxlines; $i++) {
             $null_block->nivel_x = $i;
-            for ($j = 0; $j < 3; $j++) {
+            for ($j = 0; $j < $ishikawa->maxcolumns; $j++) {
                 $null_block->nivel_y = $j;
                 $blocks['causes'][$i][$j] = $null_block;
                 $blocks['consequences'][$i][$j] = $null_block;
             }
         }
         unset($null_block->nivel_y);
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < $ishikawa->maxcolumns; $i++) {
             $null_block->nivel_x = $i;
             $blocks['axis'][$i] = $null_block;
         }
@@ -83,15 +87,9 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
          '<table id="ishikawa_center">',
     // START CAUSES
          '<tr><td><table>',
-           '<tr><td colspan="4"><h3>Causas</h3></td></tr>',
-           '<tr>',
-             '<td class="add_column"><a href="#">+coluna</a></td>',
-             '<td colspan="3" class="add_line"><a href="#">+ linha</a></td>',
-             '<td class="add_column"><a href="#">+coluna</a></td>',
-           '</tr>';
+           '<tr><td colspan="4"><h3>Causas</h3></td></tr>';
 
     foreach ($blocks['causes'] as $nivel_y => $causes) {
-        echo '<tr><td class="add_column"></td>';
         foreach ($causes as $nivel_x => $b) {
             $c_name = "causes[{$nivel_y}][{$nivel_x}]";
             echo '<td>';
@@ -105,13 +103,11 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         }
         echo '</tr>';
     }
-    echo '<tr><td colspan="5" class="add_line"><a href="#">+ linha</a></td></tr>',
-         '</table></td></tr>';
+    echo '</table></td></tr>';
 
     // END CAUSES - START AXIS
     echo '<tr id="axis"><td>',
-          '<h3>Eixo</h3>',
-          '<a href="#">+ coluna</a>';
+          '<h3>Eixo</h3>';
     foreach ($blocks['axis'] as $nivel_x => $b) {
         $a_name = "axis[{$nivel_x}]";
         if (isset($b->id) and $b->id >0) {
@@ -121,19 +117,12 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
              $b->texto,
              '</textarea>';
     }
-    echo '<a href="#">+ coluna</a>',
-         '</td></tr>';
+    echo '</td></tr>';
 
     // END AXIS - START CONSEQUENCES
     echo '<tr><td><table>',
-           '<tr><td colspan="4"><h3>Consequências</h3></td></tr>',
-           '<tr>',
-             '<td class="add_column"><a href="#">+coluna</a></td>',
-             '<td colspan="3" class="add_line"><a href="#">+ linha</a></td>',
-             '<td class="add_column"><a href="#">+coluna</a></td>',
-           '</tr>';
+           '<tr><td colspan="4"><h3>Consequências</h3></td></tr>';
     foreach ($blocks['consequences'] as $nivel_y => $consequences) {
-        echo '<tr><td class="add_column"></td>';
         foreach ($consequences as $nivel_x => $b) {
             $c_name = "consequences[{$nivel_y}][{$nivel_x}]";
             echo '<td>';
@@ -147,8 +136,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         }
         echo '</tr>';
     }
-    echo '<tr><td colspan="5" class="add_line"><a href="#">+ linha</a></td></tr>',
-         '</table></td></tr>',
+    echo '</table></td></tr>',
          // END CONSEQUENCES
          '</table>',
          '</td>',
