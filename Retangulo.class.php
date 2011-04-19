@@ -16,10 +16,14 @@ class Retangulo {
     private $line_height;
     private $line_spacing = 2;
 
-    function __construct($x, $y, $text, $draw, $im) {
+    private $color;
+
+    function __construct($x, $y, $text, $draw, $im, $color = 'white') {
 
         $this->draw = $draw;
         $this->im = $im;
+
+        $this->color = $color;
 
         $this->text_lines = $this->str_in_lines($text, $this->largura);
 
@@ -35,6 +39,7 @@ class Retangulo {
     }
 
     function draw() {
+        $this->draw->setFillColor($this->color);
         $this->draw->rectangle($this->upper_x, $this->upper_y, $this->bottom_x, $this->bottom_y);
 
         $x = $this->upper_x + $this->padding_h;

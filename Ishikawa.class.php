@@ -18,6 +18,8 @@ class Ishikawa  {
     var $im;
     var $draw;
 
+    var $colors = array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
+
     function __construct($blocks, $connections) {
 
         $this->blocks = $blocks;
@@ -27,7 +29,7 @@ class Ishikawa  {
         $this->draw = new ImagickDraw();    //Create a new drawing class (?)
 
 
-        $this->draw->setFillColor('white');    // Set up some colors to use for fill and outline:w
+        $this->draw->setFillColor('white');    // Set up some colors to use for fill and outline
         $this->draw->setStrokeColor(new ImagickPixel('black'));
     }
 
@@ -133,7 +135,7 @@ class Ishikawa  {
         foreach ($this->blocks[$multinivel] as $nivel_y => $bls) {
             foreach ($bls as $nivel_x => $block) {
 
-                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, $this->colors[$nivel_y]);
                 $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
                 if ($retangulo->bottom_y > $maior_altura) {
