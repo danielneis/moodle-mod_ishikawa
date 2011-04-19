@@ -10,7 +10,7 @@ class Retangulo {
     var $im;
     var $draw;
 
-    private $text_lines;
+    private $text_lines = array();
     private $padding_h = 10;
     private $padding_v = 17;
     private $line_height;
@@ -39,6 +39,9 @@ class Retangulo {
     }
 
     function draw() {
+        if (empty($this->text_lines)) {
+            return false;
+        }
         $this->draw->setFillColor($this->color);
         $this->draw->rectangle($this->upper_x, $this->upper_y, $this->bottom_x, $this->bottom_y);
 
@@ -67,6 +70,10 @@ class Retangulo {
     }
 
     private function str_in_lines($text, $max_width) {
+
+        if (empty($text) && $text != '0') {
+            return array();
+        }
 
         $words = explode(" ", $text);
         $lines = array();
