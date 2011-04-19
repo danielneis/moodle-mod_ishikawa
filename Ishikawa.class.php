@@ -26,12 +26,10 @@ class Ishikawa  {
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();    //Create a new drawing class (?)
 
-        $this->im->newImage(1700, 1700, new ImagickPixel('lightgray'));
 
         $this->draw->setFillColor('white');    // Set up some colors to use for fill and outline:w
-        $this->draw->setStrokeColor( new ImagickPixel('black'));
+        $this->draw->setStrokeColor(new ImagickPixel('black'));
     }
-
 
     function draw() {
         $this->ponto_x_atual = $this->inicio_x;
@@ -46,6 +44,9 @@ class Ishikawa  {
         $this->generate_multinivel('consequences');
 
         $this->generate_head();
+
+        $this->retangulos['tail']->setAltura($this->ponto_y_maximo - $this->offset);
+        $this->retangulos['head']->setAltura($this->ponto_y_maximo - $this->offset);
 
         // Gera conexões
         /*
@@ -79,6 +80,7 @@ class Ishikawa  {
             $seta->draw();
         }
 
+        $this->im->newImage($this->ponto_x_maximo, $this->ponto_y_maximo, new ImagickPixel('lightgray'));
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
         $this->im->setImageFormat('jpg');    // Give the image a format
 
@@ -117,6 +119,7 @@ class Ishikawa  {
         $this->ponto_x_atual = $this->ponto_x_head;
         $this->retangulos['head'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['head_text'], $this->draw, $this->im);
         $this->ponto_x_atual = $this->retangulos['head']->bottom_x + $this->offset;
+        $this->ponto_x_maximo = $this->ponto_x_atual;
     }
 
     private function generate_tail() {
@@ -143,6 +146,7 @@ class Ishikawa  {
             $this->ponto_x_head = $this->ponto_x_atual;
             $this->ponto_x_atual = $this->ponto_x_tail;
         }
+        $this->ponto_y_maximo = $this->ponto_y_atual;
     }
 
     private function generate_axis() {

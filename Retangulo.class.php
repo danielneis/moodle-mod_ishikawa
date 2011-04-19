@@ -91,6 +91,10 @@ class Retangulo {
         }
         return $lines;
     }
+
+    function setAltura($novo_bottom_y) {
+        $this->bottom_y = $novo_bottom_y;
+    }
 }
 
 ?>
