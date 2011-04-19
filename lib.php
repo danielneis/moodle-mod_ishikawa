@@ -222,7 +222,7 @@ function ishikawa_edit_links($cmid, $blocks, $submission, $src, $dst) {
     foreach ($blocks['causes'] as $nivel_y => $causes) {
         echo '<tr>';
         foreach ($causes as $nivel_x => $b) {
-           echo '<td class="block causes">',
+           echo '<td class="block">',
                  '<p>', $b->texto, '</p>';
            if (!empty($b->texto) && $b->texto != '0') {
                echo ishikawa_get_link_to_block($b, $cmid, $src, 'causes', $dst, 'causes');

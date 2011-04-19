@@ -10,6 +10,7 @@ class Retangulo {
     var $im;
     var $draw;
 
+    private $text = '';
     private $text_lines = array();
     private $padding_h = 10;
     private $padding_v = 17;
@@ -25,6 +26,7 @@ class Retangulo {
 
         $this->color = $color;
 
+        $this->text = $text;
         $this->text_lines = $this->str_in_lines($text, $this->largura);
 
         $metrics =  $im->queryfontmetrics($this->draw, $text);
@@ -38,8 +40,16 @@ class Retangulo {
         $this->bottom_y = $y + $this->altura + $this->padding_v;
     }
 
+    function text() {
+        return $this->text;
+    }
+
     static function funcoes() {
         return array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
+    }
+
+    function color() {
+        return $this->color;
     }
 
     function draw() {

@@ -60,8 +60,14 @@ class Ishikawa  {
         }
 
         foreach ($this->connections as $id => $connection) {
-            $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
-                            $this->retangulos[$connection->dst_type][$connection->dst_id]);
+            $src_text = $this->retangulos[$connection->src_type][$connection->src_id]->text();
+            $dst_text = $this->retangulos[$connection->dst_type][$connection->dst_id]->text();
+            if ((!empty($src_text) && $src_text != '0') &&
+                (!empty($dst_text) && $dst_text != '0')) {
+                $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
+                                $this->retangulos[$connection->dst_type][$connection->dst_id],
+                                $this->retangulos[$connection->src_type][$connection->src_id]->color());
+            }
         }
 
         foreach ($this->blocks['axis'] as $block) {
@@ -114,7 +120,7 @@ class Ishikawa  {
         echo $this->im;                // Publish it to the world!
     }
 
-    private function geraSeta($origem, $destino) {
+    private function geraSeta($origem, $destino, $cor = "white") {
         $menor_comprimento_reta = 9999;
         foreach (Retangulo::funcoes() as $funcao1) {
             foreach (Retangulo::funcoes() as $funcao2) {
@@ -132,7 +138,7 @@ class Ishikawa  {
             }
         }
 
-        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->draw);
+        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->draw, $cor);
     }
 
     private function comprimentoReta($xi, $xf, $yi, $yf) {

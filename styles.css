@@ -6,37 +6,28 @@
 }
 
 .extremos {
-    vertical-align: middle;
+    vertical-align: top;
+    padding: 0.5em;
+    margin: 0;
+    width: 20%;
+    border: 1px solid black;
+}
+
+#ishikawa_center {
     padding: 0;
     margin: 0;
-}
-
-#ishikawa_center  {
     width: 100%;
+}
+#ishikawa_center table {
+    width: 100%;
+    margin: 0;
     padding: 0;
-}
-
-.add_column {
-    width: 3em;
-    padding:0;
-}
-
-.add_line {
-    text-align: center;
-}
-
-.right {
-    text-align: right;
-    margin-right: 3em;
 }
 
 td.block {
     border: 1px solid black;
     padding: 1em;
     border-collapse: collapse;
+    width: 15em;
 }
 
-table {
-    margin: 0;
-    padding: 0;
-}
