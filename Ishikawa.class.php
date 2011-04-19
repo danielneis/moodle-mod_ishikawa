@@ -47,8 +47,17 @@ class Ishikawa  {
 
         $this->generate_head();
 
-        $this->retangulos['tail']->setAltura($this->ponto_y_maximo - $this->offset);
-        $this->retangulos['head']->setAltura($this->ponto_y_maximo - $this->offset);
+        if ($this->retangulos['tail']->bottom_y < $this->ponto_y_maximo) {
+            $this->retangulos['tail']->setAltura($this->ponto_y_maximo - $this->offset);
+        } else {
+            $this->ponto_y_maximo = $this->retangulos['tail']->bottom_y + $this->offset;
+        }
+
+        if ($this->retangulos['head']->bottom_y < $this->ponto_y_maximo) {
+            $this->retangulos['head']->setAltura($this->ponto_y_maximo - $this->offset);
+        } else {
+            $this->ponto_y_maximo = $this->retangulos['head']->bottom_y + $this->offset;
+        }
 
         // Gera conexões
         /*
@@ -82,7 +91,10 @@ class Ishikawa  {
             $seta->draw();
         }
 
-        $this->im->newImage($this->ponto_x_maximo, $this->ponto_y_maximo, new ImagickPixel('lightgray'));
+
+        $altura = max($this->ponto_y_maximo, $this->retangulos['tail']->bottom_y, $this->retangulos['head']->bottom_y);
+
+        $this->im->newImage($this->ponto_x_maximo, $altura, new ImagickPixel('lightgray'));
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
         $this->im->setImageFormat('jpg');    // Give the image a format
 
