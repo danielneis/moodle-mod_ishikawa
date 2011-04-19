@@ -28,10 +28,9 @@
 
     $submission = ishikawa_get_submission($userid, $ishikawa->id);
 
-    /// Print the page header
     $blocks = ishikawa_blocks_from_submission($submission);
 
-    $connections = array();
+    $connections = ishikawa_connections_from_submission($submission);
 
     $ishikawa = new Ishikawa($blocks, $connections);
     $ishikawa->draw();

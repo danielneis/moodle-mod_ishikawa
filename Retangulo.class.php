@@ -38,6 +38,10 @@ class Retangulo {
         $this->bottom_y = $y + $this->altura + $this->padding_v;
     }
 
+    static function funcoes() {
+        return array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
+    }
+
     function draw() {
         if (empty($this->text_lines)) {
             return false;

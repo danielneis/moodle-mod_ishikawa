@@ -55,7 +55,6 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
     $axis_blocks = get_records("ishikawa_axis_blocks", 'submissionid', $submission->id);
     $consequences_blocks = get_records("ishikawa_consequences_blocks", 'submissionid', $submission->id);
 
-
     foreach ($causes_blocks as $block) {
         $blocks['causes'][$block->nivel_y][$block->nivel_x] = $block;
     }
@@ -68,6 +67,10 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
     $blocks['tail_text'] = $submission->tail_text;
     $blocks['head_text'] = $submission->head_text;
     return $blocks;
+}
+
+function ishikawa_connections_from_submission($submission) {
+    return get_records("ishikawa_connections", "submissionid", $submission->id);
 }
 
 function ishikawa_edit_blocks($cmid, $blocks, $submission) {

@@ -37,22 +37,17 @@
         $src_type = required_param('src_type', PARAM_ALPHA);
         $dst_type = required_param('dst_type', PARAM_ALPHA);
 
-        if ($src_type != $dst_type) {
-            print_error('src_type_differ_from_dst_type');
-            // arrumar redirect para voltar para a edição de links
-        }
-
         if (!in_array($src_type, array('causes', 'consequences', 'axis'))) {
             print_error('invalid_src_type');
         }
 
-        $table = 'ishikawa_'.$src_type.'_blocks_connections';
-
         $connection = new stdClass();
-        $connection->source_id = $src;
-        $connection->destination_id = $dst;
-        if (!insert_record($table, $connection)) {
-            var_dump($table, $connection);
+        $connection->src_id = $src;
+        $connection->src_type = $src_type;
+        $connection->dst_id = $dst;
+        $connection->dst_type = $dst_type;
+        $connection->submissionid = $submission->id;
+        if (!insert_record('ishikawa_connections', $connection)) {
             print_error('cannot_add_connection');
         }
         redirect($CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cm->id);
@@ -67,8 +62,6 @@
         $blocks = ishikawa_blocks_from_submission($submission);
 
         ishikawa_edit_links($cm->id, $blocks, $submission, $src, $dst);
-
-        $connections = array();
 
         echo '<img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" />';
 

@@ -37,14 +37,6 @@ CREATE TABLE ishikawa_causes_blocks (
     INDEX ishiblocks_sub_ix (submissionid)
 );
 
-CREATE TABLE ishikawa_causes_blocks_connections (
-    id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    source_id BIGINT(10) UNSIGNED NOT NULL,
-    destination_id BIGINT(10) UNSIGNED NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE INDEX uniq_ishicausesblocks_srcdst (source_id, destination_id)
-);
-
 CREATE TABLE ishikawa_axis_blocks (
     id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     submissionid BIGINT(10) NOT NULL,
@@ -54,14 +46,6 @@ CREATE TABLE ishikawa_axis_blocks (
     PRIMARY KEY (id),
     UNIQUE INDEX uniq_ishiblocks_subniveis (submissionid, nivel_x),
     INDEX ishiblocks_sub_ix (submissionid)
-);
-
-CREATE TABLE ishikawa_axis_blocks_connections (
-    id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    source_id BIGINT(10) UNSIGNED NOT NULL,
-    destination_id BIGINT(10) UNSIGNED NOT NULL,
-    PRIMARY KEY (id),
-    UNIQUE INDEX uniq_ishiaxisblocks_srcdst (source_id, destination_id)
 );
 
 CREATE TABLE ishikawa_consequences_blocks (
@@ -76,10 +60,13 @@ CREATE TABLE ishikawa_consequences_blocks (
     INDEX ishiblocks_sub_ix (submissionid)
 );
 
-CREATE TABLE ishikawa_consequences_blocks_connections (
+CREATE TABLE ishikawa_connections (
     id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    source_id BIGINT(10) UNSIGNED NOT NULL,
-    destination_id BIGINT(10) UNSIGNED NOT NULL,
+    submissionid BIGINT(10) NOT NULL,
+    src_id BIGINT(10) UNSIGNED NOT NULL,
+    src_type ENUM('causes', 'axis', 'consequences') NOT NULL,
+    dst_id BIGINT(10) UNSIGNED NOT NULL,
+    dst_type ENUM('causes', 'axis', 'consequences') NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE INDEX uniq_ishiconsequencesblocks_srcdst (source_id, destination_id)
+    UNIQUE INDEX uniq_ishiconsequencesblocks_srcdst (src_id, src_type, dst_id, dst_type)
 );

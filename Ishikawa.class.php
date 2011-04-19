@@ -59,17 +59,30 @@ class Ishikawa  {
             $this->ponto_y_maximo = $this->retangulos['head']->bottom_y + $this->offset;
         }
 
-        // Gera conexões
-        /*
-        foreach ($this->blocks as $nivel => $niveis) {
-            foreach ($niveis as $nome_retangulo => $retangulo) {
-                foreach ($retangulo['conections'] as $connection) {
-                    $this->geraSeta($this->retangulos[$nivel][$nome_retangulo],
-                                     $this->retangulos[$connection['nivel']][$connection['nome']]);
-                }
-            }
+        foreach ($this->connections as $id => $connection) {
+            $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
+                            $this->retangulos[$connection->dst_type][$connection->dst_id]);
         }
-        */
+
+        foreach ($this->blocks['axis'] as $block) {
+            if (empty($block->texto) && $block->texto != '0') {
+                continue;
+            }
+            break;
+        }
+
+        $this->geraSeta($this->retangulos['tail'], $this->retangulos['axis'][$block->id]);
+
+        $reverse_axis = array_reverse($this->blocks['axis']);
+
+        foreach ($reverse_axis as $block) {
+            if (empty($block->texto) && $block->texto != '0') {
+                continue;
+            }
+            break;
+        }
+
+        $this->geraSeta($this->retangulos['axis'][$block->id], $this->retangulos['head']);
 
         $this->printme();
     }
@@ -91,7 +104,6 @@ class Ishikawa  {
             $seta->draw();
         }
 
-
         $altura = max($this->ponto_y_maximo, $this->retangulos['tail']->bottom_y, $this->retangulos['head']->bottom_y);
 
         $this->im->newImage($this->ponto_x_maximo, $altura, new ImagickPixel('lightgray'));
@@ -103,10 +115,9 @@ class Ishikawa  {
     }
 
     private function geraSeta($origem, $destino) {
-        $funcoes = array('pontoMedioTopo', 'pontoMedioBase', 'pontoMedioLateralDireita', 'pontoMedioLateralEsquerda');
         $menor_comprimento_reta = 9999;
-        foreach ($funcoes as $funcao1) {
-            foreach ($funcoes as $funcao2) {
+        foreach (Retangulo::funcoes() as $funcao1) {
+            foreach (Retangulo::funcoes() as $funcao2) {
                 list($xi_tmp, $yi_tmp) = call_user_func(array($origem, $funcao1));
                 list($xf_tmp, $yf_tmp) = call_user_func(array($destino, $funcao2));
                 $comprimento_reta_tmp = $this->comprimentoReta($xi_tmp, $xf_tmp, $yi_tmp, $yf_tmp);

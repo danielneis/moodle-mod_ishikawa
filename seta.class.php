@@ -21,11 +21,6 @@ class Seta {
 
         $this->draw->line($this->xi, $this->yi, $this->xf, $this->yf);
 
-        $adj = $this->xf - $this->xi;
-        $hip = sqrt(pow($this->xf - $this->xi, 2) + pow($this->yf - $this->yi,2));
-        $cos = $adj / $hip;
-        $angle = rad2deg(acos($cos));
-
         $this->draw->ellipse($this->xf, $this->yf, 6, 6, 0, 360);
     }
 }
