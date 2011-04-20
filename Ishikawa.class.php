@@ -107,7 +107,7 @@ class Ishikawa  {
         $this->retangulos['head']->draw();
 
         foreach ($this->setas as $seta) {
-            $seta->draw();
+            $seta->drawLine();
         }
 
         $altura = max($this->ponto_y_maximo, $this->retangulos['tail']->bottom_y, $this->retangulos['head']->bottom_y);
@@ -115,6 +115,10 @@ class Ishikawa  {
         $this->im->newImage($this->ponto_x_maximo, $altura, new ImagickPixel('lightgray'));
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
         $this->im->setImageFormat('jpg');    // Give the image a format
+
+        foreach ($this->setas as $seta) {
+            $seta->drawArrow();
+        }
 
         header('Content-type: image/jpeg');     // Prepare the web browser to display an image
         echo $this->im;                // Publish it to the world!
@@ -138,7 +142,7 @@ class Ishikawa  {
             }
         }
 
-        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->draw, $cor);
+        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->im, $this->draw, $cor);
     }
 
     private function comprimentoReta($xi, $xf, $yi, $yf) {
