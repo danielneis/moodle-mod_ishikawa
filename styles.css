@@ -6,11 +6,10 @@
 }
 
 .extremos {
-    vertical-align: top;
+    vertical-align: middle;
     padding: 0.5em;
     margin: 0;
     width: 20%;
-    border: 1px solid black;
 }
 
 #ishikawa_center {

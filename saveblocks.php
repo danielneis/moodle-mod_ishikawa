@@ -101,8 +101,8 @@ if (!$subid) {
                     print_error('cant_insert_cause');
                 }
                 if (empty($b->texto) && $b->texto != '0') {
-                    delete_records('ishikawa_causes', 'src_id', $b->id);
-                    delete_records('ishikawa_causes', 'dst_id', $b->id);
+                    delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'causes');
+                    delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'causes');
                 }
             }
         }
@@ -125,8 +125,8 @@ if (!$subid) {
                     print_error('cant_insert_consequence');
                 }
                 if (empty($b->texto) && $b->texto != '0') {
-                    delete_records('ishikawa_consequences', 'src_id', $b->id);
-                    delete_records('ishikawa_consequences', 'dst_id', $b->id);
+                    delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'consequences');
+                    delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'consequences');
                 }
             }
         }

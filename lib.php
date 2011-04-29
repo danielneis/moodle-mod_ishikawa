@@ -102,12 +102,12 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
          '<tr>',
            '<td class="extremos">',
              '<h2>', get_string('tail', 'ishikawa'), '</h2>',
-             '<textarea name="tail_text" id="ishikawa_tail" cols="25" rows="25">',$blocks['tail_text'],'</textarea>',
+             '<textarea name="tail_text" id="ishikawa_tail" cols="25" rows="15">',$blocks['tail_text'],'</textarea>',
            '</td>',
          '<td>',
          '<table id="ishikawa_center">',
 
-    '<tr>', '<td colspan="4"><h3>Causas</h3></td>', '</tr>';
+    '<tr>', '<td colspan="4"><h3>',get_string('causes', 'ishikawa'), '</h3></td>', '</tr>';
     foreach ($blocks['causes'] as $nivel_y => $causes) {
         echo '<tr>';
         foreach ($causes as $nivel_x => $b) {
@@ -124,7 +124,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         echo '</tr>';
     }
 
-    echo '<tr id="axis">', '<td colspan="4"><h3>Eixo</h3></td>', '</tr>',
+    echo '<tr id="axis">', '<td colspan="4"><h3>',get_string('axis', 'ishikawa'), '</h3></td>', '</tr>',
          '<tr>';
     foreach ($blocks['axis'] as $nivel_x => $b) {
         $a_name = "axis[{$nivel_x}]";
@@ -157,7 +157,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
          '</td>',
          '<td class="extremos">',
              '<h2>', get_string('head', 'ishikawa'), '</h2>',
-             '<textarea name="head_text" id="ishikawa_head" cols="25" rows="25">',$blocks['head_text'],'</textarea>',
+             '<textarea name="head_text" id="ishikawa_head" cols="25" rows="15">',$blocks['head_text'],'</textarea>',
          '</td>',
          '</tr>',
          '</table>';

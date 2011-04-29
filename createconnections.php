@@ -42,6 +42,8 @@
             print_error('invalid_src_type');
         }
 
+        $link = $CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cm->id;
+
         $connection = new stdClass();
         $connection->src_id = $src;
         $connection->src_type = $src_type;
@@ -49,9 +51,9 @@
         $connection->dst_type = $dst_type;
         $connection->submissionid = $submission->id;
         if (!insert_record('ishikawa_connections', $connection)) {
-            print_error('cannot_add_connection');
+            print_error('cannot_add_connection', 'ishikawa', $link);
         }
-        redirect($CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cm->id);
+        redirect($link);
     } else {
 
         $strishikawa = get_string('modulename', 'ishikawa');
