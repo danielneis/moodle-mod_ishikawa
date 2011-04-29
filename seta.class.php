@@ -5,12 +5,12 @@ class Seta {
     var $draw;
     var $im;
 
-    function __construct($xi, $xf, $yi, $yf, $im, $draw, $color) {
+    function __construct($xi, $xf, $yi, $yf, $im, $draw) {
         $this->xi = $xi;
         $this->xf = $xf;
         $this->yi = $yi;
         $this->yf = $yf;
-        $this->color = $color;
+        $this->color = "#000000";
         $this->draw = $draw;
         $this->im = $im;
     }

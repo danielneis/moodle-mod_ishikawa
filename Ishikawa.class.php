@@ -20,20 +20,27 @@ class Ishikawa  {
 
     var $colors = array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
 
-    function __construct($blocks, $connections) {
+    function __construct($blocks, $connections, $src_id = 0, $src_type = null) {
 
         $this->blocks = $blocks;
         $this->connections = $connections;
 
+        $this->src_id = $src_id;
+        $this->src_type = $src_type;
+
         $this->im = new Imagick();
-        $this->draw = new ImagickDraw();    //Create a new drawing class (?)
+        $this->draw = new ImagickDraw();
 
-
-        $this->draw->setFillColor('white');    // Set up some colors to use for fill and outline
+        $this->draw->setFillColor('white');
         $this->draw->setStrokeColor(new ImagickPixel('black'));
     }
 
-    function draw() {
+    function retangulos() {
+        $this->generate_blocks();
+        return $this->retangulos;
+    }
+
+    private function generate_blocks() {
         $this->ponto_x_atual = $this->inicio_x;
         $this->ponto_y_atual = $this->inicio_y;
 
@@ -46,6 +53,10 @@ class Ishikawa  {
         $this->generate_multinivel('consequences');
 
         $this->generate_head();
+    }
+
+    function draw() {
+        $this->generate_blocks();
 
         if ($this->retangulos['tail']->bottom_y < $this->ponto_y_maximo) {
             $this->retangulos['tail']->setAltura($this->ponto_y_maximo - $this->offset);
@@ -65,8 +76,7 @@ class Ishikawa  {
             if ((!empty($src_text) && $src_text != '0') &&
                 (!empty($dst_text) && $dst_text != '0')) {
                 $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
-                                $this->retangulos[$connection->dst_type][$connection->dst_id],
-                                $this->retangulos[$connection->src_type][$connection->src_id]->color());
+                                $this->retangulos[$connection->dst_type][$connection->dst_id]);
             }
         }
 
@@ -124,7 +134,7 @@ class Ishikawa  {
         echo $this->im;                // Publish it to the world!
     }
 
-    private function geraSeta($origem, $destino, $cor = "white") {
+    private function geraSeta($origem, $destino) {
         $menor_comprimento_reta = 9999;
         foreach (Retangulo::funcoes() as $funcao1) {
             foreach (Retangulo::funcoes() as $funcao2) {
@@ -142,7 +152,7 @@ class Ishikawa  {
             }
         }
 
-        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->im, $this->draw, $cor);
+        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->im, $this->draw);
     }
 
     private function comprimentoReta($xi, $xf, $yi, $yf) {
@@ -168,7 +178,11 @@ class Ishikawa  {
         foreach ($this->blocks[$multinivel] as $nivel_y => $bls) {
             foreach ($bls as $nivel_x => $block) {
 
-                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, $this->colors[$nivel_y]);
+                if ($this->src_type == $multinivel && $this->src_id == $block->id) {
+                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, "green");
+                } else {
+                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, $this->colors[$nivel_y]);
+                }
                 $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
                 if ($retangulo->bottom_y > $maior_altura) {

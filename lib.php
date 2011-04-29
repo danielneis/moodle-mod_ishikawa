@@ -83,7 +83,11 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
 }
 
 function ishikawa_connections_from_submission($submission) {
-    return get_records("ishikawa_connections", "submissionid", $submission->id);
+    if ($r = get_records("ishikawa_connections", "submissionid", $submission->id)) {
+        return $r;
+    } else {
+        return array();
+    }
 }
 
 function ishikawa_edit_blocks($cmid, $blocks, $submission) {
@@ -91,7 +95,8 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
     $rows = 3;
     $cols = 15;
 
-    echo '<form action="saveblocks.php" method="post">',
+    echo '<h2>Primeiro passo: definir blocos do diagrama</h2>',
+         '<form action="saveblocks.php" method="post">',
          '<p><input type="hidden" name="cmid" value="',$cmid,'" /></p>',
          '<table class="generaltable">',
          '<tr>',
@@ -206,88 +211,54 @@ function ishikawa_get_link_to_block($block, $cmid,$src, $src_type, $dst, $dst_ty
         $nome = 'Origem';
     }
 
-    return '<a href="'.$link.'">'.$nome.'</a>';
+    return $link;
 }
 
-function ishikawa_edit_links($cmid, $blocks, $submission, $src, $dst) {
-    global $CFG;
+function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $src, $src_type, $dst) {
+    global $CFG, $USER;
 
-    $rows = 3;
-    $cols = 15;
+    require_once("Ishikawa.class.php");
 
-    echo '<table class="generaltable">',
-         '<tr>',
-           '<td class="extremos">',
-             '<h2>', get_string('tail', 'ishikawa'), '</h2>',
-             $blocks['tail_text'],
-           '</td>',
-         '<td>',
-         '<table id="ishikawa_center">',
-    // START CAUSES
-         '<tr><td><table>',
-           '<tr><td colspan="3"><h3>Causas</h3></td></tr>';
-    foreach ($blocks['causes'] as $nivel_y => $causes) {
-        echo '<tr>';
-        foreach ($causes as $nivel_x => $b) {
-           echo '<td class="block">',
-                 '<p>', $b->texto, '</p>';
-           if (!empty($b->texto) && $b->texto != '0') {
-               echo ishikawa_get_link_to_block($b, $cmid, $src, 'causes', $dst, 'causes');
-           }
-           echo '</td>';
-        }
-        echo '</tr>';
-    }
-    echo '</table></td></tr>';
+    echo '<h2>Segundo passo: definir conexões entre os blocos</h2>';
 
-    // END CAUSES - START AXIS
-    echo '<tr><td><table>',
-         '<tr>',
-           '<td><h3>Eixo</h3></td>',
-         '</tr>',
-         '<tr>';
-        foreach ($blocks['axis'] as $nivel_x => $b) {
-           echo '<td class="block axis">',
-                 '<p>', $b->texto, '</p>';
-           if (!empty($b->texto) && $b->texto != '0') {
-               echo ishikawa_get_link_to_block($b, $cmid, $src, 'axis', $dst, 'axis');
-           }
-           echo '</td>';
-        }
-    echo '</tr></table></td></tr>';
-
-    // END AXIS - START CONSEQUENCES
-    echo '<tr><td><table>',
-           '<tr><td colspan="3"><h3>Consequências</h3></td></tr>';
-    foreach ($blocks['consequences'] as $nivel_y => $consequences) {
-        echo '<tr></td>';
-        foreach ($consequences as $nivel_x => $b) {
-           echo '<td class="block consequences">',
-                 '<p>', $b->texto, '</p>';
-           if (!empty($b->texto) && $b->texto != '0') {
-               echo ishikawa_get_link_to_block($b, $cmid, $src, 'consequences', $dst, 'consequences');
-           }
-           echo '</td>';
-        }
-        echo '</tr>';
-    }
-    echo '</table></td></tr>',
-         // END CONSEQUENCES
-         '</table>',
-         '</td>',
-         '<td class="extremos">',
-             '<h2>', get_string('head', 'ishikawa'), '</h2>',
-             '<p>',$blocks['head_text'],'</p>',
-         '</td>',
-         '</tr>',
-         '</table>';
-
-    if ($submission) {
-        echo "<p><input type='hidden' name='subid' value='{$submission->id}' /></p>";
+    if ($src) {
+        echo '<h3>Selecione o destino</h3>';
+    } else {
+        echo '<h3>Selecione a origem</h3>';
     }
 
-    echo '<a href="',$CFG->wwwroot,'/mod/ishikawa/view.php?id=',$cmid,'">Concluir</a></p>',
-         '</form>';
+    echo '<img src="image.php?id=',$cmid,'&userid=',$USER->id,'&src=',$src,'&src_type=',$src_type,'" usemap="#ishikawamap" />';
+
+    $ishikawa = new Ishikawa($blocks, $connections);
+    $rectangles = $ishikawa->retangulos();
+
+    echo '<map name="ishikawamap">';
+    foreach ($blocks['causes'] as $nivel_y) {
+        foreach ($nivel_y as $b) {
+            echo '<area shape="rect" coords="',
+                 $rectangles['causes'][$b->id]->upper_x,',',
+                 $rectangles['causes'][$b->id]->upper_y,',',
+                 $rectangles['causes'][$b->id]->bottom_x,',',
+                 $rectangles['causes'][$b->id]->bottom_y, '" href="',ishikawa_get_link_to_block($b, $cmid, $src, 'causes', $dst, 'causes'),'" />';
+        }
+    }
+    foreach ($blocks['axis'] as $b) {
+        echo '<area shape="rect" coords="',
+             $rectangles['axis'][$b->id]->upper_x,',',
+             $rectangles['axis'][$b->id]->upper_y,',',
+             $rectangles['axis'][$b->id]->bottom_x,',',
+             $rectangles['axis'][$b->id]->bottom_y, '" href="',ishikawa_get_link_to_block($b, $cmid, $src, 'axis', $dst, 'axis'),'" />';
+    }
+    foreach ($blocks['consequences'] as $nivel_y) {
+        foreach ($nivel_y as $b) {
+            echo '<area shape="rect" coords="',
+                 $rectangles['consequences'][$b->id]->upper_x,',',
+                 $rectangles['consequences'][$b->id]->upper_y,',',
+                 $rectangles['consequences'][$b->id]->bottom_x,',',
+                 $rectangles['consequences'][$b->id]->bottom_y, '" href="',ishikawa_get_link_to_block($b, $cmid, $src, 'consequences', $dst, 'consequences'),'" />';
+        }
+    }
+    echo '</map>';
 }
 
 ?>

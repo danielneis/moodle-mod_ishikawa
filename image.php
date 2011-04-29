@@ -6,6 +6,8 @@
 
     $id = required_param('id', PARAM_INT);  // Course Module ID
     $userid = required_param('userid', PARAM_INT); // user id to get submission
+    $src = optional_param('src', 0, PARAM_INT);
+    $src_type = optional_param('src_type', 0, PARAM_ALPHA);
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
@@ -32,6 +34,6 @@
 
     $connections = ishikawa_connections_from_submission($submission);
 
-    $ishikawa = new Ishikawa($blocks, $connections);
+    $ishikawa = new Ishikawa($blocks, $connections, $src, $src_type);
     $ishikawa->draw();
 ?>

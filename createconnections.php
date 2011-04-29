@@ -5,6 +5,7 @@
 
     $id = required_param('id', PARAM_INT);  // Course Module ID
     $src = optional_param('src', 0, PARAM_INT);
+    $src_type = optional_param('src_type', 0, PARAM_ALPHA);
     $dst = optional_param('dst', 0, PARAM_INT);
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
@@ -60,10 +61,9 @@
         print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 
         $blocks = ishikawa_blocks_from_submission($submission);
+        $connections = ishikawa_connections_from_submission($submission);
 
-        ishikawa_edit_links($cm->id, $blocks, $submission, $src, $dst);
-
-        echo '<img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" />';
+        ishikawa_edit_connections($cm->id, $blocks, $connections, $submission, $src, $src_type, $dst);
 
         print_footer($course);
     }
