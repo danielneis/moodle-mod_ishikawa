@@ -100,6 +100,10 @@ if (!$subid) {
                 if (!update_record('ishikawa_causes_blocks', $b)) {
                     print_error('cant_insert_cause');
                 }
+                if (empty($b->texto) && $b->texto != '0') {
+                    delete_records('ishikawa_causes', 'src_id', $b->id);
+                    delete_records('ishikawa_causes', 'dst_id', $b->id);
+                }
             }
         }
 
@@ -119,6 +123,10 @@ if (!$subid) {
                 $b->texto = $block['texto'];
                 if (!update_record('ishikawa_consequences_blocks', $b)) {
                     print_error('cant_insert_consequence');
+                }
+                if (empty($b->texto) && $b->texto != '0') {
+                    delete_records('ishikawa_consequences', 'src_id', $b->id);
+                    delete_records('ishikawa_consequences', 'dst_id', $b->id);
                 }
             }
         }
