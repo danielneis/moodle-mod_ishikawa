@@ -137,7 +137,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
     }
     echo '</tr>';
 
-    echo '<tr>', '<td colspan="4"><h3>Consequências</h3></td>', '</tr>';
+    echo '<tr><td colspan="4"><h3>',get_string('consequences', 'ishikawa'),'</h3></td></tr>';
     foreach ($blocks['consequences'] as $nivel_y => $consequences) {
         echo '<tr>';
         foreach ($consequences as $nivel_x => $b) {
