@@ -12,6 +12,19 @@ function ishikawa_update_instance($ishi) {
     return update_record("ishikawa", $ishi);
 }
 
+function ishikawa_delete_instance($ishi) {
+
+    $submissions = get_record('ishikawa_submissions', 'ishikawaid', $ishi);
+    foreach ($submissions as $sub) {
+        delete_records('ishikawa_axis_blocks', 'submissionid', $sub['id']);
+        delete_records('ishikawa_causes_blocks', 'submissionid', $sub['id']);
+        delete_records('ishikawa_connections', 'submissionid', $sub['id']);
+        delete_records('ishikawa_consequences_blocks', 'submissionid', $sub['id']);
+        delete_records('ishikawa_submissions', 'id', $sub['id']);
+    }
+    delete_records('ishikawa', 'id', $ishi);
+}
+
 function ishikawa_get_submission($userid, $ishikawaid) {
     return get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }
