@@ -80,18 +80,6 @@ class Ishikawa  {
 
         $this->generate_blocks();
 
-        if ($this->retangulos['tail']->bottom_y < $this->ponto_y_maximo) {
-            $this->retangulos['tail']->setAltura($this->ponto_y_maximo - $this->offset);
-        } else {
-            $this->ponto_y_maximo = $this->retangulos['tail']->bottom_y + $this->offset;
-        }
-
-        if ($this->retangulos['head']->bottom_y < $this->ponto_y_maximo) {
-            $this->retangulos['head']->setAltura($this->ponto_y_maximo - $this->offset);
-        } else {
-            $this->ponto_y_maximo = $this->retangulos['head']->bottom_y + $this->offset;
-        }
-
         $this->generate_connections();
 
         foreach ($this->blocks['axis'] as $block) {
@@ -100,6 +88,12 @@ class Ishikawa  {
             }
             break;
         }
+
+        reset($this->retangulos['axis']);
+        $this->retangulos['tail']->setUpperY(current($this->retangulos['axis'])->upper_y - 95);
+        $this->retangulos['tail']->setBottomY(current($this->retangulos['axis'])->bottom_y + 95);
+        $this->retangulos['head']->setUpperY(current($this->retangulos['axis'])->upper_y - 95);
+        $this->retangulos['head']->setBottomY(current($this->retangulos['axis'])->bottom_y + 95);
 
         $this->geraSeta($this->retangulos['tail'], $this->retangulos['axis'][$block->id]);
 
@@ -167,9 +161,7 @@ class Ishikawa  {
             $this->draw->annotation($this->inicio_x, $this->ponto_y_maximo - $metrics['textHeight'], $this->user);
         }
 
-        $altura = max($this->ponto_y_maximo, $this->retangulos['tail']->bottom_y, $this->retangulos['head']->bottom_y);
-
-        $this->im->newImage($this->ponto_x_maximo, $altura, new ImagickPixel('lightgray'));
+        $this->im->newImage($this->ponto_x_maximo, $this->ponto_y_maximo, new ImagickPixel('lightgray'));
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
 
         $this->im->setImageFormat('jpg');    // Give the image a format

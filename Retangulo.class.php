@@ -121,6 +121,13 @@ class Retangulo {
     function setAltura($novo_bottom_y) {
         $this->bottom_y = $novo_bottom_y;
     }
+
+    function setUpperY($novo_y) {
+        $this->upper_y = $novo_y;
+    }
+    function setBottomY($novo_y) {
+        $this->bottom_y = $novo_y;
+    }
 }
 
 ?>
