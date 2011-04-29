@@ -101,11 +101,10 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
            '</td>',
          '<td>',
          '<table id="ishikawa_center">',
-    // START CAUSES
-         '<tr><td><table>',
-           '<tr><td colspan="4"><h3>Causas</h3></td></tr>';
 
+    '<tr>', '<td colspan="4"><h3>Causas</h3></td>', '</tr>';
     foreach ($blocks['causes'] as $nivel_y => $causes) {
+        echo '<tr>';
         foreach ($causes as $nivel_x => $b) {
             $c_name = "causes[{$nivel_y}][{$nivel_x}]";
             echo '<td>';
@@ -119,26 +118,23 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         }
         echo '</tr>';
     }
-    echo '</table></td></tr>';
 
-    // END CAUSES - START AXIS
-    echo '<tr id="axis"><td>',
-          '<h3>Eixo</h3>';
+    echo '<tr id="axis">', '<td colspan="4"><h3>Eixo</h3></td>', '</tr>',
+         '<tr>';
     foreach ($blocks['axis'] as $nivel_x => $b) {
         $a_name = "axis[{$nivel_x}]";
         if (isset($b->id) and $b->id >0) {
              echo '<input type="hidden" name="',$a_name,'[id]" value="',$b->id,'">';
         }
-        echo '<textarea name="',$a_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
+        echo '<td><textarea name="',$a_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
              $b->texto,
-             '</textarea>';
+             '</textarea></td>';
     }
-    echo '</td></tr>';
+    echo '</tr>';
 
-    // END AXIS - START CONSEQUENCES
-    echo '<tr><td><table>',
-           '<tr><td colspan="4"><h3>Consequências</h3></td></tr>';
+    echo '<tr>', '<td colspan="4"><h3>Consequências</h3></td>', '</tr>';
     foreach ($blocks['consequences'] as $nivel_y => $consequences) {
+        echo '<tr>';
         foreach ($consequences as $nivel_x => $b) {
             $c_name = "consequences[{$nivel_y}][{$nivel_x}]";
             echo '<td>';
@@ -152,9 +148,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         }
         echo '</tr>';
     }
-    echo '</table></td></tr>',
-         // END CONSEQUENCES
-         '</table>',
+    echo '</table>',
          '</td>',
          '<td class="extremos">',
              '<h2>', get_string('head', 'ishikawa'), '</h2>',
