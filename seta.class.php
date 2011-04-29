@@ -1,18 +1,23 @@
 <?php
 class Seta {
 
-    var $xi, $xf, $yi, $yf;
+    var $xi, $xf, $yi, $yf, $x_delete, $y_delete;
     var $draw;
     var $im;
 
-    function __construct($xi, $xf, $yi, $yf, $im, $draw) {
+    var $id = null;
+
+    function __construct($xi, $xf, $yi, $yf, $im, $draw, $id = null) {
         $this->xi = $xi;
         $this->xf = $xf;
         $this->yi = $yi;
         $this->yf = $yf;
+        $this->x_delete = $this->xi + (($this->xf - $this->xi) / 2) - 5;
+        $this->y_delete = $this->yi + (($this->yf - $this->yi) / 2) - 5;
         $this->color = "#000000";
         $this->draw = $draw;
         $this->im = $im;
+        $this->id = $id;
     }
 
     function drawLine() {
@@ -48,6 +53,11 @@ class Seta {
         $seta = new Imagick('seta.png');
         $seta->rotateImage(new ImagickPixel('none'), $angulo);
         $this->im->compositeImage($seta, Imagick::COMPOSITE_DEFAULT, $this->xf - 5, $this->yf - 5);
+    }
+
+    function drawX() {
+        $x = new Imagick('x.png');
+        $this->im->compositeImage($x, Imagick::COMPOSITE_DEFAULT, $this->x_delete, $this->y_delete);
     }
 }
 ?>

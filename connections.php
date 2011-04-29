@@ -8,6 +8,8 @@
     $src_type = optional_param('src_type', 0, PARAM_ALPHA);
     $dst = optional_param('dst', 0, PARAM_INT);
 
+    $delete_connection_id = optional_param('delete_connection', NULL, PARAM_INT);
+
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
     }
@@ -34,6 +36,15 @@
         notice(get_string("activityiscurrentlyhidden"));
     }
 
+    if (!is_null($delete_connection_id)) {
+        $link = $CFG->wwwroot.'/mod/ishikawa/connections.php?id='.$cm->id;
+        if (ishikawa_delete_connection($delete_connection_id)) {
+            redirect($link);
+        } else {
+            print_error('cannot_delete_connection', $link);
+        }
+    }
+
     if ($src && $dst) {
         $src_type = required_param('src_type', PARAM_ALPHA);
         $dst_type = required_param('dst_type', PARAM_ALPHA);
@@ -42,7 +53,7 @@
             print_error('invalid_src_type');
         }
 
-        $link = $CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cm->id;
+        $link = $CFG->wwwroot.'/mod/ishikawa/connections.php?id='.$cm->id;
 
         $connection = new stdClass();
         $connection->src_id = $src;

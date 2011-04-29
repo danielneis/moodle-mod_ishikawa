@@ -74,7 +74,7 @@ if (!$subid) {
                 }
             }
         }
-        redirect('createconnections.php?id='.$cm->id);
+        redirect('connections.php?id='.$cm->id);
 
     } else {
         print_error('no_data_submitted');

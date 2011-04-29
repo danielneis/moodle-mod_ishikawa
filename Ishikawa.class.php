@@ -40,6 +40,11 @@ class Ishikawa  {
         return $this->retangulos;
     }
 
+    function setas() {
+        $this->generateConnections();
+        return $this->setas;
+    }
+
     private function generate_blocks() {
         $this->ponto_x_atual = $this->inicio_x;
         $this->ponto_y_atual = $this->inicio_y;
@@ -55,7 +60,7 @@ class Ishikawa  {
         $this->generate_head();
     }
 
-    function draw() {
+    function draw($edit = false) {
         $this->generate_blocks();
 
         if ($this->retangulos['tail']->bottom_y < $this->ponto_y_maximo) {
@@ -70,15 +75,7 @@ class Ishikawa  {
             $this->ponto_y_maximo = $this->retangulos['head']->bottom_y + $this->offset;
         }
 
-        foreach ($this->connections as $id => $connection) {
-            $src_text = $this->retangulos[$connection->src_type][$connection->src_id]->text();
-            $dst_text = $this->retangulos[$connection->dst_type][$connection->dst_id]->text();
-            if ((!empty($src_text) && $src_text != '0') &&
-                (!empty($dst_text) && $dst_text != '0')) {
-                $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
-                                $this->retangulos[$connection->dst_type][$connection->dst_id]);
-            }
-        }
+        $this->generateConnections();
 
         foreach ($this->blocks['axis'] as $block) {
             if (empty($block->texto) && $block->texto != '0') {
@@ -100,10 +97,22 @@ class Ishikawa  {
 
         $this->geraSeta($this->retangulos['axis'][$block->id], $this->retangulos['head']);
 
-        $this->printme();
+        $this->printme($edit);
     }
 
-    private function printme() {
+    private function generateConnections() {
+        foreach ($this->connections as $id => $connection) {
+            $src_text = $this->retangulos[$connection->src_type][$connection->src_id]->text();
+            $dst_text = $this->retangulos[$connection->dst_type][$connection->dst_id]->text();
+            if ((!empty($src_text) && $src_text != '0') &&
+                (!empty($dst_text) && $dst_text != '0')) {
+                $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
+                                $this->retangulos[$connection->dst_type][$connection->dst_id], $connection->id);
+            }
+        }
+    }
+
+    private function printme($edit = false) {
 
         $this->retangulos['tail']->draw();
 
@@ -128,13 +137,16 @@ class Ishikawa  {
 
         foreach ($this->setas as $seta) {
             $seta->drawArrow();
+            if ($edit) {
+                $seta->drawX();
+            }
         }
 
         header('Content-type: image/jpeg');     // Prepare the web browser to display an image
         echo $this->im;                // Publish it to the world!
     }
 
-    private function geraSeta($origem, $destino) {
+    private function geraSeta($origem, $destino, $id = null) {
         $menor_comprimento_reta = 9999;
         foreach (Retangulo::funcoes() as $funcao1) {
             foreach (Retangulo::funcoes() as $funcao2) {
@@ -152,7 +164,7 @@ class Ishikawa  {
             }
         }
 
-        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->im, $this->draw);
+        $this->setas[] = new Seta($xi, $xf, $yi, $yf, $this->im, $this->draw, $id);
     }
 
     private function comprimentoReta($xi, $xf, $yi, $yf) {

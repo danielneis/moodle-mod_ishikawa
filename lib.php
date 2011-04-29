@@ -200,7 +200,7 @@ function ishikawa_view_dates($ishikawa) {
 function ishikawa_get_link_to_block($block, $cmid,$src, $src_type, $dst, $dst_type) {
     global $CFG;
 
-    $link = $CFG->wwwroot.'/mod/ishikawa/createconnections.php?id='.$cmid;
+    $link = $CFG->wwwroot.'/mod/ishikawa/connections.php?id='.$cmid;
 
     if ($src) {
         $src_type = required_param('src_type', PARAM_ALPHA);
@@ -214,6 +214,12 @@ function ishikawa_get_link_to_block($block, $cmid,$src, $src_type, $dst, $dst_ty
     return $link;
 }
 
+function ishikawa_get_link_to_delete_connection($cmid, $connection_id) {
+    global $CFG;
+
+    return $CFG->wwwroot.'/mod/ishikawa/connections.php?id=' . $cmid . '&delete_connection=' . $connection_id;
+}
+
 function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $src, $src_type, $dst) {
     global $CFG, $USER;
 
@@ -222,7 +228,7 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
     echo '<h2>Segundo passo: definir conexões entre os blocos</h2>';
 
     if ($src) {
-        echo '<h3 id="dst_h">Selecione o destino ou <a href="createconnections.php?id=',$cmid,'">selecione outra origem</a></h3>';
+        echo '<h3 id="dst_h">Selecione o destino ou <a href="connections.php?id=',$cmid,'">selecione outra origem</a></h3>';
     } else {
         echo '<h3 id="dst_h">Selecione a origem</h3>';
     }
@@ -234,7 +240,18 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
     $ishikawa = new Ishikawa($blocks, $connections);
     $rectangles = $ishikawa->retangulos();
 
+    $setas = $ishikawa->setas();
+
     echo '<map name="ishikawamap">';
+
+    foreach ($setas as $seta) {
+        echo '<area shape="rect" coords="',
+             $seta->x_delete,',',
+             $seta->y_delete,',',
+             $seta->x_delete + 10,',',
+             $seta->y_delete + 10, '" href="',ishikawa_get_link_to_delete_connection($cmid, $seta->id),'" />';
+    }
+
     foreach ($blocks['causes'] as $nivel_y) {
         foreach ($nivel_y as $b) {
             echo '<area shape="rect" coords="',
@@ -261,6 +278,10 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
         }
     }
     echo '</map>';
+}
+
+function ishikawa_delete_connection($id) {
+    return delete_records('ishikawa_connections', 'id', $id);
 }
 
 ?>
