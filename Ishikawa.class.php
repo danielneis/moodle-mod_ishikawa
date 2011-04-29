@@ -41,7 +41,7 @@ class Ishikawa  {
     }
 
     function setas() {
-        $this->generateConnections();
+        $this->generate_connections();
         return $this->setas;
     }
 
@@ -75,7 +75,7 @@ class Ishikawa  {
             $this->ponto_y_maximo = $this->retangulos['head']->bottom_y + $this->offset;
         }
 
-        $this->generateConnections();
+        $this->generate_connections();
 
         foreach ($this->blocks['axis'] as $block) {
             if (empty($block->texto) && $block->texto != '0') {
@@ -100,7 +100,7 @@ class Ishikawa  {
         $this->printme($edit);
     }
 
-    private function generateConnections() {
+    private function generate_connections() {
         foreach ($this->connections as $id => $connection) {
             $src_text = $this->retangulos[$connection->src_type][$connection->src_id]->text();
             $dst_text = $this->retangulos[$connection->dst_type][$connection->dst_id]->text();
@@ -109,6 +109,18 @@ class Ishikawa  {
                 $this->geraSeta($this->retangulos[$connection->src_type][$connection->src_id],
                                 $this->retangulos[$connection->dst_type][$connection->dst_id], $connection->id);
             }
+        }
+
+        $axis_blocks = array();
+        foreach ($this->retangulos['axis'] as $block) {
+            $text = $block->text();
+            if (!empty($text) && $text != '0') {
+                $axis_blocks[] = $block;
+            }
+        }
+        $count_axis_blocks = count($axis_blocks);
+        for ($i = 1; $i < $count_axis_blocks; $i++) {
+            $this->geraSeta($axis_blocks[$i-1], $axis_blocks[$i]);
         }
     }
 
@@ -137,8 +149,12 @@ class Ishikawa  {
 
         foreach ($this->setas as $seta) {
             $seta->drawArrow();
-            if ($edit) {
-                $seta->drawX();
+        }
+        if ($edit) {
+            foreach ($this->setas as $seta) {
+                if (!is_null($seta->id)) {
+                    $seta->drawX();
+                }
             }
         }
 
