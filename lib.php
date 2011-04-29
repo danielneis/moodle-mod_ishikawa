@@ -222,10 +222,12 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
     echo '<h2>Segundo passo: definir conexões entre os blocos</h2>';
 
     if ($src) {
-        echo '<h3>Selecione o destino</h3>';
+        echo '<h3 id="dst_h">Selecione o destino ou <a href="createconnections.php?id=',$cmid,'">selecione outra origem</a></h3>';
     } else {
-        echo '<h3>Selecione a origem</h3>';
+        echo '<h3 id="dst_h">Selecione a origem</h3>';
     }
+
+    echo '<a id="back_link" href="edit.php?id=',$cmid,'" >Voltar para a edição de blocos</a>';
 
     echo '<img src="image.php?id=',$cmid,'&userid=',$USER->id,'&src=',$src,'&src_type=',$src_type,'" usemap="#ishikawamap" />';
 

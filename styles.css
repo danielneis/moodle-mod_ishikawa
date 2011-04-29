@@ -1,8 +1,8 @@
 #ishikawa_head,
 #ishikawa_tail  {
- height: 100%;
- margin: 0;
- overflow: auto;
+    height: 100%;
+    margin: 0;
+    overflow: auto;
 }
 
 .extremos {
@@ -17,11 +17,6 @@
     margin: 0;
     width: 100%;
 }
-#ishikawa_center table {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
 
 td.block {
     border: 1px solid black;
@@ -30,3 +25,14 @@ td.block {
     width: 15em;
 }
 
+#dst_h {
+    width: 70%;
+    float: left;
+    margin: 0;
+}
+
+#back_link {
+    float: right;
+    width: 20%;
+    margin: 0;
+}
