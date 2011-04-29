@@ -202,7 +202,11 @@ class Ishikawa  {
         $maior_altura = 0;
         foreach ($this->blocks['axis'] as $nivel_x => $block) {
 
-            $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+            if ($this->src_type == 'axis' && $this->src_id == $block->id) {
+                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, "green");
+            } else {
+                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+            }
             $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
             if ($retangulo->bottom_y > $maior_altura) {
