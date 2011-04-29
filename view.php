@@ -41,6 +41,16 @@
 
     print_heading(get_string('title', 'ishikawa', $ishikawa->name));
 
+    if (has_capability('mod/ishikawa:grade', $context)) {
+        echo '<div class="reportlink">';
+        if ($count = count_records('ishikawa_submissions', 'ishikawaid', $ishikawa->id)) {
+            echo '<a href="submissions.php?id=',$cm->id,'">',get_string('viewsubmissions', 'assignment', $count),'</a>';
+        } else {
+            echo '<a href="submissions.php?id=',$cm->id,'">',get_string('noattempts', 'assignment'),'</a>';
+        }
+        echo '</div>';
+    }
+
     print_box(format_text($ishikawa->description), 'generalbox', 'intro');
 
     ishikawa_view_dates($ishikawa);

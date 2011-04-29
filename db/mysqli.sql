@@ -19,6 +19,7 @@ CREATE TABLE ishikawa_submissions (
     userid BIGINT(10) UNSIGNED NOT NULL,
     tail_text TEXT NOT NULL,
     head_text TEXT NOT NULL,
+    grade BIGINT(11) NOT NULL DEFAULT 0,
     timecreated BIGINT(10) UNSIGNED NOT NULL,
     timemodified BIGINT(10) UNSIGNED NOT NULL,
     PRIMARY KEY (id),
