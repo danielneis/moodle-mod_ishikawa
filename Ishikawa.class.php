@@ -20,7 +20,7 @@ class Ishikawa  {
 
     var $colors = array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
 
-    function __construct($blocks, $connections, $src_id = 0, $src_type = null, $user = null) {
+    function __construct($blocks, $connections, $src_id = 0, $src_type = null, $title = null, $user = null) {
 
         $this->blocks = $blocks;
         $this->connections = $connections;
@@ -31,6 +31,11 @@ class Ishikawa  {
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();
 
+        $this->title = 'Diagrama de Ishikawa';
+        if (!is_null($title)) {
+            $this->title .= " - {$title}";
+        }
+
         $this->user = $user;
 
         $this->draw->setFillColor('white');
@@ -38,6 +43,7 @@ class Ishikawa  {
     }
 
     function retangulos() {
+        $this->header();
         $this->generate_blocks();
         return $this->retangulos;
     }
@@ -48,9 +54,6 @@ class Ishikawa  {
     }
 
     private function generate_blocks() {
-        $this->ponto_x_atual = $this->inicio_x;
-        $this->ponto_y_atual = $this->inicio_y;
-
         $this->generate_tail();
 
         $this->generate_multinivel('causes');
@@ -62,22 +65,18 @@ class Ishikawa  {
         $this->generate_head();
     }
 
+    private function header() {
+        $this->ponto_x_atual = $this->inicio_x;
+        $this->ponto_y_atual = $this->inicio_y;
+
+        $this->draw->setFontSize(15);
+        $metrics = $this->im->queryFontMetrics($this->draw, $this->title);
+        $this->ponto_y_atual += $metrics['textHeight'];
+    }
+
     function draw($edit = false) {
 
-        $title = "Diagrama de Ishikawa";
-        $this->draw->setFontSize(15);
-        $metrics = $this->im->queryFontMetrics($this->draw, $title);
-        $this->inicio_y += 15;
-        $this->draw->annotation($this->inicio_x, $this->inicio_y, $title);
-        $this->inicio_y += $metrics['textHeight'] + 5;
-
-        $this->draw->setFontSize(12);
-
-        if ($this->user) {
-            $metrics = $this->im->queryFontMetrics($this->draw, $this->user);
-            $this->draw->annotation($this->inicio_x, $this->inicio_y, $this->user);
-            $this->inicio_y += $metrics['textHeight'] + 5;
-        }
+        $this->header();
 
         $this->generate_blocks();
 
@@ -144,6 +143,10 @@ class Ishikawa  {
 
     private function printme($edit = false) {
 
+        $this->draw->annotation($this->inicio_x, $this->inicio_y + 5, $this->title);
+
+        $this->draw->setFontSize(12);
+
         $this->retangulos['tail']->draw();
 
         $parts = array('causes', 'axis', 'consequences');
@@ -157,6 +160,11 @@ class Ishikawa  {
 
         foreach ($this->setas as $seta) {
             $seta->drawLine();
+        }
+
+        if ($this->user) {
+            $metrics = $this->im->queryFontMetrics($this->draw, $this->user);
+            $this->draw->annotation($this->inicio_x, $this->ponto_y_maximo - $metrics['textHeight'], $this->user);
         }
 
         $altura = max($this->ponto_y_maximo, $this->retangulos['tail']->bottom_y, $this->retangulos['head']->bottom_y);
