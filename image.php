@@ -34,6 +34,6 @@
 
     $connections = ishikawa_connections_from_submission($submission);
 
-    $ishikawa = new Ishikawa($blocks, $connections, $src, $src_type);
+    $ishikawa = new Ishikawa($blocks, $connections, $src, $src_type, fullname($USER));
     $ishikawa->draw(true);
 ?>

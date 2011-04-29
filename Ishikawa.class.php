@@ -20,7 +20,7 @@ class Ishikawa  {
 
     var $colors = array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
 
-    function __construct($blocks, $connections, $src_id = 0, $src_type = null) {
+    function __construct($blocks, $connections, $src_id = 0, $src_type = null, $user = null) {
 
         $this->blocks = $blocks;
         $this->connections = $connections;
@@ -30,6 +30,8 @@ class Ishikawa  {
 
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();
+
+        $this->user = $user;
 
         $this->draw->setFillColor('white');
         $this->draw->setStrokeColor(new ImagickPixel('black'));
@@ -61,6 +63,22 @@ class Ishikawa  {
     }
 
     function draw($edit = false) {
+
+        $title = "Diagrama de Ishikawa";
+        $this->draw->setFontSize(15);
+        $metrics = $this->im->queryFontMetrics($this->draw, $title);
+        $this->inicio_y += 15;
+        $this->draw->annotation($this->inicio_x, $this->inicio_y, $title);
+        $this->inicio_y += $metrics['textHeight'] + 5;
+
+        $this->draw->setFontSize(12);
+
+        if ($this->user) {
+            $metrics = $this->im->queryFontMetrics($this->draw, $this->user);
+            $this->draw->annotation($this->inicio_x, $this->inicio_y, $this->user);
+            $this->inicio_y += $metrics['textHeight'] + 5;
+        }
+
         $this->generate_blocks();
 
         if ($this->retangulos['tail']->bottom_y < $this->ponto_y_maximo) {
@@ -145,6 +163,7 @@ class Ishikawa  {
 
         $this->im->newImage($this->ponto_x_maximo, $altura, new ImagickPixel('lightgray'));
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
+
         $this->im->setImageFormat('jpg');    // Give the image a format
 
         foreach ($this->setas as $seta) {
