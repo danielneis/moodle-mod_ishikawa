@@ -95,7 +95,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
     $rows = 3;
     $cols = 15;
 
-    echo '<h2>Primeiro passo: definir blocos do diagrama</h2>',
+    echo '<h2>',get_string('first_step', 'ishikawa'), '</h2>',
          '<form action="saveblocks.php" method="post">',
          '<p><input type="hidden" name="cmid" value="',$cmid,'" /></p>',
          '<table class="generaltable">',
@@ -225,12 +225,12 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
 
     require_once("Ishikawa.class.php");
 
-    echo '<h2>Segundo passo: definir conexões entre os blocos</h2>';
+    echo '<h2>', get_string('second_step', 'ishikawa'), '</h2>';
 
     if ($src) {
-        echo '<h3 id="dst_h">Selecione o destino ou <a href="connections.php?id=',$cmid,'">selecione outra origem</a></h3>';
+        echo '<h3 id="dst_h">', get_string('select_dst', 'ishikawa', $cmid), '</h3>';
     } else {
-        echo '<h3 id="dst_h">Selecione a origem</h3>';
+        echo '<h3 id="dst_h">', get_string('select_src', 'ishikawa'), '</h3>';
     }
 
     echo '<a id="back_link" href="edit.php?id=',$cmid,'" >Voltar para a edição de blocos</a>';
