@@ -6,6 +6,7 @@ CREATE TABLE ishikawa (
     maxchar BIGINT(10) UNSIGNED NOT NULL,
     maxlines BIGINT(10) UNSIGNED NOT NULL,
     maxcolumns BIGINT(10) UNSIGNED NOT NULL,
+    grade bigint(10) NOT NULL DEFAULT 0,
     timedue BIGINT(10) UNSIGNED NOT NULL,
     timeavailable BIGINT(10) UNSIGNED NOT NULL,
     timemodified BIGINT(10) UNSIGNED NOT NULL,

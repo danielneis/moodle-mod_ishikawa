@@ -30,6 +30,7 @@ if ($data = data_submitted()) {
     $now = time();
     foreach ($data->student as $userid => $s) {
         if ($grade = ishikawa_get_grade($userid, $ishikawa->id)) {
+            $grade->grade = $s['grade'];
             $grade->feedback = $s['feedback'];
             $grade->timecreated = $now;
             $grade->timemodified = $now;
@@ -38,6 +39,7 @@ if ($data = data_submitted()) {
             $grade = new stdclass();
             $grade->ishikawaid = $ishikawa->id;
             $grade->userid = $userid;
+            $grade->grade = $s['grade'];
             $grade->feedback = $s['feedback'];
             $grade->timecreated = $now;
             $grade->timemodified = $now;
@@ -89,6 +91,7 @@ if (!$students = get_records_sql($sql)) {
           '<th>',get_string('feedback'),'</th>',
          '</tr>';
 
+  $tabindex = 0;
   foreach ($students as $s) {
       echo '<tr>',
           '<td>',print_user_picture($s, $course->id),'</td>',
@@ -96,19 +99,21 @@ if (!$students = get_records_sql($sql)) {
           '<td>';
       if ($s->timecreated > 0) {
           echo userdate($s->timecreated), '&nbsp;',
-               '<a href="image.php?id=',$cm->id,'&userid=',$USER->id,'" target="_blank">',get_string('view'), '</a>';
+               '<a href="image.php?id=',$cm->id,'&userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
       } else {
           echo get_string('never_sent', 'ishikawa');
       }
-      echo  '</td>',
-          '<td>',$s->grade,'</td>',
+      echo '</td>',
+           '<td>',
+             choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
+                              get_string('nograde'),'',-1,true,false,$tabindex++),
+           '</td>',
           '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
          '</tr>';
   }
   echo '</table>',
        '<input type="submit" value="', get_string('confirm'), '" />',
        '</form>';
-
 }
 
 print_footer($course);

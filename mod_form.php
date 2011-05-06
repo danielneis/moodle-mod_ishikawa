@@ -18,6 +18,14 @@ class mod_ishikawa_mod_form extends moodleform_mod {
         $mform->setHelpButton('description', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
         $mform->addRule('description', get_string('required'), 'required', null, 'client');
 
+        $mform->addElement('modgrade', 'grade', get_string('grade'));
+        $mform->setDefault('grade', 100);
+
+        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'assignment'), array('optional'=>true));
+        $mform->setDefault('timeavailable', time());
+        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'assignment'), array('optional'=>true));
+        $mform->setDefault('timedue', time()+7*24*3600);
+
         $mform->addElement('text', 'maxchar', get_string('diagrammaxchar', 'ishikawa'), array('size'=>'5'));
         $mform->addRule('maxchar', null, 'required', null, 'client');
         $mform->setDefault('maxchar', 500);
@@ -27,23 +35,18 @@ class mod_ishikawa_mod_form extends moodleform_mod {
             $mform->addElement('text', 'maxlines', get_string('diagrammaxlines', 'ishikawa'), array('size'=>'5', 'disabled' => 'disabled'));
         } else {
             $mform->addElement('text', 'maxlines', get_string('diagrammaxlines', 'ishikawa'), array('size'=>'5'));
+            $mform->addRule('maxlines', null, 'required', null, 'client');
         }
-        $mform->addRule('maxlines', null, 'required', null, 'client');
         $mform->setDefault('maxlines', 3);
-        $mform->disabledIf('maxline', '', optional_param('update', 0, PARAM_INT), 0);
 
         if ($updating) {
             $mform->addElement('text', 'maxcolumns', get_string('diagrammaxcolumns', 'ishikawa'), array('size'=>'5', 'disabled' => 'disabled'));
         } else {
             $mform->addElement('text', 'maxcolumns', get_string('diagrammaxcolumns', 'ishikawa'), array('size'=>'5'));
+            $mform->addRule('maxcolumns', null, 'required', null, 'client');
         }
-        $mform->addRule('maxcolumns', null, 'required', null, 'client');
         $mform->setDefault('maxcolumns', 4);
 
-        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'assignment'), array('optional'=>true));
-        $mform->setDefault('timeavailable', time());
-        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'assignment'), array('optional'=>true));
-        $mform->setDefault('timedue', time()+7*24*3600);
 
         $features = new stdClass;
         $features->groups = false;
