@@ -6,22 +6,22 @@ require_once('lib.php');
 $id = required_param('cmid', PARAM_INT);
 $subid = optional_param('subid', 0, PARAM_INT);
 
-    if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
-        error("Course Module ID was incorrect");
-    }
+if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
+    error("Course Module ID was incorrect");
+}
 
-    if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
-        error("ishikawa ID was incorrect");
-    }
+if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
+    error("ishikawa ID was incorrect");
+}
 
-    if (! $course = get_record("course", "id", $ishikawa->course)) {
-        error("Course is misconfigured");
-    }
+if (! $course = get_record("course", "id", $ishikawa->course)) {
+    error("Course is misconfigured");
+}
 
-    require_login($course, true, $cm);
+require_login($course, true, $cm);
 
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
-    require_capability('mod/ishikawa:submit', $context);
+$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+require_capability('mod/ishikawa:submit', $context);
 
 if (!$subid) {
     // create submission

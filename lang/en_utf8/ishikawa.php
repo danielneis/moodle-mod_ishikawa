@@ -25,5 +25,8 @@ $string['head'] = 'Imagem-Objetivo';
 $string['finish_editing'] = 'Finalizar edição e voltar para o início';
 $string['edit_blocks'] = 'Editar blocos';
 $string['edit_connections'] = 'Editar conexões';
+$string['no_users_with_gradebookroles'] = 'Ninguém inscrito com papel apto a receber nota';
+$string['submission'] = 'Data de envio';
+$string['never_sent'] = 'Nunca enviado';
 
 ?>

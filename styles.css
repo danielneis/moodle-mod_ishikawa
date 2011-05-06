@@ -24,3 +24,8 @@ td.block {
     border-collapse: collapse;
     width: 15em;
 }
+
+#ishikawa_submissions {
+    width: 100%;
+    text-align: left;
+}

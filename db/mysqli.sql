@@ -19,11 +19,22 @@ CREATE TABLE ishikawa_submissions (
     userid BIGINT(10) UNSIGNED NOT NULL,
     tail_text TEXT NOT NULL,
     head_text TEXT NOT NULL,
-    grade BIGINT(11) NOT NULL DEFAULT 0,
     timecreated BIGINT(10) UNSIGNED NOT NULL,
     timemodified BIGINT(10) UNSIGNED NOT NULL,
     PRIMARY KEY (id),
     UNIQUE INDEX uni_ishisub_ishiuser (ishikawaid, userid)
+);
+
+CREATE TABLE ishikawa_grades (
+    id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    ishikawaid BIGINT(10) UNSIGNED NOT NULL,
+    userid BIGINT(10) UNSIGNED NOT NULL,
+    grade BIGINT(11) NOT NULL DEFAULT 0,
+    feedback TEXT,
+    timecreated BIGINT(10) UNSIGNED NOT NULL,
+    timemodified BIGINT(10) UNSIGNED NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE INDEX uni_ishigrade_ishiuser (ishikawaid, userid)
 );
 
 CREATE TABLE ishikawa_causes_blocks (

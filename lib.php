@@ -1,13 +1,6 @@
 <?php
-
 function ishikawa_add_instance($ishi) {
-    $id = insert_record('ishikawa', $ishi);
-
-    $cm = get_coursemodule_from_instance('ishikawa', $id);
-    $params = array('itemname'=>$ishi->name, 'idnumber'=> $cm->id);
-
-    grade_update('mod/ishikawa', $ishi->course, 'mod', 'ishikawa', $id, 0);
-    return $id;
+    return insert_record('ishikawa', $ishi);
 }
 
 function ishikawa_update_instance($ishi) {
@@ -33,6 +26,10 @@ function ishikawa_delete_instance($ishi) {
 
 function ishikawa_get_submission($userid, $ishikawaid) {
     return get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
+}
+
+function ishikawa_get_grade($userid, $ishikawaid) {
+    return get_record('ishikawa_grades', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }
 
 function ishikawa_blocks_from_submission($submission = false, $ishikawa = false) {
