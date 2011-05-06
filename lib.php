@@ -5,6 +5,7 @@ function ishikawa_add_instance($ishi) {
     $params = array('itemname'=>$ishi->name);
 
     grade_update('mod/ishikawa', $ishi->course, 'mod', 'ishikawa', $id, 0, null, $params);
+
     return $id;
 }
 

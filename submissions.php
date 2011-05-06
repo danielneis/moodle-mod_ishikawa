@@ -28,6 +28,7 @@ require_capability('mod/ishikawa:grade', $context);
 if ($data = data_submitted()) {
 
     $now = time();
+    $grades = array();
     foreach ($data->student as $userid => $s) {
         if ($grade = ishikawa_get_grade($userid, $ishikawa->id)) {
             $grade->grade = $s['grade'];
@@ -35,6 +36,7 @@ if ($data = data_submitted()) {
             $grade->timecreated = $now;
             $grade->timemodified = $now;
             update_record('ishikawa_grades',$grade);
+
         } else {
             $grade = new stdclass();
             $grade->ishikawaid = $ishikawa->id;
@@ -45,6 +47,11 @@ if ($data = data_submitted()) {
             $grade->timemodified = $now;
             insert_record('ishikawa_grades',$grade);
         }
+        $g = new stdclass();
+        $g->id    = $grade->userid;
+        $g->userid = $grade->userid;
+        $g->rawgrade = $grade->grade;
+        grade_update('mod/ishikawa', $ishikawa->course, 'mod', 'ishikawa', $ishikawa->id, 0, $g);
     }
 
     redirect($CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$cm->id);
@@ -53,7 +60,7 @@ if ($data = data_submitted()) {
 $buttontext = '';
 $strishikawa = get_string('modulename', 'ishikawa');
 $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
-$navigation = build_navigation('', $cm);
+$navigation = build_navigation(get_string('submissions', 'ishikawa'), $cm);
 $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
 print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttontext,navmenu($course, $cm));
 
