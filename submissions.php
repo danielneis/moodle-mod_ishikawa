@@ -51,6 +51,7 @@ if ($data = data_submitted()) {
         $g->id    = $grade->userid;
         $g->userid = $grade->userid;
         $g->rawgrade = $grade->grade;
+        $g->feedback = $grade->feedback;
         grade_update('mod/ishikawa', $ishikawa->course, 'mod', 'ishikawa', $ishikawa->id, 0, $g);
     }
 

@@ -29,5 +29,6 @@ $string['no_users_with_gradebookroles'] = 'Ninguém inscrito com papel apto a re
 $string['submission'] = 'Data de envio';
 $string['never_sent'] = 'Nunca enviado';
 $string['submissions'] = 'Diagramas enviados';
+$string['feedbackfromteacher'] = 'Feedback do professor';
 
 ?>

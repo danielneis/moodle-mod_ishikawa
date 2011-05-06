@@ -55,7 +55,7 @@
 
     ishikawa_view_dates($ishikawa);
 
-    // TODO testar duedate e timeavailable
+    ishikawa_view_submission_feedback($ishikawa, $submission, $course);
 
     if ($submission) {
         echo '<p><a href="view.php?id=',$cm->id,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
@@ -63,6 +63,7 @@
              '<p><a href="connections.php?id=',$cm->id,'" >',get_string('edit_connections', 'ishikawa'),'</a></p>',
              '<a href="image.php?id=',$cm->id,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a>',
              '<p><img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" /></p>';
+
     } else {
         echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
     }

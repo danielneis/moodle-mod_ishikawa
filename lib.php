@@ -294,4 +294,77 @@ function ishikawa_delete_connection($id) {
     return delete_records('ishikawa_connections', 'id', $id);
 }
 
+function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
+    global $USER, $CFG;
+    require($CFG->libdir.'/gradelib.php');
+
+    $context = get_context_instance(CONTEXT_COURSE, $course->id);
+
+    // Check the user can submit
+    $cansubmit = has_capability('mod/ishikawa:submit', $context, $USER->id, false);
+    // If not then check if ther user still has the view cap and has a previous submission
+    $cansubmit = $cansubmit || (!empty($submission) && has_capability('mod/ishikawa:view', $context, $USER->id, false));
+
+    if (!$cansubmit) {
+        // can not submit ishikawas -> no feedback
+        return;
+    }
+
+    $grading_info = grade_get_grades($course->id, 'mod', 'ishikawa', $ishikawa->id, $USER->id);
+    $item = $grading_info->items[0];
+    $grade = $item->grades[$USER->id];
+
+    if ($grade->hidden or $grade->grade === false) { // hidden or error
+        return;
+    }
+
+    if ($grade->grade === null and empty($grade->str_feedback)) {   /// Nothing to show yet
+        return;
+    }
+
+    $graded_date = $grade->dategraded;
+    $graded_by   = $grade->usermodified;
+
+/// We need the teacher info
+    if (!$teacher = get_record('user', 'id', $graded_by)) {
+        error('Could not find the teacher');
+    }
+
+/// Print the feedback
+    print_heading(get_string('feedbackfromteacher', 'ishikawa', $course->teacher)); // TODO: fix teacher string
+
+    echo '<table cellspacing="0" class="feedback">';
+
+    echo '<tr>';
+    echo '<td class="left picture">';
+    if ($teacher) {
+        print_user_picture($teacher, $course->id, $teacher->picture);
+    }
+    echo '</td>';
+    echo '<td class="topic">';
+    echo '<div class="from">';
+    if ($teacher) {
+        echo '<div class="fullname">'.fullname($teacher).'</div>';
+    }
+    echo '<div class="time">'.userdate($graded_date).'</div>';
+    echo '</div>';
+    echo '</td>';
+    echo '</tr>';
+
+    echo '<tr>';
+    echo '<td class="left side">&nbsp;</td>';
+    echo '<td class="content">';
+    echo '<div class="grade">';
+    echo get_string("grade").': '.$grade->str_long_grade;
+    echo '</div>';
+    echo '<div class="clearer"></div>';
+
+    echo '<div class="comment">';
+    echo $grade->str_feedback;
+    echo '</div>';
+    echo '</tr>';
+
+    echo '</table>';
+}
+
 ?>
