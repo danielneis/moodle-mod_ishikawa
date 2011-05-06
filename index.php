@@ -31,9 +31,7 @@
            '<th>Descrição</th>',
            '<th>Data de entrega</th>',
            '<th>Enviada</th>',
-           '<th>Nota</th>',
          '</tr>';
-
 
     $ishimod = get_record('modules', 'name', 'ishikawa');
     foreach ($ishikawas as $ishi) {
@@ -47,7 +45,6 @@
               '<td>', $ishi->description,'</td>',
               '<td>',userdate($ishi->timedue),'</td>',
               '<td>',userdate($sub->timemodified),'</td>',
-              '<td>',10,'</td>',
              '</tr>';
     }
     echo '</table>';
