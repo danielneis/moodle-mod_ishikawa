@@ -22,11 +22,21 @@ class mod_ishikawa_mod_form extends moodleform_mod {
         $mform->addRule('maxchar', null, 'required', null, 'client');
         $mform->setDefault('maxchar', 500);
 
-        $mform->addElement('text', 'maxlines', get_string('diagrammaxlines', 'ishikawa'), array('size'=>'5'));
+        $updating = optional_param('update', 0, PARAM_INT);
+        if ($updating) {
+            $mform->addElement('text', 'maxlines', get_string('diagrammaxlines', 'ishikawa'), array('size'=>'5', 'disabled' => 'disabled'));
+        } else {
+            $mform->addElement('text', 'maxlines', get_string('diagrammaxlines', 'ishikawa'), array('size'=>'5'));
+        }
         $mform->addRule('maxlines', null, 'required', null, 'client');
         $mform->setDefault('maxlines', 3);
+        $mform->disabledIf('maxline', '', optional_param('update', 0, PARAM_INT), 0);
 
-        $mform->addElement('text', 'maxcolumns', get_string('diagrammaxcolumns', 'ishikawa'), array('size'=>'5'));
+        if ($updating) {
+            $mform->addElement('text', 'maxcolumns', get_string('diagrammaxcolumns', 'ishikawa'), array('size'=>'5', 'disabled' => 'disabled'));
+        } else {
+            $mform->addElement('text', 'maxcolumns', get_string('diagrammaxcolumns', 'ishikawa'), array('size'=>'5'));
+        }
         $mform->addRule('maxcolumns', null, 'required', null, 'client');
         $mform->setDefault('maxcolumns', 4);
 
