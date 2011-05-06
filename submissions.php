@@ -68,10 +68,12 @@ print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttonte
 print_heading(get_string('title', 'ishikawa', $ishikawa->name));
 
 $course_ctx = get_context_instance(CONTEXT_COURSE, $course->id);
+$grade_item = get_record('grade_items', 'itemmodule', 'ishikawa', 'iteminstance', $ishikawa->id, 'courseid', $course->id);
 
 $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
                 s.id as submission_id, s.timecreated,
-                g.id as grade_id, g.grade, g.feedback
+                g.id as grade_id, g.grade, g.feedback,
+                gg.id as grade_grades_id, gg.rawgrade, gg.finalgrade, gg.locked, gg.overridden
            FROM {$CFG->prefix}user u
            JOIN {$CFG->prefix}role_assignments ra
              ON (ra.userid = u.id AND
@@ -82,7 +84,10 @@ $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
                  s.ishikawaid = {$ishikawa->id})
       LEFT JOIN {$CFG->prefix}ishikawa_grades g
              ON (g.userid = u.id and
-                 g.ishikawaid = {$ishikawa->id})";
+                 g.ishikawaid = {$ishikawa->id})
+      LEFT JOIN {$CFG->prefix}grade_grades gg
+             ON (gg.userid = u.id AND
+                 gg.itemid = {$grade_item->id})";
 
 if (!$students = get_records_sql($sql)) {
     print_heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
@@ -111,10 +116,14 @@ if (!$students = get_records_sql($sql)) {
           echo get_string('never_sent', 'ishikawa');
       }
       echo '</td>',
-           '<td>',
-             choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
-                              get_string('nograde'),'',-1,true,false,$tabindex++),
-           '</td>',
+           '<td>';
+      if ($s->locked or $s->overridden) {
+          echo $s->finalgrade;
+      } else {
+          echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
+                              get_string('nograde'),'',-1,true,false,$tabindex++);
+      }
+      echo '</td>',
           '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
          '</tr>';
   }
