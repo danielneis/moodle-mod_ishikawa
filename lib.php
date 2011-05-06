@@ -242,7 +242,7 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
         echo '<h3>', get_string('select_src', 'ishikawa'), '</h3>',
              '<p><a href="view.php?id=',$cmid,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
              '<p><a href="edit.php?id=',$cmid,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
-             '<a href="image.php?id=',$cmid,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a>';
+             '<p><a href="image.php?id=',$cmid,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a></p>';
     }
 
     echo '<img src="image.php?id=',$cmid,'&userid=',$USER->id,'&src=',$src,'&src_type=',$src_type,'&editing=1" usemap="#ishikawamap" />';
