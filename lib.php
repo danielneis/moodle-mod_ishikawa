@@ -1,6 +1,11 @@
 <?php
 function ishikawa_add_instance($ishi) {
-    return insert_record('ishikawa', $ishi);
+    $id =  insert_record('ishikawa', $ishi);
+
+    $params = array('itemname'=>$ishi->name);
+
+    grade_update('mod/ishikawa', $ishi->course, 'mod', 'ishikawa', $id, 0, null, $params);
+    return $id;
 }
 
 function ishikawa_update_instance($ishi) {
