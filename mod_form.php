@@ -26,6 +26,11 @@ class mod_ishikawa_mod_form extends moodleform_mod {
         $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'assignment'), array('optional'=>true));
         $mform->setDefault('timedue', time()+7*24*3600);
 
+        $ynoptions = array( 0 => get_string('no'), 1 => get_string('yes'));
+
+        $mform->addElement('select', 'preventlate', get_string('preventlate', 'assignment'), $ynoptions);
+        $mform->setDefault('preventlate', 0);
+
         $mform->addElement('text', 'maxchar', get_string('diagrammaxchar', 'ishikawa'), array('size'=>'5'));
         $mform->addRule('maxchar', null, 'required', null, 'client');
         $mform->setDefault('maxchar', 500);

@@ -367,4 +367,13 @@ function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
     echo '</table>';
 }
 
+function ishikawa_isopen($ishikawa) {
+    $time = time();
+    if ($ishikawa->preventlate && $ishikawa->timedue) {
+        return ($ishikawa->timeavailable <= $time && $time <= $ishikawa->timedue);
+    } else {
+        return ($ishikawa->timeavailable <= $time);
+    }
+}
+
 ?>

@@ -57,15 +57,21 @@
 
     ishikawa_view_submission_feedback($ishikawa, $submission, $course);
 
+    $now = time();
+
     if ($submission) {
-        echo '<p><a href="view.php?id=',$cm->id,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
-             '<p><a href="edit.php?id=',$cm->id,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
-             '<p><a href="connections.php?id=',$cm->id,'" >',get_string('edit_connections', 'ishikawa'),'</a></p>',
-             '<a href="image.php?id=',$cm->id,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a>',
+        if (ishikawa_isopen($ishikawa)) {
+            echo '<p><a href="view.php?id=',$cm->id,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
+                 '<p><a href="edit.php?id=',$cm->id,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
+                 '<p><a href="connections.php?id=',$cm->id,'" >',get_string('edit_connections', 'ishikawa'),'</a></p>';
+        }
+        echo '<p><a href="image.php?id=',$cm->id,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a></p>',
              '<p><img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" /></p>';
 
     } else {
-        echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
+        if (ishikawa_isopen($ishikawa)) {
+            echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
+        }
     }
 
     print_footer($course);
