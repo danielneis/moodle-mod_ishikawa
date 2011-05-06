@@ -39,13 +39,21 @@
     $navigation = build_navigation('', $cm);
     print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
 
-/// Finish the page
+    print_heading(get_string('title', 'ishikawa', $ishikawa->name));
+
     print_box(format_text($ishikawa->description), 'generalbox', 'intro');
 
     ishikawa_view_dates($ishikawa);
 
     // TODO testar duedate e timeavailable
-    echo "<a href='edit.php?id={$id}'>Editar diagrama</a>";
+
+    if ($submission) {
+        echo "<p><a href='edit.php?id={$id}'>Editar blocos</a></p>";
+        echo "<p><a href='connections.php?id={$id}'>Editar conexões</a></p>";
+        echo '<p><img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" /></p>';
+    } else {
+        echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
+    }
 
     print_footer($course);
 ?>

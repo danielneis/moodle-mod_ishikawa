@@ -74,7 +74,7 @@ class Ishikawa  {
         $this->ponto_y_atual += $metrics['textHeight'];
     }
 
-    function draw($edit = false) {
+    function draw($edit = false, $download = false) {
 
         $this->header();
 
@@ -108,7 +108,7 @@ class Ishikawa  {
 
         $this->geraSeta($this->retangulos['axis'][$block->id], $this->retangulos['head']);
 
-        $this->printme($edit);
+        $this->printme($edit, $download);
     }
 
     private function generate_connections() {
@@ -135,7 +135,7 @@ class Ishikawa  {
         }
     }
 
-    private function printme($edit = false) {
+    private function printme($edit = false, $download = false) {
 
         $this->draw->annotation($this->inicio_x, $this->inicio_y + 5, $this->title);
 
@@ -164,7 +164,7 @@ class Ishikawa  {
         $this->im->newImage($this->ponto_x_maximo, $this->ponto_y_maximo, new ImagickPixel('lightgray'));
         $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
 
-        $this->im->setImageFormat('jpg');    // Give the image a format
+        $this->im->setImageFormat('png');    // Give the image a format
 
         foreach ($this->setas as $seta) {
             $seta->drawArrow();
@@ -177,7 +177,12 @@ class Ishikawa  {
             }
         }
 
-        header('Content-type: image/jpeg');     // Prepare the web browser to display an image
+        if ($download) {
+            header('Content-type: image/forcedownload');     // Prepare the web browser to display an image
+            header("Content-Disposition: filename=espinha.png"); // use 'attachment' to force a download
+        } else {
+            header('Content-type: image/png');     // Prepare the web browser to display an image
+        }
         echo $this->im;                // Publish it to the world!
     }
 

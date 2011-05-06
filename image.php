@@ -4,10 +4,14 @@
     require_once("Ishikawa.class.php");
     require_once("lib.php");
 
-    $id = required_param('id', PARAM_INT);  // Course Module ID
+    $id     = required_param('id', PARAM_INT);  // Course Module ID
     $userid = required_param('userid', PARAM_INT); // user id to get submission
-    $src = optional_param('src', 0, PARAM_INT);
+
+    $editing  = optional_param('editing', false, PARAM_BOOL);
+    $src      = optional_param('src', 0, PARAM_INT);
     $src_type = optional_param('src_type', 0, PARAM_ALPHA);
+
+    $download = optional_param('download', false, PARAM_BOOL);
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
@@ -35,5 +39,5 @@
     $connections = ishikawa_connections_from_submission($submission);
 
     $ishikawa = new Ishikawa($blocks, $connections, $src, $src_type, $ishikawa->name, fullname($USER));
-    $ishikawa->draw(true);
+    $ishikawa->draw($editing, $download);
 ?>

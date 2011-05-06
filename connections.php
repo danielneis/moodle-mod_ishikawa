@@ -49,11 +49,15 @@
         $src_type = required_param('src_type', PARAM_ALPHA);
         $dst_type = required_param('dst_type', PARAM_ALPHA);
 
+        $link = $CFG->wwwroot.'/mod/ishikawa/connections.php?id='.$cm->id;
+
         if (!in_array($src_type, array('causes', 'consequences', 'axis'))) {
-            print_error('invalid_src_type');
+            print_error('invalid_src_type', 'ishikawa', $link);
         }
 
-        $link = $CFG->wwwroot.'/mod/ishikawa/connections.php?id='.$cm->id;
+        if ($src == $dst) {
+            print_error('src_equal_dst', 'ishikawa', $link);
+        }
 
         $connection = new stdClass();
         $connection->src_id = $src;

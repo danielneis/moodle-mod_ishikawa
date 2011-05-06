@@ -24,15 +24,3 @@ td.block {
     border-collapse: collapse;
     width: 15em;
 }
-
-#dst_h {
-    width: 70%;
-    float: left;
-    margin: 0;
-}
-
-#back_link {
-    float: right;
-    width: 20%;
-    margin: 0;
-}
