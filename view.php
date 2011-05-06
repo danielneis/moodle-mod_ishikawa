@@ -48,9 +48,11 @@
     // TODO testar duedate e timeavailable
 
     if ($submission) {
-        echo "<p><a href='edit.php?id={$id}'>Editar blocos</a></p>";
-        echo "<p><a href='connections.php?id={$id}'>Editar conexões</a></p>";
-        echo '<p><img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" /></p>';
+        echo '<p><a href="view.php?id=',$cm->id,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
+             '<p><a href="edit.php?id=',$cm->id,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
+             '<p><a href="connections.php?id=',$cm->id,'" >',get_string('edit_connections', 'ishikawa'),'</a></p>',
+             '<a href="image.php?id=',$cm->id,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a>',
+             '<p><img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" /></p>';
     } else {
         echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
     }

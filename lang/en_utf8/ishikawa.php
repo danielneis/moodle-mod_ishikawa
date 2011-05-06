@@ -14,12 +14,16 @@ $string['diagrammaxcolumns'] = 'Número máximo de colunas';
 $string['modulename'] = 'Espinha de Peixe';
 $string['modulenameplural'] = 'Espinhas de Peixe';
 $string['title'] = 'Diagrama espinha de peixe: $a';
-$stirng['first_step'] = 'Primeiro passo: definir blocos do diagrama';
+$string['first_step'] = 'Primeiro passo: definir blocos do diagrama';
+$string['save_image'] = 'Salvar imagem';
 $string['second_step'] = 'Segundo passo: definir as conexões entre os campos';
 $string['select_src'] = 'Selecione a origem clicando no campo desejado';
 $string['select_dst'] = 'Selecione o destino ou <a href=\"connections.php?id=$a\">selecione outra origem</a>';
 $string['src_equal_dst'] = 'A origem deve ser diferente do destino da conexão';
 $string['tail'] = 'Problema';
 $string['head'] = 'Imagem-Objetivo';
+$string['finish_editing'] = 'Finalizar edição e voltar para o início';
+$string['edit_blocks'] = 'Editar blocos';
+$string['edit_connections'] = 'Editar conexões';
 
 ?>

@@ -230,13 +230,13 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
     if ($src) {
         echo '<h3>', get_string('select_dst', 'ishikawa', $cmid), '</h3>';
     } else {
-        echo '<h3>', get_string('select_src', 'ishikawa'), '</h3>';
-        echo '<p><a href="view.php?id=',$cmid,'" >Finalizar edição e voltar para o início</a></p>';
-        echo '<p><a href="edit.php?id=',$cmid,'" >Edição de blocos</a></p>';
-        echo '<a href="image.php?id=',$cmid,'&userid=',$USER->id,'&download=1">Salvar imagem</a>';
+        echo '<h3>', get_string('select_src', 'ishikawa'), '</h3>',
+             '<p><a href="view.php?id=',$cmid,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
+             '<p><a href="edit.php?id=',$cmid,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
+             '<a href="image.php?id=',$cmid,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a>';
     }
 
-    echo '<img src="image.php?id=',$cmid,'&userid=',$USER->id,'&src=',$src,'&src_type=',$src_type,'" usemap="#ishikawamap" />';
+    echo '<img src="image.php?id=',$cmid,'&userid=',$USER->id,'&src=',$src,'&src_type=',$src_type,'&editing=1" usemap="#ishikawamap" />';
 
     $ishikawa = new Ishikawa($blocks, $connections);
     $rectangles = $ishikawa->retangulos();
