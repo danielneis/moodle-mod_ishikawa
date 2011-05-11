@@ -20,7 +20,11 @@ class Ishikawa  {
 
     var $colors = array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
 
-    function __construct($blocks, $connections, $src_id = 0, $src_type = null, $title = null, $user = null) {
+    var $header = '';
+
+    var $footer = '';
+
+    function __construct($blocks, $connections, $src_id = 0, $src_type = null, $header = null, $footer = null) {
 
         $this->blocks = $blocks;
         $this->connections = $connections;
@@ -31,12 +35,12 @@ class Ishikawa  {
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();
 
-        $this->title = 'Diagrama de Ishikawa';
-        if (!is_null($title)) {
-            $this->title .= " - {$title}";
+        $this->header = 'Diagrama de Ishikawa';
+        if (!is_null($header)) {
+            $this->header .= " - {$header}";
         }
 
-        $this->user = $user;
+        $this->footer = $footer;
 
         $this->draw->setFillColor('white');
         $this->draw->setStrokeColor(new ImagickPixel('black'));
@@ -70,7 +74,7 @@ class Ishikawa  {
         $this->ponto_y_atual = $this->inicio_y;
 
         $this->draw->setFontSize(15);
-        $metrics = $this->im->queryFontMetrics($this->draw, $this->title);
+        $metrics = $this->im->queryFontMetrics($this->draw, $this->header);
         $this->ponto_y_atual += $metrics['textHeight'];
     }
 
@@ -137,7 +141,7 @@ class Ishikawa  {
 
     private function printme($edit = false, $download = false) {
 
-        $this->draw->annotation($this->inicio_x, $this->inicio_y + 5, $this->title);
+        $this->draw->annotation($this->inicio_x, $this->inicio_y + 5, $this->header);
 
         $this->draw->setFontSize(12);
 
@@ -156,9 +160,9 @@ class Ishikawa  {
             $seta->drawLine();
         }
 
-        if ($this->user) {
-            $metrics = $this->im->queryFontMetrics($this->draw, $this->user);
-            $this->draw->annotation($this->inicio_x, $this->ponto_y_maximo - $metrics['textHeight'], $this->user);
+        if ($this->footer) {
+            $metrics = $this->im->queryFontMetrics($this->draw, $this->footer);
+            $this->draw->annotation($this->inicio_x, $this->ponto_y_maximo - $metrics['textHeight'], $this->footer);
         }
 
         $this->im->newImage($this->ponto_x_maximo, $this->ponto_y_maximo, new ImagickPixel('lightgray'));
