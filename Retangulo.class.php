@@ -15,7 +15,7 @@ class Retangulo {
     private $padding_h = 10;
     private $padding_v = 17;
     private $line_height;
-    private $line_spacing = 2;
+    private $line_spacing = -4;
 
     private $color;
 

@@ -4,8 +4,8 @@ require_once("../../config.php");
 require_once($CFG->libdir.'/gradelib.php');
 require_once("lib.php");
 
-$id   = required_param('id', PARAM_INT);          // Course module ID
-$quickgrade = optional_param('quickgrade', 0, PARAM_INT);
+$id         = required_param('id', PARAM_INT);// Course module ID
+$group      = optional_param('group', 0, PARAM_INT);
 
 if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     error("Course Module ID was incorrect");
@@ -55,7 +55,7 @@ if ($data = data_submitted()) {
         grade_update('mod/ishikawa', $ishikawa->course, 'mod', 'ishikawa', $ishikawa->id, 0, $g);
     }
 
-    redirect($CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$cm->id);
+    redirect($CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$cm->id. '&group='.$group);
 }
 
 $buttontext = '';
@@ -65,8 +65,9 @@ $navigation = build_navigation(get_string('submissions', 'ishikawa'), $cm);
 $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
 print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttontext,navmenu($course, $cm));
 
-
 print_heading(get_string('title', 'ishikawa', $ishikawa->name));
+
+groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$id);
 
 $course_ctx = get_context_instance(CONTEXT_COURSE, $course->id);
 $grade_item = get_record('grade_items', 'itemmodule', 'ishikawa', 'iteminstance', $ishikawa->id, 'courseid', $course->id);
@@ -90,11 +91,21 @@ $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
              ON (gg.userid = u.id AND
                  gg.itemid = {$grade_item->id})";
 
+if ($group > 0) {
+    $sql .= " JOIN {$CFG->prefix}groups_members gm
+                ON (gm.userid = u.id AND
+                    gm.groupid = {$group})";
+}
+
+$sql .= "ORDER BY firstname,lastname,username";
+
 if (!$students = get_records_sql($sql)) {
     print_heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
 } else {
 
-   echo '<form method="post" action="submissions.php?id=',$cm->id, '" >',
+    $act = "submissions.php?id={$cm->id}&group={$group}";
+
+   echo '<form method="post" action="',$act,'" >',
         '<table id="ishikawa_submissions" class="generaltable">',
          '<tr>',
           '<th></th>',
