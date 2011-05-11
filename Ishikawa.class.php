@@ -251,7 +251,9 @@ class Ishikawa  {
     }
 
     private function generate_axis() {
-        $maior_altura = 0;
+        $maior_retangulo = new stdclass();
+        $maior_retangulo->bottom_y = 0;
+
         foreach ($this->blocks['axis'] as $nivel_x => $block) {
 
             if ($this->src_type == 'axis' && $this->src_id == $block->id) {
@@ -261,14 +263,18 @@ class Ishikawa  {
             }
             $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
-            if ($retangulo->bottom_y > $maior_altura) {
-                $maior_altura = $retangulo->bottom_y;
+            if ($retangulo->bottom_y > $maior_retangulo->bottom_y) {
+                 $maior_retangulo = $retangulo;
             }
 
             $this->retangulos['axis'][$block->id] = $retangulo;
         }
         $this->ponto_x_atual = $this->ponto_x_tail;
-        $this->ponto_y_atual = $maior_altura + $this->offset;
+        $this->ponto_y_atual = $maior_retangulo->bottom_y + $this->offset;
+
+        foreach ($this->retangulos['axis'] as $nivel_x => $retangulo) {
+            $retangulo->moveY($maior_retangulo->pontoMedioY() - $retangulo->pontoMedioY());
+        }
     }
 }
 ?>

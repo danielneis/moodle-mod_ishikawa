@@ -128,6 +128,15 @@ class Retangulo {
     function setBottomY($novo_y) {
         $this->bottom_y = $novo_y;
     }
+
+    function moveY($n) {
+        $this->upper_y += $n;
+        $this->bottom_y += $n;
+    }
+
+    function pontoMedioY() {
+        return (($this->bottom_y - $this->upper_y) / 2) + $this->upper_y;
+    }
 }
 
 ?>
