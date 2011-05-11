@@ -19,9 +19,10 @@ class Retangulo {
 
     private $color;
 
-    function __construct($x, $y, $text, $draw, $im, $color = 'white') {
+    function __construct($x, $y, $text, $draw, $canvas, $im, $color = '#ffffdd') {
 
         $this->draw = $draw;
+        $this->canvas = $canvas;
         $this->im = $im;
 
         $this->color = $color;
@@ -62,7 +63,7 @@ class Retangulo {
         $x = $this->upper_x + $this->padding_h;
         $y = $this->upper_y + $this->padding_v;
         foreach ($this->text_lines as $l) {
-            $this->draw->annotation($x, $y, $l);
+            $this->canvas->annotation($x, $y, $l);
             $y += $this->line_height + $this->line_spacing;
         }
     }
@@ -110,7 +111,7 @@ class Retangulo {
 
                 //messure size of line + next word
                 $linePreview = $line." ".$words[$i];
-                $metrics = $this->im->queryFontMetrics($this->draw, $linePreview);
+                $metrics = $this->im->queryFontMetrics($this->canvas, $linePreview);
             } while($metrics["textWidth"] <= $max_width);
 
             $lines[] = $line;

@@ -35,15 +35,14 @@ class Ishikawa  {
         $this->im = new Imagick();
         $this->draw = new ImagickDraw();
 
+        $this->canvas = new ImagickDraw();
+
         $this->header = 'Diagrama de Ishikawa';
         if (!is_null($header)) {
             $this->header .= " - {$header}";
         }
 
         $this->footer = $footer;
-
-        $this->draw->setFillColor('white');
-        $this->draw->setStrokeColor(new ImagickPixel('black'));
     }
 
     function retangulos() {
@@ -73,8 +72,7 @@ class Ishikawa  {
         $this->ponto_x_atual = $this->inicio_x;
         $this->ponto_y_atual = $this->inicio_y;
 
-        $this->draw->setFontSize(15);
-        $metrics = $this->im->queryFontMetrics($this->draw, $this->header);
+        $metrics = $this->im->queryFontMetrics($this->canvas, $this->header);
         $this->ponto_y_atual += $metrics['textHeight'];
     }
 
@@ -141,9 +139,11 @@ class Ishikawa  {
 
     private function printme($edit = false, $download = false) {
 
-        $this->draw->annotation($this->inicio_x, $this->inicio_y + 5, $this->header);
+        $this->canvas->setFontSize(15);
 
-        $this->draw->setFontSize(12);
+        $this->canvas->annotation($this->inicio_x, $this->inicio_y + 5, $this->header);
+
+        $this->canvas->setFontSize(12);
 
         $this->retangulos['tail']->draw();
 
@@ -161,12 +161,14 @@ class Ishikawa  {
         }
 
         if ($this->footer) {
+            $this->canvas->setFontSize(15);
             $metrics = $this->im->queryFontMetrics($this->draw, $this->footer);
-            $this->draw->annotation($this->inicio_x, $this->ponto_y_maximo - $metrics['textHeight'], $this->footer);
+            $this->canvas->annotation($this->inicio_x, $this->ponto_y_maximo - $metrics['textHeight'], $this->footer);
         }
 
         $this->im->newImage($this->ponto_x_maximo, $this->ponto_y_maximo, new ImagickPixel('lightgray'));
-        $this->im->drawImage($this->draw);    // Apply the stuff from the draw class to the image canvas
+        $this->im->drawImage($this->draw);
+        $this->im->drawImage($this->canvas);
 
         $this->im->setImageFormat('png');    // Give the image a format
 
@@ -218,13 +220,13 @@ class Ishikawa  {
     private function generate_head() {
         $this->ponto_y_atual = $this->inicio_y;
         $this->ponto_x_atual = $this->ponto_x_head;
-        $this->retangulos['head'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['head_text'], $this->draw, $this->im);
+        $this->retangulos['head'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['head_text'], $this->draw, $this->canvas, $this->im);
         $this->ponto_x_atual = $this->retangulos['head']->bottom_x + $this->offset;
         $this->ponto_x_maximo = $this->ponto_x_atual;
     }
 
     private function generate_tail() {
-        $this->retangulos['tail'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['tail_text'], $this->draw, $this->im);
+        $this->retangulos['tail'] = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $this->blocks['tail_text'], $this->draw, $this->canvas, $this->im);
         $this->ponto_x_atual += $this->retangulos['tail']->bottom_x + $this->offset;
         $this->ponto_x_tail = $this->ponto_x_atual;
     }
@@ -235,9 +237,9 @@ class Ishikawa  {
             foreach ($bls as $nivel_x => $block) {
 
                 if ($this->src_type == $multinivel && $this->src_id == $block->id) {
-                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, "green");
+                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im, "green");
                 } else {
-                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, $this->colors[$nivel_y]);
+                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im, $this->colors[$nivel_y]);
                 }
                 $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
@@ -261,9 +263,9 @@ class Ishikawa  {
         foreach ($this->blocks['axis'] as $nivel_x => $block) {
 
             if ($this->src_type == 'axis' && $this->src_id == $block->id) {
-                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im, "green");
+                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im, "green");
             } else {
-                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->im);
+                $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im);
             }
             $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
