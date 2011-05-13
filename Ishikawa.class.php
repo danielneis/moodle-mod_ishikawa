@@ -239,7 +239,7 @@ class Ishikawa  {
                 if ($this->src_type == $multinivel && $this->src_id == $block->id) {
                     $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im, "green");
                 } else {
-                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im, $this->colors[$nivel_y]);
+                    $retangulo = new Retangulo($this->ponto_x_atual, $this->ponto_y_atual, $block->texto, $this->draw, $this->canvas, $this->im, $this->colors[$nivel_y % sizeof($this->colors)]);
                 }
                 $this->ponto_x_atual = $retangulo->bottom_x + $this->offset;
 
