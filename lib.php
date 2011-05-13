@@ -198,7 +198,6 @@ function ishikawa_view_dates($ishikawa) {
     }
     $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
     if ($submission) {
-        //TODO incluir link para ver/editar o diagrama
         echo '<tr><td class="c0">'.get_string('lastedited').':</td>';
         echo '    <td class="c1">'.userdate($submission->timemodified);
     }
