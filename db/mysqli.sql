@@ -84,3 +84,11 @@ CREATE TABLE ishikawa_connections (
     PRIMARY KEY (id),
     UNIQUE INDEX uniq_ishiconsequencesblocks_srcdst (src_id, src_type, dst_id, dst_type)
 );
+
+CREATE TABLE ishikawa_colors (
+    id BIGINT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    code CHAR(6) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE INDEX uniq_ishicolors_code(code)
+);

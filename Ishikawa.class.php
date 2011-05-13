@@ -4,6 +4,8 @@ require_once('seta.class.php');
 
 class Ishikawa  {
 
+    var $colors = array();
+
     var $retangulos = array();
 
     var $setas = array();
@@ -17,8 +19,6 @@ class Ishikawa  {
 
     var $im;
     var $draw;
-
-    var $colors = array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
 
     var $header = '';
 
@@ -47,7 +47,17 @@ class Ishikawa  {
             $this->header .= " - {$header}";
         }
 
+        if ($colors = get_records('ishikawa_colors', '','','','name')) {
+            $this->colors = array_map(create_function('$a', 'return "#{$a}";'), $colors);
+        } else {
+            $this->colors = Ishikawa::default_colors();
+        }
+
         $this->footer = $footer;
+    }
+
+    static function default_colors() {
+        return array('#ffff00', '#ffd100', '#ff8b00', '#ff5c00', '#ff2200', '#da0000');
     }
 
     function retangulos() {
