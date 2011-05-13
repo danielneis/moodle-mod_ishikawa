@@ -36,8 +36,13 @@ class Ishikawa  {
         $this->draw = new ImagickDraw();
 
         $this->canvas = new ImagickDraw();
+        // SUGGESTION: implement font list config in config_plugins
+        $fontfile = './Ubuntu-R.ttf';
+        if (file_exists($fontfile)) {
+            $this->canvas->setFont($fontfile);
+        }
 
-        $this->header = 'Diagrama de Ishikawa';
+        $this->header = get_string('modulename', 'ishikawa');
         if (!is_null($header)) {
             $this->header .= " - {$header}";
         }
