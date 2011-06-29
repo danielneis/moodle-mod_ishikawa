@@ -90,6 +90,13 @@ class Retangulo {
             return array();
         }
 
+        $text_tmp = explode(' ', $text);
+        $text = '';
+
+        foreach ($text_tmp as $palavra) {
+            $text .= $this->quebra_palavra($palavra, 20) . ' ';
+        }
+
         $words = explode(" ", $text);
         $lines = array();
         $i=0;
@@ -118,6 +125,14 @@ class Retangulo {
         }
         return $lines;
     }
+
+    private function quebra_palavra($str, $n) {
+        if (strlen($str) < $n) {
+            return $str;
+        }
+        return substr($str, 0, $n) . ' ' . $this->quebra_palavra(substr($str, $n), $n);
+    }
+
 
     function setAltura($novo_bottom_y) {
         $this->bottom_y = $novo_bottom_y;

@@ -6,6 +6,14 @@ require_once('lib.php');
 $id = required_param('cmid', PARAM_INT);
 $subid = optional_param('subid', 0, PARAM_INT);
 
+$tail_text = required_param('tail_text', PARAM_ALPHA);
+$head_text = required_param('head_text', PARAM_ALPHA);
+
+if (empty($tail_text) || empty($head_text)) {
+    $link = $CFG->wwwroot.'/mod/ishikawa/edit.php?id='.$id;
+    print_error('required_tail_head', 'ishikawa', $link);
+}
+
 if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     error("Course Module ID was incorrect");
 }
