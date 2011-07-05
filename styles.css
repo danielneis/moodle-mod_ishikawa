@@ -28,4 +28,6 @@ td.block {
 #ishikawa_submissions {
     width: 100%;
     text-align: left;
+    clear: both;
+    margin-top: 1em;
 }
