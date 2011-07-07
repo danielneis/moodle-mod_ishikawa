@@ -39,7 +39,8 @@
     $navigation = build_navigation('', $cm);
     print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
 
-    print_heading(get_string('title', 'ishikawa', $ishikawa->name));
+    $img = '<img src="'.$CFG->themewww.'/'.current_theme().'/pix/mod/ishikawa/icon.gif" class="activityicon" alt="" />';
+    print_heading( $img.'&nbsp;'. $ishikawa->name);
 
     if (has_capability('mod/ishikawa:grade', $context)) {
         echo '<div class="reportlink">';
