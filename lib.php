@@ -30,6 +30,41 @@ function ishikawa_delete_instance($ishi) {
     delete_records('ishikawa', 'id', $ishi);
 }
 
+function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
+    global $CFG;
+
+
+    if (!empty($CFG->gradebookroles)) {
+        $gradebookroles = explode(",", $CFG->gradebookroles);
+    } else {
+        $gradebookroles = '';
+    }
+    $users = get_role_users($gradebookroles, $context, true, '', 'u.lastname ASC', true, $groupid);
+
+
+    if ($users) {
+        $users = array_keys($users);
+        // if groupmembersonly used, remove users who are not in any group
+        if (!empty($CFG->enablegroupings) and $cm->groupmembersonly) {
+            $groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id');
+            if ($groupingusers) {
+                $users = array_intersect($users, array_keys($groupingusers));
+            }
+        }
+    }
+    if (empty($users)) {
+        return 0;
+    }
+
+    $userlists = implode(',', $users);
+    $sql = "SELECT COUNT(*) as count
+              FROM {$CFG->dbname}.{$CFG->prefix}ishikawa_submissions s
+             WHERE userid IN ({$userlists}) ";
+
+    $record = get_record_sql($sql);
+    return $record->count;
+}
+
 function ishikawa_get_submission($userid, $ishikawaid) {
     return get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }

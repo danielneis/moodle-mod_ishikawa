@@ -42,9 +42,13 @@
     $img = '<img src="'.$CFG->themewww.'/'.current_theme().'/pix/mod/ishikawa/icon.gif" class="activityicon" alt="" />';
     print_heading( $img.'&nbsp;'. $ishikawa->name);
 
+    $groupmode = groups_get_activity_groupmode($cm);
+    groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/view.php?id='.$id);
+    $group = groups_get_activity_group($cm, true);
+
     if (has_capability('mod/ishikawa:grade', $context)) {
         echo '<div class="reportlink">';
-        if ($count = count_records('ishikawa_submissions', 'ishikawaid', $ishikawa->id)) {
+        if ($count = ishikawa_count_submissions($ishikawa->id,$context, $group)) {
             echo '<a href="submissions.php?id=',$cm->id,'">',get_string('viewsubmissions', 'assignment', $count),'</a>';
         } else {
             echo '<a href="submissions.php?id=',$cm->id,'">',get_string('noattempts', 'assignment'),'</a>';

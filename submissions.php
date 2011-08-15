@@ -67,7 +67,9 @@ print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttonte
 
 print_heading(get_string('title', 'ishikawa', $ishikawa->name));
 
-groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$id);
+if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used
+    groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$id);
+}
 
 $course_ctx = get_context_instance(CONTEXT_COURSE, $course->id);
 $grade_item = get_record('grade_items', 'itemmodule', 'ishikawa', 'iteminstance', $ishikawa->id, 'courseid', $course->id);
@@ -91,6 +93,9 @@ $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
              ON (gg.userid = u.id AND
                  gg.itemid = {$grade_item->id})";
 
+if (!$group) {
+    $group = groups_get_activity_group($cm, true);
+}
 if ($group > 0) {
     $sql .= " JOIN {$CFG->prefix}groups_members gm
                 ON (gm.userid = u.id AND
