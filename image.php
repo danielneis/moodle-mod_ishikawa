@@ -38,7 +38,7 @@ $blocks = ishikawa_blocks_from_submission($submission);
 
 $connections = ishikawa_connections_from_submission($submission);
 
-$footer = fullname($USER);
+$footer = fullname(get_record('user', 'id', $userid));
 
 $sql = "SELECT g.id, g.name
           FROM {$CFG->prefix}groups g
