@@ -3,17 +3,19 @@
     require_once("../../config.php");
     require_once("lib.php");
 
+    global $DB;
+
     $id = required_param('id', PARAM_INT);  // Course Module ID
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
         error("Course Module ID was incorrect");
     }
 
-    if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
+    if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
         error("ishikawa ID was incorrect");
     }
 
-    if (! $course = get_record("course", "id", $ishikawa->course)) {
+    if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
         error("Course is misconfigured");
     }
 

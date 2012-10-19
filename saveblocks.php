@@ -3,6 +3,8 @@
 require_once('../../config.php');
 require_once('lib.php');
 
+$global $DB;
+
 $id = required_param('cmid', PARAM_INT);
 $subid = optional_param('subid', 0, PARAM_INT);
 
@@ -18,11 +20,11 @@ if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     error("Course Module ID was incorrect");
 }
 
-if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
+if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
     error("ishikawa ID was incorrect");
 }
 
-if (! $course = get_record("course", "id", $ishikawa->course)) {
+if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
     error("Course is misconfigured");
 }
 
@@ -43,7 +45,7 @@ if (!$subid) {
         $submission->timecreated = time();
         $submission->timemodified = $submission->timecreated;
 
-        if (!$submissionid = insert_record('ishikawa_submissions', $submission)) {
+        if (!$submissionid = $DB->insert_record('ishikawa_submissions', $submission)) {
             print_error('cant_insert_submit_record');
         }
 
@@ -54,7 +56,7 @@ if (!$subid) {
                 $b->nivel_x = $nivel_x;
                 $b->nivel_y = $nivel_y;
                 $b->texto = $block['texto'];
-                if (!insert_record('ishikawa_causes_blocks', $b)) {
+                if (!$DB->insert_record('ishikawa_causes_blocks', $b)) {
                     print_error('cant_insert_cause');
                 }
             }
@@ -65,7 +67,7 @@ if (!$subid) {
             $b->submissionid = $submissionid;
             $b->nivel_x = $nivel_x;
             $b->texto = $block['texto'];
-            if (!insert_record('ishikawa_axis_blocks', $b)) {
+            if (!$DB->insert_record('ishikawa_axis_blocks', $b)) {
                 print_error('cant_insert_axis');
             }
         }
@@ -77,7 +79,7 @@ if (!$subid) {
                 $b->nivel_x = $nivel_x;
                 $b->nivel_y = $nivel_y;
                 $b->texto = $block['texto'];
-                if (!insert_record('ishikawa_consequences_blocks', $b)) {
+                if (!$DB->insert_record('ishikawa_consequences_blocks', $b)) {
                     print_error('cant_insert_consequence');
                 }
             }
@@ -96,7 +98,7 @@ if (!$subid) {
         $submission->timemodified = time();
         $submission->tail_text = $data->tail_text;
         $submission->head_text = $data->head_text;
-        if (!update_record('ishikawa_submissions', $submission)) {
+        if (!$DB->update_record('ishikawa_submissions', $submission)) {
             print_error('cant_insert_submit_record');
         }
 
@@ -105,12 +107,12 @@ if (!$subid) {
                 $b = new stdclass();
                 $b->id = $block['id'];
                 $b->texto = $block['texto'];
-                if (!update_record('ishikawa_causes_blocks', $b)) {
+                if (!$DB->update_record('ishikawa_causes_blocks', $b)) {
                     print_error('cant_insert_cause');
                 }
                 if (empty($b->texto) && $b->texto != '0') {
-                    delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'causes');
-                    delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'causes');
+                   $DB->delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'causes');
+                   $DB->delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'causes');
                 }
             }
         }
@@ -119,7 +121,7 @@ if (!$subid) {
             $b = new stdclass();
             $b->id = $block['id'];
             $b->texto = $block['texto'];
-            if (!update_record('ishikawa_axis_blocks', $b)) {
+            if (!$DB->update_record('ishikawa_axis_blocks', $b)) {
                 print_error('cant_insert_axis');
             }
         }
@@ -129,12 +131,12 @@ if (!$subid) {
                 $b = new stdclass();
                 $b->id = $block['id'];
                 $b->texto = $block['texto'];
-                if (!update_record('ishikawa_consequences_blocks', $b)) {
+                if (!$DB->update_record('ishikawa_consequences_blocks', $b)) {
                     print_error('cant_insert_consequence');
                 }
                 if (empty($b->texto) && $b->texto != '0') {
-                    delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'consequences');
-                    delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'consequences');
+                    $DB->delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'consequences');
+                    $DB->delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'consequences');
                 }
             }
         }
