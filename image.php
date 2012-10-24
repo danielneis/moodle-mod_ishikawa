@@ -4,8 +4,6 @@ require_once("../../config.php");
 require_once("Ishikawa.class.php");
 require_once("lib.php");
 
-global $DB;
-
 $id     = required_param('id', PARAM_INT);  // Course Module ID
 $userid = required_param('userid', PARAM_INT); // user id to get submission
 

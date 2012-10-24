@@ -3,8 +3,6 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-$global $DB;
-
 $id = required_param('cmid', PARAM_INT);
 $subid = optional_param('subid', 0, PARAM_INT);
 

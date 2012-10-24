@@ -3,8 +3,6 @@
     require_once('../../config.php');
     require_once('lib.php');
   
-    global $DB;
-   
     $id = required_param('id', PARAM_INT);  // Course Module ID
     $src = optional_param('src', 0, PARAM_INT);
     $src_type = optional_param('src_type', 0, PARAM_ALPHA);

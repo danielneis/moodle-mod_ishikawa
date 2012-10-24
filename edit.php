@@ -3,8 +3,6 @@
 require_once('../../config.php');
 require_once('lib.php');
 
-global $DB;
-
 $id = required_param('id', PARAM_INT);  // Course Module ID
 
 if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
