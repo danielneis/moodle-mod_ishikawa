@@ -114,7 +114,7 @@
         <FIELD NAME="src_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="submissionid" NEXT="src_type"/>
         <FIELD NAME="src_type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" ENUMVALUES="'causes', 'axis', 'consequences'" PREVIOUS="src_id" NEXT="dst_id"/>
         <FIELD NAME="dst_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="src_type" NEXT="dst_type"/>
-        <FIELD NAME="dst_type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" ENUMVALUES="'causes', 'axis', 'consequences'" PREVIOUS="dst_id"/>
+        <FIELD NAME="dst_type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="true" ENUMVALUES="'causes', 'axis', 'consequences'" PREVIOUS="dst_id"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
