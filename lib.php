@@ -1,6 +1,8 @@
 <?php
 function ishikawa_add_instance($ishi) {
-    $id =  insert_record('ishikawa', $ishi);
+    global $DB;
+    
+    $id =  $DB->insert_record('ishikawa', $ishi);
 
     $params = array('itemname'=>$ishi->name);
 
@@ -10,28 +12,30 @@ function ishikawa_add_instance($ishi) {
 }
 
 function ishikawa_update_instance($ishi) {
+    global $DB;
 
     $ishi->timemodified = time();
     $ishi->id = $ishi->instance;
 
-    return update_record("ishikawa", $ishi);
+    return $DB->update_record("ishikawa", $ishi);
 }
 
 function ishikawa_delete_instance($ishi) {
+    global $DB;
 
-    $submissions = get_record('ishikawa_submissions', 'ishikawaid', $ishi);
+    $submissions = $DB->get_record('ishikawa_submissions', 'ishikawaid', $ishi);
     foreach ($submissions as $sub) {
-        delete_records('ishikawa_axis_blocks', 'submissionid', $sub['id']);
-        delete_records('ishikawa_causes_blocks', 'submissionid', $sub['id']);
-        delete_records('ishikawa_connections', 'submissionid', $sub['id']);
-        delete_records('ishikawa_consequences_blocks', 'submissionid', $sub['id']);
-        delete_records('ishikawa_submissions', 'id', $sub['id']);
+        $DB->delete_records('ishikawa_axis_blocks', 'submissionid', $sub['id']);
+        $DB->delete_records('ishikawa_causes_blocks', 'submissionid', $sub['id']);
+        $DB->delete_records('ishikawa_connections', 'submissionid', $sub['id']);
+        $DB->delete_records('ishikawa_consequences_blocks', 'submissionid', $sub['id']);
+        $DB->delete_records('ishikawa_submissions', 'id', $sub['id']);
     }
-    delete_records('ishikawa', 'id', $ishi);
+    $DB->delete_records('ishikawa', 'id', $ishi);
 }
 
 function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
-    global $CFG;
+    global $CFG, $DB;
 
 
     if (!empty($CFG->gradebookroles)) {
@@ -57,23 +61,29 @@ function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
     }
 
     $userlists = implode(',', $users);
+    $parms = array($userlists);
     $sql = "SELECT COUNT(*) as count
-              FROM {$CFG->dbname}.{$CFG->prefix}ishikawa_submissions s
-             WHERE userid IN ({$userlists}) ";
+              FROM {$CFG->dbname}.{ishikawa_submissions} s
+             WHERE userid IN ? ";
 
-    $record = get_record_sql($sql);
+    $record = $DB->get_record_sql($sql,$params);
     return $record->count;
 }
 
 function ishikawa_get_submission($userid, $ishikawaid) {
-    return get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
+    global $DB;
+
+    return $DB->get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }
 
 function ishikawa_get_grade($userid, $ishikawaid) {
-    return get_record('ishikawa_grades', 'userid', $userid, 'ishikawaid', $ishikawaid);
+    global $DB;
+
+    return $DB->get_record('ishikawa_grades', 'userid', $userid, 'ishikawaid', $ishikawaid);
 }
 
 function ishikawa_blocks_from_submission($submission = false, $ishikawa = false) {
+    global $DB;	
 
     $blocks = array();
     $blocks['causes'] = array();
@@ -108,9 +118,9 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
         return $blocks;
     }
 
-    $causes_blocks = get_records("ishikawa_causes_blocks", 'submissionid', $submission->id);
-    $axis_blocks = get_records("ishikawa_axis_blocks", 'submissionid', $submission->id);
-    $consequences_blocks = get_records("ishikawa_consequences_blocks", 'submissionid', $submission->id);
+    $causes_blocks = $DB->get_records("ishikawa_causes_blocks", 'submissionid', $submission->id);
+    $axis_blocks = $DB->get_records("ishikawa_axis_blocks", 'submissionid', $submission->id);
+    $consequences_blocks = $DB->get_records("ishikawa_consequences_blocks", 'submissionid', $submission->id);
 
     foreach ($causes_blocks as $block) {
         $blocks['causes'][$block->nivel_y][$block->nivel_x] = $block;
@@ -127,7 +137,9 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
 }
 
 function ishikawa_connections_from_submission($submission) {
-    if ($r = get_records("ishikawa_connections", "submissionid", $submission->id)) {
+    global $DB;
+
+    if ($r = $DB->get_records("ishikawa_connections", "submissionid", $submission->id)) {
         return $r;
     } else {
         return array();
@@ -325,11 +337,13 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
 }
 
 function ishikawa_delete_connection($id) {
-    return delete_records('ishikawa_connections', 'id', $id);
+    global $DB;
+
+    return $DB->delete_records('ishikawa_connections', 'id', $id);
 }
 
 function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
-    global $USER, $CFG;
+    global $USER,$DB, $CFG;
     require($CFG->libdir.'/gradelib.php');
 
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
@@ -360,7 +374,7 @@ function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
     $graded_by   = $grade->usermodified;
 
 /// We need the teacher info
-    if (!$teacher = get_record('user', 'id', $graded_by)) {
+    if (!$teacher = $DB->get_record('user', 'id', $graded_by)) {
         error('Could not find the teacher');
     }
 

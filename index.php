@@ -5,7 +5,7 @@
 
     $id = required_param('id', PARAM_INT);   // course
 
-    if (! $course = get_record("course", "id", $id)) {
+    if (! $course = $DB->get_record("course", "id", $id)) {
         error("Course ID is incorrect");
     }
 
@@ -23,7 +23,7 @@
     $navigation = build_navigation($navlinks);
     print_header_simple($strishikawas, "", $navigation, "", "", true, '',navmenu($course));
 
-    $ishikawas = get_records('ishikawa', 'course', $course->id);
+    $ishikawas = $DB->get_records('ishikawa', 'course', $course->id);
 
     echo '<table class="generaltable">',
          '<tr>',
@@ -33,13 +33,13 @@
            '<th>Enviada</th>',
          '</tr>';
 
-    $ishimod = get_record('modules', 'name', 'ishikawa');
+    $ishimod = $DB->get_record('modules', 'name', 'ishikawa');
     foreach ($ishikawas as $ishi) {
         if(!$sub = ishikawa_get_submission($USER->id, $ishi->id)) {
             $sub->timemodified = 0;
         }
 
-        $cm = get_record('course_modules', 'module', $ishimod->id, 'instance', $ishi->id);
+        $cm = $DB->get_record('course_modules', 'module', $ishimod->id, 'instance', $ishi->id);
         echo '<tr>',
               '<td><a href="', $CFG->wwwroot, '/mod/ishikawa/view.php?id=',$cm->id, '">', $ishi->name,'</td>',
               '<td>', $ishi->description,'</td>',

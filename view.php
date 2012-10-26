@@ -9,11 +9,11 @@
         error("Course Module ID was incorrect");
     }
 
-    if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
+    if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
         error("ishikawa ID was incorrect");
     }
 
-    if (! $course = get_record("course", "id", $ishikawa->course)) {
+    if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
         error("Course is misconfigured");
     }
 

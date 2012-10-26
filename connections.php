@@ -2,7 +2,7 @@
 
     require_once('../../config.php');
     require_once('lib.php');
-
+  
     $id = required_param('id', PARAM_INT);  // Course Module ID
     $src = optional_param('src', 0, PARAM_INT);
     $src_type = optional_param('src_type', 0, PARAM_ALPHA);
@@ -14,11 +14,11 @@
         error("Course Module ID was incorrect");
     }
 
-    if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
+    if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
         error("ishikawa ID was incorrect");
     }
 
-    if (! $course = get_record("course", "id", $ishikawa->course)) {
+    if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
         error("Course is misconfigured");
     }
 
@@ -65,7 +65,7 @@
         $connection->dst_id = $dst;
         $connection->dst_type = $dst_type;
         $connection->submissionid = $submission->id;
-        if (!insert_record('ishikawa_connections', $connection)) {
+        if (!$DB->insert_record('ishikawa_connections', $connection)) {
             print_error('cannot_add_connection', 'ishikawa', $link);
         }
         redirect($link);

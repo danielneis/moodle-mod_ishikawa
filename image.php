@@ -17,11 +17,11 @@ if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     error("Course Module ID was incorrect");
 }
 
-if (! $ishikawa = get_record("ishikawa", "id", $cm->instance)) {
+if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
     error("ishikawa ID was incorrect");
 }
 
-if (! $course = get_record("course", "id", $ishikawa->course)) {
+if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
     error("Course is misconfigured");
 }
 
@@ -38,15 +38,16 @@ $blocks = ishikawa_blocks_from_submission($submission);
 
 $connections = ishikawa_connections_from_submission($submission);
 
-$footer = fullname(get_record('user', 'id', $userid));
+$footer = fullname($DB->get_record('user', 'id', $userid));
 
+$params = array({$userid}, {$course->id});
 $sql = "SELECT g.id, g.name
-          FROM {$CFG->prefix}groups g
-          JOIN {$CFG->prefix}groups_members gm
+          FROM {groups} g
+          JOIN {groups_members} gm
             ON gm.groupid = g.id
-         WHERE gm.userid = {$userid}
-           AND g.courseid = {$course->id}";
-if (!$groups = get_records_sql($sql)) {
+         WHERE gm.userid = ?
+           AND g.courseid = ?";
+if (!$groups = $DB->get_records_sql($sql, $params)) {
     $groups = array();
 } else {
     $footer .= ' - ';
