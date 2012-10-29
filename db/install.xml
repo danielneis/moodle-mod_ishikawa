@@ -114,11 +114,10 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="submissionid"/>
         <FIELD NAME="submissionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="src_id"/>
-        <FIELD NAME="src_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="submissionid" NEXT="causes"/>
-        <FIELD NAME="causes" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="src_id" NEXT="axis"/>
-        <FIELD NAME="axis" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="causes" NEXT="consequences"/>
-        <FIELD NAME="consequences" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="axis" NEXT="dst_id"/>
-        <FIELD NAME="dst_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="consequences"/>
+        <FIELD NAME="src_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="submissionid" NEXT="src_type"/>
+        <FIELD NAME="src_type" TYPE="char" LENGTH="12" NOTNULL="true" SEQUENCE="false" PREVIOUS="src_id" NEXT="dst_id"/>
+        <FIELD NAME="dst_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="src_type" NEXT="dst_type"/>
+        <FIELD NAME="dst_type" TYPE="char" LENGTH="12" NOTNULL="false" SEQUENCE="false" PREVIOUS="dst_id"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

@@ -6,6 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 $module->version  = 2012102400;
-$module->requires = 2007101509;  // Requires this Moodle version
+$module->requires = 2010000000;  // Requires this Moodle version
 
 ?>
