@@ -65,7 +65,7 @@ $navigation = build_navigation(get_string('submissions', 'ishikawa'), $cm);
 $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
 print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttontext,navmenu($course, $cm));
 
-print_heading(get_string('title', 'ishikawa', $ishikawa->name));
+echo $OUTPUT->heading(get_string('title', 'ishikawa', $ishikawa->name));
 
 if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used
     groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$id);
@@ -107,7 +107,7 @@ if ($group > 0) {
 $sql .= "ORDER BY firstname,lastname,username";
 
 if (!$students = $DB->get_records_sql($sql,$params)) {
-    print_heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
+    echo $OUTPUT->heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
 } else {
 
     $act = "submissions.php?id={$cm->id}&group={$group}";
@@ -124,10 +124,13 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
 
   $tabindex = 0;
   foreach ($students as $s) {
+      $userpic = new moodle_user_picture();
+      $userpic->user = $s;
+      $userpic->courseid = $course->id;
       echo '<tr>',
-          '<td>',print_user_picture($s, $course->id),'</td>',
-          '<td>',fullname($s),'</td>',
-          '<td>';
+           '<td>', $OUTPUT->user_picture($userpic),'</td>',
+           '<td>', fullname($s),'</td>',
+           '<td>';
       if ($s->timecreated > 0) {
           echo userdate($s->timecreated), '&nbsp;',
                '<a href="image.php?id=',$cm->id,'&userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
@@ -139,6 +142,7 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
       if ($s->locked or $s->overridden) {
           echo $s->finalgrade;
       } else {
+	  // echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade);
           echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
                               get_string('nograde'),'',-1,true,false,$tabindex++);
       }
@@ -151,6 +155,6 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
        '</form>';
 }
 
-print_footer($course);
+echo $OUTPUT->footer();
 
 ?>

@@ -379,14 +379,18 @@ function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
     }
 
 /// Print the feedback
-    print_heading(get_string('feedbackfromteacher', 'ishikawa', $course->teacher)); // TODO: fix teacher string
+    echo $OUTPUT->heading(get_string('feedbackfromteacher', 'ishikawa', $course->teacher)); // TODO: fix teacher string
 
     echo '<table cellspacing="0" class="feedback">';
 
     echo '<tr>';
     echo '<td class="left picture">';
     if ($teacher) {
-        print_user_picture($teacher, $course->id, $teacher->picture);
+        $userpic = new user_picture();
+	$userpic->user = $teacher;
+	$userpic->courseid = $course->id;  
+	$userpic->image->src = $teacher->picture;
+	echo $OUTPUT->user_picture($userpic);
     }
     echo '</td>';
     echo '<td class="topic">';

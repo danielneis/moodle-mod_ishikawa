@@ -35,6 +35,6 @@ print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmen
 $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
 ishikawa_edit_blocks($cm->id, ishikawa_blocks_from_submission($submission, $ishikawa), $submission);
 
-print_footer($course);
+echo $OUTPUT->footer();
 
 ?>

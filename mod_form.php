@@ -15,7 +15,7 @@ class mod_ishikawa_mod_form extends moodleform_mod {
 
         $mform->addElement('htmleditor', 'description', get_string('description', 'assignment'));
         $mform->setType('description', PARAM_RAW);
-        $mform->setHelpButton('description', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
+        $mform->addHelpButton('description','helpbutton','ishikawa'); 
         $mform->addRule('description', get_string('required'), 'required', null, 'client');
 
         $mform->addElement('modgrade', 'grade', get_string('grade'));

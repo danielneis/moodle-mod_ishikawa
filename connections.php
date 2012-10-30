@@ -82,7 +82,7 @@
 
         ishikawa_edit_connections($cm->id, $blocks, $connections, $submission, $src, $src_type, $dst);
 
-        print_footer($course);
+        echo $OUTPUT->footer();
     }
 
 ?>

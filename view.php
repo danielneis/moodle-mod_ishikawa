@@ -40,7 +40,7 @@
     print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
 
     $img = '<img src="'.$CFG->themewww.'/'.current_theme().'/pix/mod/ishikawa/icon.gif" class="activityicon" alt="" />';
-    print_heading( $img.'&nbsp;'. $ishikawa->name);
+    echo $OUTPUT->heading( $img.'&nbsp;'. $ishikawa->name);
 
     $groupmode = groups_get_activity_groupmode($cm);
     groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/view.php?id='.$id);
@@ -56,7 +56,7 @@
         echo '</div>';
     }
 
-    print_box(format_text($ishikawa->description), 'generalbox', 'intro');
+    echo OUTPUT->box(format_text($ishikawa->description), 'generalbox', 'intro');
 
     ishikawa_view_dates($ishikawa);
 
@@ -79,5 +79,5 @@
         }
     }
 
-    print_footer($course);
+    echo $OUTPUT->footer();
 ?>
