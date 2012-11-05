@@ -1,4 +1,4 @@
-<?PHP // $Id$
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,12 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-////////////////////////////////////////////////////////////////////////////////
-//  Code fragment to define the module version etc.
-//  This fragment is called by /admin/index.php
-////////////////////////////////////////////////////////////////////////////////
 
-$module->version  = 2012102400;
-$module->requires = 2010000000;  // Requires this Moodle version
+defined('MOODLE_INTERNAL') || die();
 
-?>
+function mod_ishikawa_uninstall() {
+     // global $DB;
+ 
+     // $dbman = $DB->get_manager();
+ 
+     return true;
+}
+
+
