@@ -16,8 +16,8 @@ $string['diagrammaxlines'] = 'Número máximo de linhas';
 $string['diagrammaxcolumns'] = 'Número máximo de colunas';
 $string['helpbutton'] = 'editor';
 $string['helpbutton_help'] = 'Help with html editor'; 
-$string['modulename'] = 'Espinha de Peixe';
-$string['modulenameplural'] = 'Espinhas de Peixe';
+$string['modulename'] = 'Espinha de peixe';
+$string['modulenameplural'] = 'Espinhas de peixe';
 $string['title'] = 'Espinha de peixe: $a';
 $string['first_step'] = 'Primeiro passo: definir campos da espinha de peixe';
 $string['foo'] = 'foo';
@@ -38,4 +38,5 @@ $string['never_sent'] = 'Nunca enviado';
 $string['submissions'] = 'Espinhas de peixe enviadas';
 $string['feedbackfromteacher'] = 'Feedback do professor';
 $string['required_tail_head'] = $string['tail'] . ' e ' . $string['head'] . ' são campos obrigatórios';
-?>
+$string['pluginname'] = 'Espinha de peixe';
+$string['pluginadministration'] = 'Administração de Espinhas de peixe';
