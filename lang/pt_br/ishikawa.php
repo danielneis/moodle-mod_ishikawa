@@ -5,6 +5,7 @@ $string['availabledate'] = 'Disponível a partir de';
 $string['cannot_add_connection'] = 'Não foi possível adicionar conexão. É provável que ela já exista.';
 $string['causes'] = 'Causas - Por que isto ocorre?';
 $string['consequences'] = 'Consequências - O que isto gera?';
+$string['description'] = 'Descrição';
 $string['diagramname'] = 'Nome da espinha de peixe';
 $string['diagrammaxchar'] = 'Número máximo de caracteres em cada caixa';
 $string['duedate'] = 'Data de entrega';

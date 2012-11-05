@@ -1,7 +1,7 @@
 <?php
 function ishikawa_add_instance($ishi) {
     global $DB;
-    
+     
     $id =  $DB->insert_record('ishikawa', $ishi);
 
     $params = array('itemname'=>$ishi->name);

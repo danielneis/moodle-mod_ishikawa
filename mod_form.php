@@ -13,7 +13,7 @@ class mod_ishikawa_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
 
 
-        $mform->addElement('htmleditor', 'description', get_string('description', 'assignment'));
+        $mform->addElement('htmleditor', 'description', get_string('description', 'ishikawa'));
         $mform->setType('description', PARAM_RAW);
         $mform->addHelpButton('description','helpbutton','ishikawa'); 
         $mform->addRule('description', get_string('required'), 'required', null, 'client');
@@ -21,14 +21,14 @@ class mod_ishikawa_mod_form extends moodleform_mod {
         $mform->addElement('modgrade', 'grade', get_string('grade'));
         $mform->setDefault('grade', 100);
 
-        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'assignment'), array('optional'=>true));
+        $mform->addElement('date_time_selector', 'timeavailable', get_string('availabledate', 'ishikawa'), array('optional'=>true));
         $mform->setDefault('timeavailable', time());
-        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'assignment'), array('optional'=>true));
+        $mform->addElement('date_time_selector', 'timedue', get_string('duedate', 'ishikawa'), array('optional'=>true));
         $mform->setDefault('timedue', time()+7*24*3600);
 
         $ynoptions = array( 0 => get_string('no'), 1 => get_string('yes'));
 
-        $mform->addElement('select', 'preventlate', get_string('preventlate', 'assignment'), $ynoptions);
+        $mform->addElement('select', 'preventlate', get_string('preventlate', 'ishikawa'), $ynoptions);
         $mform->setDefault('preventlate', 0);
 
         $mform->addElement('text', 'maxchar', get_string('diagrammaxchar', 'ishikawa'), array('size'=>'5'));
@@ -51,7 +51,6 @@ class mod_ishikawa_mod_form extends moodleform_mod {
             $mform->addRule('maxcolumns', null, 'required', null, 'client');
         }
         $mform->setDefault('maxcolumns', 4);
-
 
         $features = new stdClass;
         $features->groups = true;
