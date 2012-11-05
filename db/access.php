@@ -1,6 +1,8 @@
 <?php
 
-$mod_ishikawa_capabilities = array(
+defined('MOODLE_INTERNAL') || die();
+
+$capabilities = array(
 
     'mod/ishikawa:view' => array(
 
@@ -11,7 +13,7 @@ $mod_ishikawa_capabilities = array(
             'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     ),
 
@@ -32,8 +34,7 @@ $mod_ishikawa_capabilities = array(
         'legacy' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     )
 );
-?>
