@@ -18,10 +18,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 function mod_ishikawa_uninstall() {
-     // global $DB;
- 
-     // $dbman = $DB->get_manager();
- 
+     global $DB;
+     //$dbman = $DB->get_manager();
+     $param = "SELECT modules.id FROM modules WHERE modules.name = 'ishikawa' ";	
+     $DB->delete_records('course_modules', 'module', $param);	
      return true;
 }
 
