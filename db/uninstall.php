@@ -22,7 +22,10 @@ function mod_ishikawa_uninstall() {
      //$dbman = $DB->get_manager();
      $param = "SELECT modules.id FROM modules WHERE modules.name = 'ishikawa' ";	
      $DB->delete_records('course_modules', 'module', $param);	
-     return true;
+					$DB->delete_records('grade_items', 'itemmodule', 'ishikawa');
+					$DB->delete_records('grade_items_history', 'itemmodule', 'ishikawa');
+     
+					return true;
 }
 
 
