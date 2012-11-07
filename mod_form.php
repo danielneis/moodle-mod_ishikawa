@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,16 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
+
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_ishikawa_mod_form extends moodleform_mod {
 
     function definition() {
         global $CFG;
+
         $mform =& $this->_form;
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
@@ -35,8 +37,7 @@ class mod_ishikawa_mod_form extends moodleform_mod {
             $mform->setType('name', PARAM_CLEANHTML);
         }
         $mform->addRule('name', null, 'required', null, 'client');
-	$mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
- 
+        $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $this->add_intro_editor(true, get_string('description', 'ishikawa'));
 
         $mform->addElement('modgrade', 'grade', get_string('grade'));
