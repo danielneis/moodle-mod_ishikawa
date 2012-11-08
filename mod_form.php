@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// this file contains all the functions that aren't needed by core moodle
+// but start becoming required once we're actually inside the ishikawa module.
+/**
+ * @package     mod
+ * @subpackage  ishikawa
+ **/
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page

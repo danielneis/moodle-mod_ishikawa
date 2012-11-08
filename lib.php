@@ -13,7 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+//
+// this file contains all the functions that aren't needed by core moodle
+// but start becoming required once we're actually inside the ishikawa module.
+/**
+ * @package     mod
+ * @subpackage  ishikawa
+ **/
 
 function ishikawa_add_instance($ishi) {
     global $DB;
@@ -39,7 +45,7 @@ function ishikawa_update_instance($ishi) {
 function ishikawa_delete_instance($ishi) {
     global $DB;
 
-    $submissions = $DB->get_record('ishikawa_submissions', 'ishikawaid', $ishi);
+    $submissions = $DB->get_record('ishikawa_submissions', array('ishikawaid' => $ishi));
     foreach ($submissions as $sub) {
         $DB->delete_records('ishikawa_axis_blocks', 'submissionid', $sub['id']);
         $DB->delete_records('ishikawa_causes_blocks', 'submissionid', $sub['id']);
@@ -89,13 +95,13 @@ function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
 function ishikawa_get_submission($userid, $ishikawaid) {
     global $DB;
 
-    return $DB->get_record('ishikawa_submissions', 'userid', $userid, 'ishikawaid', $ishikawaid);
+    return $DB->get_record('ishikawa_submissions', array('userid' => $userid, 'ishikawaid' => $ishikawaid));
 }
 
 function ishikawa_get_grade($userid, $ishikawaid) {
     global $DB;
 
-    return $DB->get_record('ishikawa_grades', 'userid', $userid, 'ishikawaid', $ishikawaid);
+    return $DB->get_record('ishikawa_grades', array('userid' => $userid, 'ishikawaid' => $ishikawaid));
 }
 
 function ishikawa_blocks_from_submission($submission = false, $ishikawa = false) {
@@ -134,9 +140,9 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
         return $blocks;
     }
 
-    $causes_blocks = $DB->get_records("ishikawa_causes_blocks", 'submissionid', $submission->id);
-    $axis_blocks = $DB->get_records("ishikawa_axis_blocks", 'submissionid', $submission->id);
-    $consequences_blocks = $DB->get_records("ishikawa_consequences_blocks", 'submissionid', $submission->id);
+    $causes_blocks = $DB->get_records("ishikawa_causes_blocks", array('submissionid' => $submission->id));
+    $axis_blocks = $DB->get_records("ishikawa_axis_blocks", array('submissionid' => $submission->id));
+    $consequences_blocks = $DB->get_records("ishikawa_consequences_blocks", array('submissionid' => $submission->id));
 
     foreach ($causes_blocks as $block) {
         $blocks['causes'][$block->nivel_y][$block->nivel_x] = $block;
@@ -155,7 +161,7 @@ function ishikawa_blocks_from_submission($submission = false, $ishikawa = false)
 function ishikawa_connections_from_submission($submission) {
     global $DB;
 
-    if ($r = $DB->get_records("ishikawa_connections", "submissionid", $submission->id)) {
+    if ($r = $DB->get_records("ishikawa_connections", array('submissionid' => $submission->id))) {
         return $r;
     } else {
         return array();
@@ -390,7 +396,7 @@ function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
     $graded_by   = $grade->usermodified;
 
 /// We need the teacher info
-    if (!$teacher = $DB->get_record('user', 'id', $graded_by)) {
+    if (!$teacher = $DB->get_record('user', array('id' => $graded_by))) {
         error('Could not find the teacher');
     }
 

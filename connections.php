@@ -13,6 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// this file contains all the functions that aren't needed by core moodle
+// but start becoming required once we're actually inside the ishikawa module.
+/**
+ * @package     mod
+ * @subpackage  ishikawa
+ **/
 
     require_once('../../config.php');
     require_once('lib.php');
@@ -89,7 +96,9 @@
 
         $navigation = build_navigation('', $cm);
         $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-        print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
+        prckage     mod
+ * @subpackage  ishikawa
+ **/int_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 
         $blocks = ishikawa_blocks_from_submission($submission);
         $connections = ishikawa_connections_from_submission($submission);

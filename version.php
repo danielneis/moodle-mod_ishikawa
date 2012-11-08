@@ -13,7 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+//
+// this file contains all the functions that aren't needed by core moodle
+// but start becoming required once we're actually inside the ishikawa module.
+/**
+ * @package     mod
+ * @subpackage  ishikawa
+ **/
 ////////////////////////////////////////////////////////////////////////////////
 //  Code fragment to define the module version etc.
 //  This fragment is called by /admin/index.php

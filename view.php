@@ -13,6 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+//
+// this file contains all the functions that aren't needed by core moodle
+// but start becoming required once we're actually inside the ishikawa module.
+/**
+ * @package     mod
+ * @subpackage  ishikawa
+ **/
 
     require_once("../../config.php");
     require_once("lib.php");
@@ -23,11 +30,11 @@
         error("Course Module ID was incorrect");
     }
 
-    if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
+    if (! $ishikawa = $DB->get_record("ishikawa", array('id' => $cm->instance))) {
         error("ishikawa ID was incorrect");
     }
 
-    if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
+    if (! $course = $DB->get_record("course", array('id' => $ishikawa->course))) {
         error("Course is misconfigured");
     }
 
@@ -51,9 +58,11 @@
     $strishikawa = get_string('modulename', 'ishikawa');
     $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
     $navigation = build_navigation('', $cm);
-    print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
 
-    $img = '<img src="'.$CFG->themewww.'/'.current_theme().'/pix/mod/ishikawa/icon.gif" class="activityicon" alt="" />';
+    //print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
+    //echo $OUTPUT->header();
+
+    $img = '<img src="' . $OUTPUT->pix_url('icon.gif') . '" class="activityicon" alt="" />';
     echo $OUTPUT->heading( $img.'&nbsp;'. $ishikawa->name);
 
     $groupmode = groups_get_activity_groupmode($cm);
@@ -70,7 +79,7 @@
         echo '</div>';
     }
 
-    echo OUTPUT->box(format_text($ishikawa->description), 'generalbox', 'intro');
+//    echo $OUTPUT->box(format_text($ishikawa->description), 'generalbox', 'intro');
 
     ishikawa_view_dates($ishikawa);
 
