@@ -30,11 +30,11 @@ if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     error("Course Module ID was incorrect");
 }
 
-if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) 
+if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))){ 
     error("ishikawa ID was incorrect");
 }
 
-if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
+if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
     error("Course is misconfigured");
 }
 

@@ -249,13 +249,14 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
 }
 
 function ishikawa_view_dates($ishikawa) {
-    global $USER, $CFG;
+    global $USER, $CFG, $OUTPUT;
 
     if (!$ishikawa->timeavailable && !$ishikawa->timedue) {
         return;
     }
-
-    print_simple_box_start('center', '', '', 0, 'generalbox', 'dates');
+    echo $OUTPUT->box_start('center', '', '', 0, 'generalbox', 'dates');
+    echo $OUTPUT->box_end();	
+  //  print_simple_box_start('center', '', '', 0, 'generalbox', 'dates');
     echo '<table>';
     if ($ishikawa->timeavailable) {
         echo '<tr><td class="c0">'.get_string('availabledate','ishikawa').':</td>';

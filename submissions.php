@@ -32,11 +32,11 @@ if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     error("Course Module ID was incorrect");
 }
 
-if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
+if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))) {
     error("ishikawa ID was incorrect");
 }
 
-if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
+if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
     error("Course is misconfigured");
 }
 
@@ -79,12 +79,20 @@ if ($data = data_submitted()) {
     redirect($CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$cm->id. '&group='.$group);
 }
 
-$buttontext = '';
+//$buttontext = '';
 $strishikawa = get_string('modulename', 'ishikawa');
-$buttontext = update_module_button($cm->id, $course->id, $strishikawa);
+//$buttontext = update_module_button($cm->id, $course->id, $strishikawa);
+$PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
+
 $navigation = build_navigation(get_string('submissions', 'ishikawa'), $cm);
 $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttontext,navmenu($course, $cm));
+//print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttontext,navmenu($course, $cm));
+$PAGE->set_url('/mod/ishikawa/submissions.php', array('id'=>$course->id));  
+$PAGE->navbar->add($strishikawa);
+$PAGE->set_title($strishikawa);
+$PAGE->set_heading($course->fullname);      
+echo $OUTPUT->header();
+
 
 echo $OUTPUT->heading(get_string('title', 'ishikawa', $ishikawa->name));
 
@@ -93,7 +101,7 @@ if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being use
 }
 
 $course_ctx = get_context_instance(CONTEXT_COURSE, $course->id);
-$grade_item = $DB->get_record('grade_items', 'itemmodule', 'ishikawa', 'iteminstance', $ishikawa->id, 'courseid', $course->id);
+$grade_item = $DB->get_record('grade_items', array('itemmodule' => 'ishikawa', 'iteminstance' => $ishikawa->id, 'courseid' => $course->id));
 
 $params = array($course_ctx->id, $CFG->gradebookroles, $ishikawa->id, $ishikawa->id, $grade_item->id);
 $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,

@@ -53,18 +53,22 @@
     }
 
     $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
-
-    $buttontext = '';
+    // $buttontext = '';
     $strishikawa = get_string('modulename', 'ishikawa');
-    $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
+    // $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
+    $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
     $navigation = build_navigation('', $cm);
-
-    //print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
-    //echo $OUTPUT->header();
-
+    
+    // print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
+    
+    $PAGE->set_url('/mod/ishikawa/view.php', array('id'=>$course->id));	 
+    $PAGE->navbar->add($strishikawa);
+    $PAGE->set_title($strishikawa);
+    $PAGE->set_heading($course->fullname);	
+    echo $OUTPUT->header();
+    
     $img = '<img src="' . $OUTPUT->pix_url('icon.gif') . '" class="activityicon" alt="" />';
     echo $OUTPUT->heading( $img.'&nbsp;'. $ishikawa->name);
-
     $groupmode = groups_get_activity_groupmode($cm);
     groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/view.php?id='.$id);
     $group = groups_get_activity_group($cm, true);
@@ -79,7 +83,7 @@
         echo '</div>';
     }
 
-//    echo $OUTPUT->box(format_text($ishikawa->description), 'generalbox', 'intro');
+    echo $OUTPUT->box(format_text($ishikawa->intro), 'generalbox', 'intro');
 
     ishikawa_view_dates($ishikawa);
 
