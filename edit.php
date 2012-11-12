@@ -48,10 +48,16 @@ if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities'
 }
 
 $strishikawa = get_string('modulename', 'ishikawa');
+/**                   $navigation = build_navigation('', $cm);
+ Old functions        $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
+**///                 print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 
-$navigation = build_navigation('', $cm);
-$meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
+$PAGE->set_url('/mod/ishikawa/edit.php', array('id' => $course->id));
+$PAGE->navbar->add($strishikawa);
+$PAGE->set_heading($course->fullname);
+$PAGE->set_title($ishikawa->name);
+$PAGE->set_cacheable(true);
+echo $OUTPUT->header();		
 
 $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
 ishikawa_edit_blocks($cm->id, ishikawa_blocks_from_submission($submission, $ishikawa), $submission);

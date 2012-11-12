@@ -35,11 +35,11 @@
         error("Course Module ID was incorrect");
     }
 
-    if (! $ishikawa = $DB->get_record("ishikawa", "id", $cm->instance)) {
+    if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))) {
         error("ishikawa ID was incorrect");
     }
 
-    if (! $course = $DB->get_record("course", "id", $ishikawa->course)) {
+    if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
         error("Course is misconfigured");
     }
 
@@ -94,18 +94,20 @@
 
         $strishikawa = get_string('modulename', 'ishikawa');
 
-        $navigation = build_navigation('', $cm);
-        $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-        prckage     mod
- * @subpackage  ishikawa
- **/int_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
-
-        $blocks = ishikawa_blocks_from_submission($submission);
+        //$navigation = build_navigation('', $cm);
+        //$meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
+        //print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
+	$PAGE->set_url('/mod/ishikawa/connections.php', array('id' => $course->id));
+	$PAGE->set_title($strishikawa);
+	$PAGE->set_heading($course->fullname);
+	$PAGE->navbar->add($strishikawa);
+	echo $OUTPUT->header();
+       
+	$blocks = ishikawa_blocks_from_submission($submission);
         $connections = ishikawa_connections_from_submission($submission);
 
         ishikawa_edit_connections($cm->id, $blocks, $connections, $submission, $src, $src_type, $dst);
 
-        echo $OUTPUT->footer();
     }
 
 ?>
