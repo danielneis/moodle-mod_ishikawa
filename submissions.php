@@ -29,15 +29,15 @@ $id         = required_param('id', PARAM_INT);// Course module ID
 $group      = optional_param('group', 0, PARAM_INT);
 
 if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
-    error("Course Module ID was incorrect");
+    print_error('invalidcoursemodule');
 }
 
 if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))) {
-    error("ishikawa ID was incorrect");
+    print_error('ishikawa ID was incorrect', 'ishikawa');
 }
 
 if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
-    error("Course is misconfigured");
+    print_error('Course is misconfigured', 'ishikawa');
 }
 
 require_login($course->id, false, $cm);
@@ -93,8 +93,8 @@ $PAGE->navbar->add($strishikawa);
 $PAGE->set_title($strishikawa);
 $PAGE->set_heading($course->fullname);      
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('title', 'ishikawa'));
-
+$title = get_string('title', 'ishikawa');
+echo $OUTPUT->heading($title . $ishikawa->name);
 if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used
     groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$id);
 }

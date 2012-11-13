@@ -27,15 +27,15 @@ require_once('lib.php');
 $id = required_param('id', PARAM_INT);  // Course Module ID
 
 if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
-    error("Course Module ID was incorrect");
+    print_error("Course Module ID was incorrect");
 }
 
 if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))){ 
-    error("ishikawa ID was incorrect");
+    print_error("ishikawa ID was incorrect");
 }
 
 if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
-    error("Course is misconfigured");
+    print_error("Course is misconfigured");
 }
 
 require_login($course, true, $cm);
@@ -57,7 +57,7 @@ $PAGE->navbar->add($strishikawa);
 $PAGE->set_heading($course->fullname);
 $PAGE->set_title($ishikawa->name);
 $PAGE->set_cacheable(true);
-echo $OUTPUT->header();		
+//echo $OUTPUT->header();		
 
 $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
 ishikawa_edit_blocks($cm->id, ishikawa_blocks_from_submission($submission, $ishikawa), $submission);

@@ -36,15 +36,15 @@ if (empty($tail_text) || empty($head_text)) {
 }
 
 if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
-    error("Course Module ID was incorrect");
+    print_error("Course Module ID was incorrect");
 }
 
 if (! $ishikawa = $DB->get_record("ishikawa", array('id' => $cm->instance))) {
-    error("ishikawa ID was incorrect");
+    print_error("ishikawa ID was incorrect");
 }
 
 if (! $course = $DB->get_record("course", array('id' => $ishikawa->course))) {
-    error("Course is misconfigured");
+    print_error("Course is misconfigured");
 }
 
 require_login($course, true, $cm);
@@ -130,8 +130,8 @@ if (!$subid) {
                     print_error('cant_insert_cause');
                 }
                 if (empty($b->texto) && $b->texto != '0') {
-                   $DB->delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'causes');
-                   $DB->delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'causes');
+                   $DB->delete_records('ishikawa_connections', array('src_id' => $b->id, 'src_type' => 'causes'));
+                   $DB->delete_records('ishikawa_connections', array('dst_id'=> $b->id, 'src_type' => 'causes'));
                 }
             }
         }
@@ -154,8 +154,8 @@ if (!$subid) {
                     print_error('cant_insert_consequence');
                 }
                 if (empty($b->texto) && $b->texto != '0') {
-                    $DB->delete_records('ishikawa_connections', 'src_id', $b->id, 'src_type', 'consequences');
-                    $DB->delete_records('ishikawa_connections', 'dst_id', $b->id, 'src_type', 'consequences');
+                    $DB->delete_records('ishikawa_connections', array('src_id' => $b->id, 'src_type' => 'consequences'));
+                    $DB->delete_records('ishikawa_connections', array('dst_id' => $b->id, 'src_type' => 'consequences'));
                 }
             }
         }

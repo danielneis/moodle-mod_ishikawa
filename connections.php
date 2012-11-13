@@ -32,15 +32,15 @@
     $delete_connection_id = optional_param('delete_connection', NULL, PARAM_INT);
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
-        error("Course Module ID was incorrect");
+        print_error("Course Module ID was incorrect");
     }
 
     if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))) {
-        error("ishikawa ID was incorrect");
+        print_error("ishikawa ID was incorrect");
     }
 
     if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
-        error("Course is misconfigured");
+        print_error("Course is misconfigured");
     }
 
     if (!$submission = ishikawa_get_submission($USER->id, $ishikawa->id)) {
