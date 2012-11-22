@@ -20,7 +20,6 @@
  * @package     mod
  * @subpackage  ishikawa
  **/
-
     require_once('../../config.php');
     require_once('lib.php');
   

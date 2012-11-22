@@ -45,15 +45,15 @@ function ishikawa_update_instance($ishi) {
 function ishikawa_delete_instance($ishi) {
     global $DB;
 
-    $submissions = $DB->get_record('ishikawa_submissions', array('ishikawaid' => $ishi));
+    $submissions = (array) $DB->get_record('ishikawa_submissions', array('ishikawaid' => $ishi));
     foreach ($submissions as $sub) {
-        $DB->delete_records('ishikawa_axis_blocks', 'submissionid', $sub['id']);
-        $DB->delete_records('ishikawa_causes_blocks', 'submissionid', $sub['id']);
-        $DB->delete_records('ishikawa_connections', 'submissionid', $sub['id']);
-        $DB->delete_records('ishikawa_consequences_blocks', 'submissionid', $sub['id']);
-        $DB->delete_records('ishikawa_submissions', 'id', $sub['id']);
+        $DB->delete_records('ishikawa_axis_blocks', array('submissionid' => $sub['id']));
+        $DB->delete_records('ishikawa_causes_blocks', array('submissionid' => $sub['id']));
+        $DB->delete_records('ishikawa_connections', array('submissionid' => $sub['id']));
+        $DB->delete_records('ishikawa_consequences_blocks', array('submissionid' => $sub['id']));
+        $DB->delete_records('ishikawa_submissions', array('id' => $sub['id']));
     }
-    $DB->delete_records('ishikawa', 'id', $ishi);
+    $DB->delete_records('ishikawa', array('id' => $ishi));
 }
 
 function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
@@ -182,57 +182,81 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
              '<h2>', get_string('tail', 'ishikawa'), '</h2>',
              '<textarea name="tail_text" id="ishikawa_tail" cols="25" rows="15">',$blocks['tail_text'],'</textarea>',
            '</td>',
-         '<td>',
-         '<table id="ishikawa_center">',
+           '<td>',
+		 '<table id="ishikawa_center">',
 
-    '<tr>', '<td colspan="4"><h3>',get_string('causes', 'ishikawa'), '</h3></td>', '</tr>';
-    foreach ($blocks['causes'] as $nivel_y => $causes) {
-        echo '<tr>';
-        foreach ($causes as $nivel_x => $b) {
-            $c_name = "causes[{$nivel_y}][{$nivel_x}]";
-            echo '<td>';
-            if (isset($b->id) and $b->id >0) {
-                 echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'">';
-            }
-            echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
-                 $b->texto,
-                 '</textarea>',
-                 '</td>';
-        }
-        echo '</tr>';
-    }
+                   '<tr>',
+                     '<td><h3>',get_string('causes', 'ishikawa'), '</h3></td>',
+                   '</tr>',
+                   '<tr>',
+                     '<td>',
+                       '<table id="ishikawa_causes">';
+                         foreach ($blocks['causes'] as $nivel_y => $causes) {
+                           echo '<tr>';
+                             foreach ($causes as $nivel_x => $b) {
+                               $c_name = "causes[{$nivel_y}][{$nivel_x}]";
+                               echo '<td>';
+                               if (isset($b->id) and $b->id >0) {
+                                   echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'" />';
+                               }
+                               echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
+                                   $b->texto,
+                                   '</textarea>',
+                                   '</td>';
+                           }
+                           echo '</tr>';
+                         }
+    echo            '</table>',
+                    '</td>',
+                    '</tr>',
 
-    echo '<tr id="axis">', '<td colspan="4"><h3>',get_string('axis', 'ishikawa'), '</h3></td>', '</tr>',
-         '<tr>';
-    foreach ($blocks['axis'] as $nivel_x => $b) {
-        $a_name = "axis[{$nivel_x}]";
-        if (isset($b->id) and $b->id >0) {
-             echo '<input type="hidden" name="',$a_name,'[id]" value="',$b->id,'">';
-        }
-        echo '<td><textarea name="',$a_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
-             $b->texto,
-             '</textarea></td>';
-    }
-    echo '</tr>';
+                 '<tr id="axis">',
+                   '<td><h3>',get_string('axis', 'ishikawa'), '</h3></td>',
+                 '</tr>',
+                 '<tr>',
+                 '<td>',
+                 '<table id="ishikawa_axis">',
+                 '<tr>';
+                    foreach ($blocks['axis'] as $nivel_x => $b) {
+                        $a_name = "axis[{$nivel_x}]";
+                        if (isset($b->id) and $b->id >0) {
+                             echo '<input type="hidden" name="',$a_name,'[id]" value="',$b->id,'" />';
+                        }
+                        echo '<td>',
+                               '<textarea name="',$a_name,'[texto]" rows="',$rows,'" cols="',$cols,'">', $b->texto, '</textarea>',
+                             '</td>';
+                    }
+    echo          '</tr>',
+                  '</table>',
+                  '</td>',
+                  '</tr>',
 
-    echo '<tr><td colspan="4"><h3>',get_string('consequences', 'ishikawa'),'</h3></td></tr>';
-    foreach ($blocks['consequences'] as $nivel_y => $consequences) {
-        echo '<tr>';
-        foreach ($consequences as $nivel_x => $b) {
-            $c_name = "consequences[{$nivel_y}][{$nivel_x}]";
-            echo '<td>';
-            if (isset($b->id) and $b->id >0) {
-                 echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'">';
-            }
-            echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
-                 $b->texto,
-                 '</textarea>',
-                 '</td>';
-        }
-        echo '</tr>';
-    }
-    echo '</table>',
-         '</td>',
+                  '<tr>',
+                    '<td><h3>',get_string('consequences', 'ishikawa'),'</h3></td>',
+                  '</tr>',
+                  '<tr>',
+                  '<td>',
+                  '<table id="ishikawa_consequences">';
+                    foreach ($blocks['consequences'] as $nivel_y => $consequences) {
+                        echo '<tr>';
+                        foreach ($consequences as $nivel_x => $b) {
+                            $c_name = "consequences[{$nivel_y}][{$nivel_x}]";
+                            echo '<td>';
+                            if (isset($b->id) and $b->id >0) {
+                                 echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'" />';
+                            }
+                            echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
+                                 $b->texto,
+                                 '</textarea>',
+                                 '</td>';
+                        }
+                        echo '</tr>';
+                    }
+    echo          '</table>',
+                  '</td>',
+                '</tr>',
+                '</table>',
+                '</td>',
          '<td class="extremos">',
              '<h2>', get_string('head', 'ishikawa'), '</h2>',
              '<textarea name="head_text" id="ishikawa_head" cols="25" rows="15">',$blocks['head_text'],'</textarea>',
@@ -295,7 +319,10 @@ function ishikawa_get_link_to_block($block, $cmid,$src, $src_type, $dst, $dst_ty
 function ishikawa_get_link_to_delete_connection($cmid, $connection_id) {
     global $CFG;
 
+    if ($connection_id) {
     return $CFG->wwwroot.'/mod/ishikawa/connections.php?id=' . $cmid . '&delete_connection=' . $connection_id;
+    } 
+    return '';
 }
 
 function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $src, $src_type, $dst) {
@@ -311,10 +338,10 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
         echo '<h3>', get_string('select_src', 'ishikawa'), '</h3>',
              '<p><a href="view.php?id=',$cmid,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
              '<p><a href="edit.php?id=',$cmid,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
-             '<p><a href="image.php?id=',$cmid,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a></p>';
+             '<p><a href="image.php?id=',$cmid,'&amp;userid=',$USER->id,'&amp;download=1">',get_string('save_image', 'ishikawa'), '</a></p>';
     }
 
-    echo '<img src="image.php?id=',$cmid,'&userid=',$USER->id,'&src=',$src,'&src_type=',$src_type,'&editing=1" usemap="#ishikawamap" />';
+    echo '<img src="image.php?id=',$cmid,'&amp;userid=',$USER->id,'&amp;src=',$src,'&amp;src_type=',$src_type,'&amp;editing=1" usemap="#ishikawamap" />';
 
     $ishikawa = new Ishikawa($blocks, $connections);
     $rectangles = $ishikawa->retangulos();
@@ -362,7 +389,7 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
 function ishikawa_delete_connection($id) {
     global $DB;
 
-    return $DB->delete_records('ishikawa_connections', 'id', $id);
+    return $DB->delete_records('ishikawa_connections', array('id' => $id));
 }
 
 function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {

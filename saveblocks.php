@@ -29,7 +29,6 @@ $subid = optional_param('subid', 0, PARAM_INT);
 
 $tail_text = required_param('tail_text', PARAM_ALPHA);
 $head_text = required_param('head_text', PARAM_ALPHA);
-
 if (empty($tail_text) || empty($head_text)) {
     $link = $CFG->wwwroot.'/mod/ishikawa/edit.php?id='.$id;
     print_error('required_tail_head', 'ishikawa', $link);
@@ -63,7 +62,7 @@ if (!$subid) {
         $submission->head_text = $data->head_text;
         $submission->timecreated = time();
         $submission->timemodified = $submission->timecreated;
-
+        
         if (!$submissionid = $DB->insert_record('ishikawa_submissions', $submission)) {
             print_error('cant_insert_submit_record');
         }

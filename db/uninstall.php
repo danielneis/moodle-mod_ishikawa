@@ -27,9 +27,9 @@ function mod_ishikawa_uninstall() {
      global $DB;
      //$dbman = $DB->get_manager();
      $param = "SELECT modules.id FROM modules WHERE modules.name = 'ishikawa' ";	
-     $DB->delete_records('course_modules', 'module', $param);	
-					$DB->delete_records('grade_items', 'itemmodule', 'ishikawa');
-					$DB->delete_records('grade_items_history', 'itemmodule', 'ishikawa');
+     $DB->delete_records('course_modules', array('module' => $param));	
+					$DB->delete_records('grade_items', array('itemmodule' => 'ishikawa'));
+					$DB->delete_records('grade_items_history', array('itemmodule' => 'ishikawa'));
      
 					return true;
 }

@@ -37,7 +37,7 @@ $string['helpbutton'] = 'o editor html';
 $string['helpbutton_help'] = 'Ajuda com o editor html';
 $string['modulename'] = 'Espinha de Peixe';
 $string['modulenameplural'] = 'Espinhas de Peixe';
-$string['title'] = 'Espinha de peixe: $a';
+$string['title'] = 'Espinha de peixe:';
 $string['first_step'] = 'Primeiro passo: definir campos da espinha de peixe';
 $string['save_image'] = 'Salvar imagem';
 $string['second_step'] = 'Segundo passo: definir as conexões entre os campos';
@@ -55,5 +55,4 @@ $string['never_sent'] = 'Nunca enviado';
 $string['submissions'] = 'Espinhas de peixe enviadas';
 $string['feedbackfromteacher'] = 'Feedback do professor';
 $string['required_tail_head'] = $string['tail'] . ' e ' . $string['head'] . ' são campos obrigatórios';
-
 ?>

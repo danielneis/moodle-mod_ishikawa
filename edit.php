@@ -20,7 +20,6 @@
  * @package     mod
  * @subpackage  ishikawa
  **/
-
 require_once('../../config.php');
 require_once('lib.php');
 
@@ -47,17 +46,15 @@ if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities'
     notice(get_string("activityiscurrentlyhidden"));
 }
 
-$strishikawa = get_string('modulename', 'ishikawa');
 /**                   $navigation = build_navigation('', $cm);
  Old functions        $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
 **///                 print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
-
+$strishikawa = get_string('modulename', 'ishikawa');
 $PAGE->set_url('/mod/ishikawa/edit.php', array('id' => $course->id));
 $PAGE->navbar->add($strishikawa);
-$PAGE->set_heading($course->fullname);
 $PAGE->set_title($ishikawa->name);
-$PAGE->set_cacheable(true);
-//echo $OUTPUT->header();		
+$PAGE->set_heading($course->fullname);
+echo $OUTPUT->header();		
 
 $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
 ishikawa_edit_blocks($cm->id, ishikawa_blocks_from_submission($submission, $ishikawa), $submission);

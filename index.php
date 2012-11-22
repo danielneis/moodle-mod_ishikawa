@@ -45,7 +45,7 @@
     $navigation = build_navigation($navlinks);
     print_header_simple($strishikawas, "", $navigation, "", "", true, '',navmenu($course));
 
-    $ishikawas = $DB->get_records('ishikawa', 'course', $course->id);
+    $ishikawas = $DB->get_records('ishikawa', array('course' => $course->id));
 
     echo '<table class="generaltable">',
          '<tr>',
@@ -55,13 +55,13 @@
            '<th>Enviada</th>',
          '</tr>';
 
-    $ishimod = $DB->get_record('modules', 'name', 'ishikawa');
+    $ishimod = $DB->get_record('modules', array('name' => 'ishikawa'));
     foreach ($ishikawas as $ishi) {
         if(!$sub = ishikawa_get_submission($USER->id, $ishi->id)) {
             $sub->timemodified = 0;
         }
 
-        $cm = $DB->get_record('course_modules', 'module', $ishimod->id, 'instance', $ishi->id);
+        $cm = $DB->get_record('course_modules', array('module'=> $ishimod->id, 'instance' => $ishi->id));
         echo '<tr>',
               '<td><a href="', $CFG->wwwroot, '/mod/ishikawa/view.php?id=',$cm->id, '">', $ishi->name,'</td>',
               '<td>', $ishi->description,'</td>',
