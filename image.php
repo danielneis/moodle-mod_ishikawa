@@ -59,7 +59,7 @@ $blocks = ishikawa_blocks_from_submission($submission);
 
 $connections = ishikawa_connections_from_submission($submission);
 
-$footer = fullname($DB->get_record('user', 'id', $userid));
+$footer = fullname($DB->get_record('user', array('id' => $userid)));
 
 $params = array($userid, $course->id);
 $sql = "SELECT g.id, g.name

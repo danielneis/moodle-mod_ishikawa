@@ -175,94 +175,92 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
 
     echo '<h2>',get_string('first_step', 'ishikawa'), '</h2>',
          '<form action="saveblocks.php" method="post">',
-         '<p><input type="hidden" name="cmid" value="',$cmid,'" /></p>',
-         '<table class="generaltable">',
-         '<tr>',
-           '<td class="extremos">',
-             '<h2>', get_string('tail', 'ishikawa'), '</h2>',
-             '<textarea name="tail_text" id="ishikawa_tail" cols="25" rows="15">',$blocks['tail_text'],'</textarea>',
-           '</td>',
-           '<td>',
-		 '<table id="ishikawa_center">',
-
-                   '<tr>',
-                     '<td><h3>',get_string('causes', 'ishikawa'), '</h3></td>',
-                   '</tr>',
-                   '<tr>',
-                     '<td>',
-                       '<table id="ishikawa_causes">';
-                         foreach ($blocks['causes'] as $nivel_y => $causes) {
-                           echo '<tr>';
-                             foreach ($causes as $nivel_x => $b) {
-                               $c_name = "causes[{$nivel_y}][{$nivel_x}]";
-                               echo '<td>';
-                               if (isset($b->id) and $b->id >0) {
-                                   echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'" />';
-                               }
-                               echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
-                                   $b->texto,
-                                   '</textarea>',
-                                   '</td>';
-                           }
-                           echo '</tr>';
-                         }
-    echo            '</table>',
-                    '</td>',
-                    '</tr>',
-
-                 '<tr id="axis">',
-                   '<td><h3>',get_string('axis', 'ishikawa'), '</h3></td>',
-                 '</tr>',
+             '<p><input type="hidden" name="cmid" value="',$cmid,'" /></p>',
+             '<table class="generaltable">',
                  '<tr>',
-                 '<td>',
-                 '<table id="ishikawa_axis">',
-                 '<tr>';
-                    foreach ($blocks['axis'] as $nivel_x => $b) {
-                        $a_name = "axis[{$nivel_x}]";
-                        if (isset($b->id) and $b->id >0) {
-                             echo '<input type="hidden" name="',$a_name,'[id]" value="',$b->id,'" />';
-                        }
-                        echo '<td>',
-                               '<textarea name="',$a_name,'[texto]" rows="',$rows,'" cols="',$cols,'">', $b->texto, '</textarea>',
-                             '</td>';
-                    }
-    echo          '</tr>',
-                  '</table>',
-                  '</td>',
-                  '</tr>',
+                     '<td class="extremos">',
+                     '<h2>', get_string('tail', 'ishikawa'), '</h2>',
+                     '<textarea name="tail_text" id="ishikawa_tail" cols="25" rows="15">',$blocks['tail_text'],'</textarea>',
+                     '</td>',
+                     '<td>',
+		         '<table id="ishikawa_center">',
+                             '<tr>',
+                                 '<td><h3>',get_string('causes', 'ishikawa'), '</h3></td>',
+                             '</tr>',
+                             '<tr>',
+                                 '<td>',
+                                     '<table id="ishikawa_causes">';
+                                         foreach ($blocks['causes'] as $nivel_y => $causes) {
+                                             echo '<tr>';
+                                             foreach ($causes as $nivel_x => $b) {
+                                                $c_name = "causes[{$nivel_y}][{$nivel_x}]";
+                                                echo '<td>';
+                                                if (isset($b->id) and $b->id >0) {
+                                                    echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'" />';
+                                                }
+                                                echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
+                                                $b->texto,
+                                                '</textarea>',
+                                                '</td>';
+                                             }
+                                             echo '</tr>';
+                                         }
+   echo                              '</table>',
+                                 '</td>',
+                             '</tr>',
 
-                  '<tr>',
-                    '<td><h3>',get_string('consequences', 'ishikawa'),'</h3></td>',
-                  '</tr>',
-                  '<tr>',
-                  '<td>',
-                  '<table id="ishikawa_consequences">';
-                    foreach ($blocks['consequences'] as $nivel_y => $consequences) {
-                        echo '<tr>';
-                        foreach ($consequences as $nivel_x => $b) {
-                            $c_name = "consequences[{$nivel_y}][{$nivel_x}]";
-                            echo '<td>';
-                            if (isset($b->id) and $b->id >0) {
-                                 echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'" />';
-                            }
-                            echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
-                                 $b->texto,
-                                 '</textarea>',
-                                 '</td>';
-                        }
-                        echo '</tr>';
-                    }
-    echo          '</table>',
-                  '</td>',
-                '</tr>',
-                '</table>',
-                '</td>',
-         '<td class="extremos">',
-             '<h2>', get_string('head', 'ishikawa'), '</h2>',
-             '<textarea name="head_text" id="ishikawa_head" cols="25" rows="15">',$blocks['head_text'],'</textarea>',
-         '</td>',
-         '</tr>',
-         '</table>';
+                             '<tr id="axis">',
+                                 '<td><h3>',get_string('axis', 'ishikawa'), '</h3></td>',
+                             '</tr>',
+                             '<tr>',
+                                 '<td>',
+                                     '<table id="ishikawa_axis">',
+                                         '<tr>';
+                                         foreach ($blocks['axis'] as $nivel_x => $b) {
+                                             $a_name = "axis[{$nivel_x}]";
+                                             if (isset($b->id) and $b->id >0) {
+                                                 echo '<input type="hidden" name="',$a_name,'[id]" value="',$b->id,'" />';
+                                             }
+                                             echo '<td>',
+                                             '<textarea name="',$a_name,'[texto]" rows="',$rows,'" cols="',$cols,'">', $b->texto, '</textarea>',
+                                             '</td>';
+                                         }
+   echo                                  '</tr>',
+                                     '</table>',
+                                 '</td>',
+                             '</tr>',
+                             '<tr>',
+                                 '<td><h3>',get_string('consequences', 'ishikawa'),'</h3></td>',
+                             '</tr>',
+                             '<tr>',
+                                 '<td>',
+                                     '<table id="ishikawa_consequences">';
+                                     foreach ($blocks['consequences'] as $nivel_y => $consequences) {
+                                        echo '<tr>';
+                                        foreach ($consequences as $nivel_x => $b) {
+                                            $c_name = "consequences[{$nivel_y}][{$nivel_x}]";
+                                            echo '<td>';
+                                              if (isset($b->id) and $b->id >0) {
+                                              echo '<input type="hidden" name="',$c_name,'[id]" value="',$b->id,'" />';
+                                              }
+                                              echo '<textarea name="',$c_name,'[texto]" rows="',$rows,'" cols="',$cols,'">',
+                                              $b->texto,
+                                              '</textarea>',
+                                            '</td>';
+                                        }
+                                        echo '</tr>';
+                                     }
+    echo                             '</table>',
+                                 '</td>',
+                             '</tr>',
+                         '</table>',
+                     '</td>',
+                     '<td class="extremos">',
+                     '<h2>', get_string('head', 'ishikawa'), '</h2>',
+                     '<textarea name="head_text" id="ishikawa_head" cols="25" rows="15">',$blocks['head_text'],'</textarea>',
+                     '</td>',
+                 '</tr>',
+             '</table>';
 
     if ($submission) {
         echo "<p><input type='hidden' name='subid' value='{$submission->id}' /></p>";
@@ -430,42 +428,39 @@ function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
 
 /// Print the feedback
     echo $OUTPUT->heading(get_string('feedbackfromteacher', 'ishikawa', $course->teacher)); // TODO: fix teacher string
-
     echo '<table cellspacing="0" class="feedback">';
+        echo '<tr>';
+            echo '<td class="left picture">';
+            if ($teacher) {
+                $userpic = new user_picture();
+	        $userpic->user = $teacher;
+	        $userpic->courseid = $course->id;  
+	        $userpic->image->src = $teacher->picture;
+	        echo $OUTPUT->user_picture($userpic);
+            }
+            echo '</td>';
+            echo '<td class="topic">';
+                echo '<div class="from">';
+                if ($teacher) {
+                    echo '<div class="fullname">'.fullname($teacher).'</div>';
+                }
+                echo '<div class="time">'.userdate($graded_date).'</div>';
+                echo '</div>';
+            echo '</td>';
+        echo '</tr>';
 
-    echo '<tr>';
-    echo '<td class="left picture">';
-    if ($teacher) {
-        $userpic = new user_picture();
-	$userpic->user = $teacher;
-	$userpic->courseid = $course->id;  
-	$userpic->image->src = $teacher->picture;
-	echo $OUTPUT->user_picture($userpic);
-    }
-    echo '</td>';
-    echo '<td class="topic">';
-    echo '<div class="from">';
-    if ($teacher) {
-        echo '<div class="fullname">'.fullname($teacher).'</div>';
-    }
-    echo '<div class="time">'.userdate($graded_date).'</div>';
-    echo '</div>';
-    echo '</td>';
-    echo '</tr>';
-
-    echo '<tr>';
-    echo '<td class="left side">&nbsp;</td>';
-    echo '<td class="content">';
-    echo '<div class="grade">';
-    echo get_string("grade").': '.$grade->str_long_grade;
-    echo '</div>';
-    echo '<div class="clearer"></div>';
-
-    echo '<div class="comment">';
-    echo $grade->str_feedback;
-    echo '</div>';
-    echo '</tr>';
-
+        echo '<tr>';
+            echo '<td class="left side">&nbsp;</td>';
+            echo '<td class="content">';
+                echo '<div class="grade">';
+                    echo get_string("grade").': '.$grade->str_long_grade;
+                echo '</div>';
+                echo '<div class="clearer"></div>';
+                echo '<div class="comment">';
+                    echo $grade->str_feedback;
+                echo '</div>';
+            echo '</td>';
+        echo '</tr>';
     echo '</table>';
 }
 

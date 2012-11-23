@@ -138,51 +138,49 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
     echo $OUTPUT->heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
 } else {
 
-    $act = "submissions.php?id={$cm->id}&group={$group}";
+   $act = "submissions.php?id={$cm->id}&group={$group}";
 
    echo '<form method="post" action="',$act,'" >',
-        '<table id="ishikawa_submissions" class="generaltable">',
-         '<tr>',
-          '<th></th>',
-          '<th>',get_string('fullname'),'</th>',
-          '<th>',get_string('submission', 'ishikawa'),'</th>',
-          '<th>',get_string('grade'),'</th>',
-          '<th>',get_string('feedback'),'</th>',
-         '</tr>';
+            '<table id="ishikawa_submissions" class="generaltable">',
+                '<tr>',
+                    '<th></th>',
+                    '<th>',get_string('fullname'),'</th>',
+                    '<th>',get_string('submission', 'ishikawa'),'</th>',
+                    '<th>',get_string('grade'),'</th>',
+                    '<th>',get_string('feedback'),'</th>',
+                '</tr>';
 
-  $tabindex = 0;
-  foreach ($students as $s) {
-      $userpic = new moodle_user_picture();
-      $userpic->user = $s;
-      $userpic->courseid = $course->id;
-      echo '<tr>',
-           '<td>', $OUTPUT->user_picture($userpic),'</td>',
-           '<td>', fullname($s),'</td>',
-           '<td>';
-      if ($s->timecreated > 0) {
-          echo userdate($s->timecreated), '&nbsp;',
-               '<a href="image.php?id=',$cm->id,'&userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
-      } else {
-          echo get_string('never_sent', 'ishikawa');
-      }
-      echo '</td>',
-           '<td>';
-      if ($s->locked or $s->overridden) {
-          echo $s->finalgrade;
-      } else {
-	  // echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade);
-          echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
-                              get_string('nograde'),'',-1,true,false,$tabindex++);
-      }
-      echo '</td>',
-          '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
-         '</tr>';
-  }
-  echo '</table>',
-       '<input type="submit" value="', get_string('confirm'), '" />',
+                $tabindex = 0;
+                foreach ($students as $s) {
+                $userpic = new moodle_user_picture();
+                $userpic->user = $s;
+                $userpic->courseid = $course->id;
+                echo '<tr>',
+                   '<td>', $OUTPUT->user_picture($userpic),'</td>',
+                   '<td>', fullname($s),'</td>',
+                   '<td>';
+                        if ($s->timecreated > 0) {
+                            echo userdate($s->timecreated), '&nbsp;',
+                            '<a href="image.php?id=',$cm->id,'&userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
+                        } else {
+                            echo get_string('never_sent', 'ishikawa');
+                        }
+                   echo '</td>',
+                   '<td>';
+                        if ($s->locked or $s->overridden) {
+                            echo $s->finalgrade;
+                        } else {
+	                    // echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade);
+                            echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
+                            get_string('nograde'),'',-1,true,false,$tabindex++);
+                        }
+                   echo '</td>',
+                   '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
+                '</tr>';
+                }
+            echo '</table>',
+            '<input type="submit" value="', get_string('confirm'), '" />',
        '</form>';
 }
-
 echo $OUTPUT->footer();
-
 ?>

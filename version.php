@@ -27,5 +27,4 @@
 
 $module->version  = 2012102400;
 $module->requires = 2010000000;  // Requires this Moodle version
-
 ?>

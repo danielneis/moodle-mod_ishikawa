@@ -21,55 +21,55 @@
  * @subpackage  ishikawa
  **/
 
-    require_once("../../config.php");
-    require_once("lib.php");
+require_once("../../config.php");
+require_once("lib.php");
 
 
-    $id = required_param('id', PARAM_INT);   // course
+$id = required_param('id', PARAM_INT);   // course
 
-    if (! $course = $DB->get_record("course", array("id" => $id))) {
-        error("Course ID is incorrect");
-    }
+if (! $course = $DB->get_record("course", array("id" => $id))) {
+    error("Course ID is incorrect");
+}
 
-    require_course_login($course);
-    $context = get_context_instance(CONTEXT_COURSE, $course->id);
-    require_capability('mod/ishikawa:view', $context);
+require_course_login($course);
+$context = get_context_instance(CONTEXT_COURSE, $course->id);
+require_capability('mod/ishikawa:view', $context);
 
-    add_to_log($course->id, "ishikawa", "view all", "index.php?id=$course->id", "");
+add_to_log($course->id, "ishikawa", "view all", "index.php?id=$course->id", "");
 
-    $strishikawa = get_string('modulename', 'ishikawa');
-    $strishikawas = get_string('modulenameplural', 'ishikawa');
+$strishikawa = get_string('modulename', 'ishikawa');
+$strishikawas = get_string('modulenameplural', 'ishikawa');
 
-    $navlinks = array();
-    $navlinks[] = array('name' => $strishikawas, 'link' => '', 'type' => 'activity');
-    $navigation = build_navigation($navlinks);
-    print_header_simple($strishikawas, "", $navigation, "", "", true, '',navmenu($course));
+$navlinks = array();
+$navlinks[] = array('name' => $strishikawas, 'link' => '', 'type' => 'activity');
+$navigation = build_navigation($navlinks);
+print_header_simple($strishikawas, "", $navigation, "", "", true, '',navmenu($course));
 
-    $ishikawas = $DB->get_records('ishikawa', array('course' => $course->id));
+$ishikawas = $DB->get_records('ishikawa', array('course' => $course->id));
 
-    echo '<table class="generaltable">',
-         '<tr>',
+echo '<table class="generaltable">',
+       '<tr>',
            '<th>Diagrama</th>',
            '<th>Descrição</th>',
            '<th>Data de entrega</th>',
            '<th>Enviada</th>',
-         '</tr>';
+       '</tr>';
 
-    $ishimod = $DB->get_record('modules', array('name' => 'ishikawa'));
-    foreach ($ishikawas as $ishi) {
-        if(!$sub = ishikawa_get_submission($USER->id, $ishi->id)) {
-            $sub->timemodified = 0;
-        }
-
-        $cm = $DB->get_record('course_modules', array('module'=> $ishimod->id, 'instance' => $ishi->id));
-        echo '<tr>',
-              '<td><a href="', $CFG->wwwroot, '/mod/ishikawa/view.php?id=',$cm->id, '">', $ishi->name,'</td>',
-              '<td>', $ishi->description,'</td>',
-              '<td>',userdate($ishi->timedue),'</td>',
-              '<td>',userdate($sub->timemodified),'</td>',
-             '</tr>';
+$ishimod = $DB->get_record('modules', array('name' => 'ishikawa'));
+foreach ($ishikawas as $ishi) {
+    if(!$sub = ishikawa_get_submission($USER->id, $ishi->id)) {
+        $sub->timemodified = 0;
     }
-    echo '</table>';
 
-    echo $OUTPUT->footer();
+    $cm = $DB->get_record('course_modules', array('module'=> $ishimod->id, 'instance' => $ishi->id));
+    echo '<tr>',
+            '<td><a href="', $CFG->wwwroot, '/mod/ishikawa/view.php?id=',$cm->id, '">', $ishi->name,'</td>',
+            '<td>', $ishi->description,'</td>',
+            '<td>',userdate($ishi->timedue),'</td>',
+            '<td>',userdate($sub->timemodified),'</td>',
+         '</tr>';
+}
+echo '</table>';
+
+echo $OUTPUT->footer();
 ?>

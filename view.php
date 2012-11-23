@@ -23,7 +23,6 @@
 
     require_once("../../config.php");
     require_once("lib.php");
-
     $id = required_param('id', PARAM_INT);  // Course Module ID
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
@@ -58,13 +57,14 @@
     // $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
     $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
     $navigation = build_navigation('', $cm);
-    
+
     // print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
     
     $PAGE->set_url('/mod/ishikawa/view.php', array('id'=>$course->id));	 
     $PAGE->navbar->add($strishikawa);
     $PAGE->set_title($strishikawa);
     $PAGE->set_heading($course->fullname);	
+    
     echo $OUTPUT->header();
     
     $img = '<img src="' . $OUTPUT->pix_url('icon.gif') . '" class="activityicon" alt="" />';
@@ -97,8 +97,8 @@
                  '<p><a href="edit.php?id=',$cm->id,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
                  '<p><a href="connections.php?id=',$cm->id,'" >',get_string('edit_connections', 'ishikawa'),'</a></p>';
         }
-        echo '<p><a href="image.php?id=',$cm->id,'&userid=',$USER->id,'&download=1">',get_string('save_image', 'ishikawa'), '</a></p>',
-             '<p><img src="image.php?id=',$cm->id,'&userid=',$USER->id,'" /></p>';
+        echo '<p><a href="image.php?id=',$cm->id,'&amp;userid=',$USER->id,'&amp;download=1">',get_string('save_image', 'ishikawa'), '</a></p>',
+             '<p><img src="image.php?id=',$cm->id,'&amp;userid=',$USER->id,'" /></p>';
 
     } else {
         if (ishikawa_isopen($ishikawa)) {

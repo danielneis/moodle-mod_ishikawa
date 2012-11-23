@@ -72,7 +72,7 @@ class Seta {
             }
         }
 
-        $seta = new Imagick('seta.png');
+        $seta = new Imagick('pix/seta.png');
         $seta->rotateImage(new ImagickPixel('none'), $angulo);
         $this->im->compositeImage($seta, Imagick::COMPOSITE_DEFAULT, $this->xf - 5, $this->yf - 5);
     }
