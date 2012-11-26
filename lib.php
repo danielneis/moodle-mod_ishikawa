@@ -291,7 +291,7 @@ function ishikawa_view_dates($ishikawa) {
     $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
     if ($submission) {
         echo '<tr><td class="c0">'.get_string('lastedited').':</td>';
-        echo '    <td class="c1">'.userdate($submission->timemodified);
+        echo '    <td class="c1">'.userdate($submission->timemodified).'</td></tr>';
     }
     echo '</table>';
     print_simple_box_end();

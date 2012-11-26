@@ -161,7 +161,7 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
                    '<td>';
                         if ($s->timecreated > 0) {
                             echo userdate($s->timecreated), '&nbsp;',
-                            '<a href="image.php?id=',$cm->id,'&userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
+                            '<a href="image.php?id=',$cm->id,'&amp;userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
                         } else {
                             echo get_string('never_sent', 'ishikawa');
                         }

@@ -41,6 +41,7 @@
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     require_capability('mod/ishikawa:view', $context);
+    $PAGE->set_pagelayout('incourse');
 
     add_to_log($course->id, "ishikawa", "view", "view.php?id={$cm->id}", $ishikawa->id, $cm->id);
 
@@ -52,19 +53,16 @@
     }
 
     $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
-    // $buttontext = '';
     $strishikawa = get_string('modulename', 'ishikawa');
+    // $buttontext = '';
     // $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
-    $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
-    $navigation = build_navigation('', $cm);
-
     // print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
-    
+    $navigation = build_navigation('', $cm);
     $PAGE->set_url('/mod/ishikawa/view.php', array('id'=>$course->id));	 
     $PAGE->navbar->add($strishikawa);
     $PAGE->set_title($strishikawa);
     $PAGE->set_heading($course->fullname);	
-    
+    $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
     echo $OUTPUT->header();
     
     $img = '<img src="' . $OUTPUT->pix_url('icon.gif') . '" class="activityicon" alt="" />';
@@ -76,9 +74,9 @@
     if (has_capability('mod/ishikawa:grade', $context)) {
         echo '<div class="reportlink">';
         if ($count = ishikawa_count_submissions($ishikawa->id,$context, $group)) {
-            echo '<a href="submissions.php?id=',$cm->id,'">',get_string('viewsubmissions', 'assignment', $count),'</a>';
+            echo '<a href="submissions.php?id=',$cm->id,'">',get_string('viewsubmissions', 'ishikawa', $count),'</a>';
         } else {
-            echo '<a href="submissions.php?id=',$cm->id,'">',get_string('noattempts', 'assignment'),'</a>';
+            echo '<a href="submissions.php?id=',$cm->id,'">',get_string('noattempts', 'ishikawa'),'</a>';
         }
         echo '</div>';
     }
