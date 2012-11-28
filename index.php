@@ -27,23 +27,30 @@ require_once("lib.php");
 
 $id = required_param('id', PARAM_INT);   // course
 
+$PAGE->set_url('/mod/ishikawa/index.php', array('id'=>$id));
+
 if (! $course = $DB->get_record("course", array("id" => $id))) {
-    error("Course ID is incorrect");
+    print_error("invalidcourseid");
 }
 
 require_course_login($course);
+$PAGE->set_pagelayout('incourse');
+
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('mod/ishikawa:view', $context);
-
 add_to_log($course->id, "ishikawa", "view all", "index.php?id=$course->id", "");
 
 $strishikawa = get_string('modulename', 'ishikawa');
 $strishikawas = get_string('modulenameplural', 'ishikawa');
-
-$navlinks = array();
+$PAGE->set_title($strishikawas);
+$PAGE->set_heading($course->fullname);
+$PAGE->navbar->add($strishikawas);
+/*$navlinks = array();
 $navlinks[] = array('name' => $strishikawas, 'link' => '', 'type' => 'activity');
 $navigation = build_navigation($navlinks);
 print_header_simple($strishikawas, "", $navigation, "", "", true, '',navmenu($course));
+*/
+echo $OUTPUT->header();
 
 $ishikawas = $DB->get_records('ishikawa', array('course' => $course->id));
 

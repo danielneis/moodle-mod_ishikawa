@@ -338,7 +338,6 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
              '<p><a href="edit.php?id=',$cmid,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
              '<p><a href="image.php?id=',$cmid,'&amp;userid=',$USER->id,'&amp;download=1">',get_string('save_image', 'ishikawa'), '</a></p>';
     }
-
     echo '<img src="image.php?id=',$cmid,'&amp;userid=',$USER->id,'&amp;src=',$src,'&amp;src_type=',$src_type,'&amp;editing=1" usemap="#ishikawamap" />';
 
     $ishikawa = new Ishikawa($blocks, $connections);

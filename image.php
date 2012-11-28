@@ -24,10 +24,8 @@
 require_once("../../config.php");
 require_once("Ishikawa.class.php");
 require_once("lib.php");
-
 $id     = required_param('id', PARAM_INT);  // Course Module ID
 $userid = required_param('userid', PARAM_INT); // user id to get submission
-var_dump($userid);
 $editing  = optional_param('editing', false, PARAM_BOOL);
 $src      = optional_param('src', 0, PARAM_INT);
 $src_type = optional_param('src_type', 0, PARAM_ALPHA);
@@ -76,7 +74,6 @@ if (!$groups = $DB->get_records_sql($sql, $params)) {
 
 // aí conhece! ou não ...
 $footer .= implode(array_map(create_function('$a', 'return $a->name;'), $groups), ', ');
-
 $ishikawa = new Ishikawa($blocks, $connections, $src, $src_type, $ishikawa->name, $footer);
 $ishikawa->draw($editing, $download);
 ?>

@@ -1,4 +1,4 @@
-<?php  // $Id$
+<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,6 +16,7 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
  * @package     mod
  * @subpackage  ishikawa
@@ -65,7 +66,7 @@
     $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
     echo $OUTPUT->header();
     
-    $img = '<img src="' . $OUTPUT->pix_url('icon.gif') . '" class="activityicon" alt="" />';
+    $img = '<img src="' . $OUTPUT->pix_url('icon', 'ishikawa') . '" class="activityicon" alt="" />' ;
     echo $OUTPUT->heading( $img.'&nbsp;'. $ishikawa->name);
     $groupmode = groups_get_activity_groupmode($cm);
     groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/ishikawa/view.php?id='.$id);
@@ -97,7 +98,7 @@
         }
         echo '<p><a href="image.php?id=',$cm->id,'&amp;userid=',$USER->id,'&amp;download=1">',get_string('save_image', 'ishikawa'), '</a></p>',
              '<p><img src="image.php?id=',$cm->id,'&amp;userid=',$USER->id,'" /></p>';
-
+         
     } else {
         if (ishikawa_isopen($ishikawa)) {
             echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
@@ -105,4 +106,3 @@
     }
 
     echo $OUTPUT->footer();
-?>
