@@ -42,8 +42,7 @@
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     require_capability('mod/ishikawa:view', $context);
-    $PAGE->set_pagelayout('incourse');
-
+    $PAGE->set_pagelayout('embedded');
     add_to_log($course->id, "ishikawa", "view", "view.php?id={$cm->id}", $ishikawa->id, $cm->id);
 
     /// Print the page header

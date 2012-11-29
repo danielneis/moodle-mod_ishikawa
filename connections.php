@@ -22,7 +22,6 @@
  **/
     require_once('../../config.php');
     require_once('lib.php');
-  
     $id = required_param('id', PARAM_INT);  // Course Module ID
     $src = optional_param('src', 0, PARAM_INT);
     $src_type = optional_param('src_type', 0, PARAM_ALPHA);
@@ -50,7 +49,7 @@
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     require_capability('mod/ishikawa:submit', $context);
-
+    $PAGE->set_pagelayout('embedded');
     /// Some capability checks.
     if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
         notice(get_string("activityiscurrentlyhidden"));
@@ -85,9 +84,12 @@
         $connection->dst_id = $dst;
         $connection->dst_type = $dst_type;
         $connection->submissionid = $submission->id;
-        if (!$DB->insert_record('ishikawa_connections', $connection)) {
-            print_error('cannot_add_connection', 'ishikawa', $link);
-        }
+        try{
+            if (!$DB->insert_record('ishikawa_connections', $connection)) {
+           }
+        } catch (Exception $e){  
+             print_error('cannot_add_connection', 'ishikawa', $link);
+        }  
         redirect($link);
     } else {
 

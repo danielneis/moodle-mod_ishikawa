@@ -48,7 +48,6 @@ require_login($course, true, $cm);
 
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 require_capability('mod/ishikawa:view', $context);
-
 add_to_log($course->id, "ishikawa", "view", "view.php?id={$cm->id}", $ishikawa->id, $cm->id);
 
 $submission = ishikawa_get_submission($userid, $ishikawa->id);

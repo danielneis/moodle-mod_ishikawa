@@ -78,7 +78,7 @@ class Seta {
     }
 
     function drawX() {
-        $x = new Imagick('x.png');
+        $x = new Imagick('pix/x.png');
         $this->im->compositeImage($x, Imagick::COMPOSITE_DEFAULT, $this->x_delete, $this->y_delete);
     }
 }
