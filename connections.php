@@ -49,7 +49,7 @@
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     require_capability('mod/ishikawa:submit', $context);
-    $PAGE->set_pagelayout('embedded');
+    $PAGE->set_pagelayout('ishikawa');
     /// Some capability checks.
     if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
         notice(get_string("activityiscurrentlyhidden"));
@@ -95,9 +95,6 @@
 
         $strishikawa = get_string('modulename', 'ishikawa');
 
-        //$navigation = build_navigation('', $cm);
-        //$meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-        //print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 	$PAGE->set_url('/mod/ishikawa/connections.php', array('id' => $course->id));
 	$PAGE->set_title($strishikawa);
 	$PAGE->set_heading($course->fullname);
@@ -108,6 +105,7 @@
         $connections = ishikawa_connections_from_submission($submission);
 
         ishikawa_edit_connections($cm->id, $blocks, $connections, $submission, $src, $src_type, $dst);
+	echo $OUTPUT->footer();
 
     }
 

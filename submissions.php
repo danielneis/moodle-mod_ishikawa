@@ -149,12 +149,11 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
                     '<th>',get_string('grade'),'</th>',
                     '<th>',get_string('feedback'),'</th>',
                 '</tr>';
-
                 $tabindex = 0;
                 foreach ($students as $s) {
-                $userpic = new moodle_user_picture();
                 $userpic->user = $s;
                 $userpic->courseid = $course->id;
+                $userpic->id = $s->id;
                 echo '<tr>',
                    '<td>', $OUTPUT->user_picture($userpic),'</td>',
                    '<td>', fullname($s),'</td>',
@@ -170,9 +169,11 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
                         if ($s->locked or $s->overridden) {
                             echo $s->finalgrade;
                         } else {
-	                    // echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade);
-                            echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
-                            get_string('nograde'),'',-1,true,false,$tabindex++);
+                            $attributes['disabled'] = false;
+                            $attributes['tabindex'] = $tabindex++;
+                            echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade, array(get_string('nograde')), $attributes);
+                            //echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
+                            //get_string('nograde'),'',-1,true,false,$tabindex++);
                         }
                    echo '</td>',
                    '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',

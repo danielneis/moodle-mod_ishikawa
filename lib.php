@@ -83,12 +83,11 @@ function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
     }
 
     $userlists = implode(',', $users);
-    $parms = array($userlists);
     $sql = "SELECT COUNT(*) as count
               FROM {$CFG->dbname}.{ishikawa_submissions} s
-             WHERE userid IN ? ";
+             WHERE userid IN ({$userlists})";
 
-    $record = $DB->get_record_sql($sql,$params);
+    $record = $DB->get_record_sql($sql);
     return $record->count;
 }
 
@@ -390,7 +389,7 @@ function ishikawa_delete_connection($id) {
 }
 
 function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
-    global $USER,$DB, $CFG;
+    global $USER,$DB, $CFG, $OUTPUT;
     require($CFG->libdir.'/gradelib.php');
 
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
