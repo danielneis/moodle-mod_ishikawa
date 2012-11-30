@@ -102,43 +102,39 @@ if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being use
 $course_ctx = get_context_instance(CONTEXT_COURSE, $course->id);
 $grade_item = $DB->get_record('grade_items', array('itemmodule' => 'ishikawa', 'iteminstance' => $ishikawa->id, 'courseid' => $course->id));
 
-$params = array($course_ctx->id, $CFG->gradebookroles, $ishikawa->id, $ishikawa->id, $grade_item->id);
 $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
                 s.id as submission_id, s.timecreated,
                 g.id as grade_id, g.grade, g.feedback,
                 gg.id as grade_grades_id, gg.rawgrade, gg.finalgrade, gg.locked, gg.overridden
-           FROM {user} u
-           JOIN {role_assignments} ra
-             ON (ra.userid = u.id AND
-                 ra.contextid =  ? AND
-                 ra.roleid IN (?))
-      LEFT JOIN {ishikawa_submissions} s
-             ON (s.userid = u.id and
-                 s.ishikawaid = ? )
-      LEFT JOIN {ishikawa_grades} g
-             ON (g.userid = u.id and
-                 g.ishikawaid = ? )
-      LEFT JOIN {grade_grades} gg
-             ON (gg.userid = u.id AND
-                 gg.itemid = ? )";
-
-if (!$group) {
+          FROM {user} u
+          JOIN {role_assignments} ra
+            ON (ra.userid = u.id AND
+                ra.contextid =  {$course_ctx->id} AND
+                ra.roleid IN ({$CFG->gradebookroles}))
+          LEFT JOIN {ishikawa_submissions} s
+            ON (s.userid = u.id and
+                s.ishikawaid = {$ishikawa->id})
+          LEFT JOIN {ishikawa_grades} g
+            ON (g.userid = u.id and
+               g.ishikawaid = {$ishikawa->id})
+          LEFT JOIN {grade_grade}s gg
+            ON (gg.userid = u.id AND
+               gg.itemid = {$grade_item->id})";
+ 
+ if (!$group) {
     $group = groups_get_activity_group($cm, true);
-}
-if ($group > 0) {
+ }
+ if ($group > 0) {
     $sql .= " JOIN {groups_members} gm
                 ON (gm.userid = u.id AND
-                    gm.groupid = ? )";
-    $params[] = $group;
-}
-
-$sql .= "ORDER BY firstname,lastname,username";
-
-if (!$students = $DB->get_records_sql($sql,$params)) {
-    echo $OUTPUT->heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
-} else {
-
-   $act = "submissions.php?id={$cm->id}&group={$group}";
+                   gm.groupid = {$group})";
+ }
+ 
+ $sql .= "ORDER BY firstname,lastname,username";
+ if (!$students = $DB->get_records_sql($sql)) {
+         echo $OUTPUT->heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
+ } else {
+     $act = "submissions.php?id={$cm->id}&group={$group}";
 
    echo '<form method="post" action="',$act,'" >',
             '<table id="ishikawa_submissions" class="generaltable">',
@@ -151,11 +147,8 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
                 '</tr>';
                 $tabindex = 0;
                 foreach ($students as $s) {
-                $userpic->user = $s;
-                $userpic->courseid = $course->id;
-                $userpic->id = $s->id;
                 echo '<tr>',
-                   '<td>', $OUTPUT->user_picture($userpic),'</td>',
+                   '<td>', $OUTPUT->user_picture($s, array('courseid' => $course->id)),'</td>',
                    '<td>', fullname($s),'</td>',
                    '<td>';
                         if ($s->timecreated > 0) {
@@ -172,8 +165,6 @@ if (!$students = $DB->get_records_sql($sql,$params)) {
                             $attributes['disabled'] = false;
                             $attributes['tabindex'] = $tabindex++;
                             echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade, array(get_string('nograde')), $attributes);
-                            //echo choose_from_menu(make_grades_menu($ishikawa->grade), 'student['.$s->id.'][grade]', $s->grade,
-                            //get_string('nograde'),'',-1,true,false,$tabindex++);
                         }
                    echo '</td>',
                    '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
