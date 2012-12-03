@@ -45,11 +45,6 @@ $strishikawas = get_string('modulenameplural', 'ishikawa');
 $PAGE->set_title($strishikawas);
 $PAGE->set_heading($course->fullname);
 $PAGE->navbar->add($strishikawas);
-/*$navlinks = array();
-$navlinks[] = array('name' => $strishikawas, 'link' => '', 'type' => 'activity');
-$navigation = build_navigation($navlinks);
-print_header_simple($strishikawas, "", $navigation, "", "", true, '',navmenu($course));
-*/
 echo $OUTPUT->header();
 
 $ishikawas = $DB->get_records('ishikawa', array('course' => $course->id));

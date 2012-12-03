@@ -79,15 +79,8 @@ if ($data = data_submitted()) {
     redirect($CFG->wwwroot.'/mod/ishikawa/submissions.php?id='.$cm->id. '&group='.$group);
 }
 
-//$buttontext = '';
 $strishikawa = get_string('modulename', 'ishikawa');
-//$buttontext = update_module_button($cm->id, $course->id, $strishikawa);
 $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
-
-//$navigation = build_navigation(get_string('submissions', 'ishikawa'), $cm);
-//$meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-//print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, $buttontext,navmenu($course, $cm));
-
 $PAGE->set_url('/mod/ishikawa/submissions.php', array('id'=>$course->id));  
 $PAGE->navbar->add($strishikawa);
 $PAGE->set_title($strishikawa);

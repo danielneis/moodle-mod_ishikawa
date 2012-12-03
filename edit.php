@@ -46,9 +46,6 @@ if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities'
     notice(get_string("activityiscurrentlyhidden"));
 }
 
-/**                   $navigation = build_navigation('', $cm);
- Old functions        $meta = '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/mod/ishikawa/styles.css" />';
-**///                 print_header_simple($ishikawa->name, "", $navigation, "", $meta, true, '',navmenu($course, $cm));
 $strishikawa = get_string('modulename', 'ishikawa');
 $PAGE->set_url('/mod/ishikawa/edit.php', array('id' => $course->id));
 $PAGE->navbar->add($strishikawa);

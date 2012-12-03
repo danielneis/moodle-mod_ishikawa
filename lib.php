@@ -277,7 +277,6 @@ function ishikawa_view_dates($ishikawa) {
     }
     echo $OUTPUT->box_start('center', '', '', 0, 'generalbox', 'dates');
     echo $OUTPUT->box_end();	
-  //  print_simple_box_start('center', '', '', 0, 'generalbox', 'dates');
     echo '<table>';
     if ($ishikawa->timeavailable) {
         echo '<tr><td class="c0">'.get_string('availabledate','ishikawa').':</td>';

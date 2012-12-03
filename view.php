@@ -54,9 +54,6 @@
 
     $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
     $strishikawa = get_string('modulename', 'ishikawa');
-    // $buttontext = '';
-    // $buttontext = update_module_button($cm->id, $course->id, $strishikawa);
-    // print_header_simple($ishikawa->name, "", $navigation, "", "", true, $buttontext,navmenu($course, $cm));
     $navigation = build_navigation('', $cm);
     $PAGE->set_url('/mod/ishikawa/view.php', array('id'=>$course->id));	 
     $PAGE->navbar->add($strishikawa);

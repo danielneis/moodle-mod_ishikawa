@@ -26,6 +26,7 @@
     $src = optional_param('src', 0, PARAM_INT);
     $src_type = optional_param('src_type', 0, PARAM_ALPHA);
     $dst = optional_param('dst', 0, PARAM_INT);
+    $dst_type = optional_param('dst_type', 0, PARAM_ALPHA);
 
     $delete_connection_id = optional_param('delete_connection', NULL, PARAM_INT);
 
@@ -73,9 +74,11 @@
         if (!in_array($src_type, array('causes', 'consequences', 'axis'))) {
             print_error('invalid_src_type', 'ishikawa', $link);
         }
-
+        // adcionado uma condição a mais para possibilitar a conexão entre os mesmos campos em eixos diferentes.
         if ($src == $dst) {
-            print_error('src_equal_dst', 'ishikawa', $link);
+            if ($src_type == $dst_type){
+                print_error('src_equal_dst', 'ishikawa', $link);
+            }    
         }
 
         $connection = new stdClass();
