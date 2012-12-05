@@ -386,7 +386,12 @@ function ishikawa_delete_connection($id) {
 
     return $DB->delete_records('ishikawa_connections', array('id' => $id));
 }
-
+function ishikawa_supports($feature) {
+     switch($feature) {
+          case FEATURE_BACKUP_MOODLE2:          return true;
+          default:                              return null;
+     }
+}
 function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
     global $USER,$DB, $CFG, $OUTPUT;
     require($CFG->libdir.'/gradelib.php');
