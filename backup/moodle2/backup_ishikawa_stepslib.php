@@ -63,7 +63,30 @@ class backup_choice_activity_structure_step extends backup_activity_structure_st
           
           
           // Define sources
+          $ishikawa->set_source_table('ishikawa', array('id' => backup::VAR_ACTIVITYID));
           
+          if ($userinfo) {
+              $submissions->set_source_sql('
+                  SELECT *
+                  FROM {ishikawa_submissions}
+                  WHERE ishikawaid = ?', array(backup::VAR_PARENTID));
+             
+             $axis->set_source_table('ishikawa_axis_blocks', array('submissionid' => backup::VAR_PARENTID));
+             $causes->set_source_table('ishikawa_causes_blocks', array('submissionid' => backup::VAR_PARENTID));
+             $consequences->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
+             $grades->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
+             $connections->set_source_table('wiki_versions', array('submissionid' => backup::VAR_PARENTID));
+             /*
+             $tag->set_source_sql('SELECT t.id, t.name, t.rawname
+                                   FROM {tag} t
+                                   JOIN {tag_instance} ti ON ti.tagid = t.id
+                                   WHERE ti.itemtype = ?
+                                   AND ti.itemid = ?', array(
+                                   backup_helper::is_sqlparam('wiki_pages'),
+                                   backup::VAR_PARENTID));
+             */
+          }
+                      
           // Define id annotations
           
           // Define file annotations
@@ -71,4 +94,4 @@ class backup_choice_activity_structure_step extends backup_activity_structure_st
           // Return the root element (choice), wrapped into standard activity structure
           return $this->prepare_activity_structure($ishikawa); 
          }
-  }
+
