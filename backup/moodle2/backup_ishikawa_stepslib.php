@@ -66,20 +66,20 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
           $ishikawa->set_source_table('ishikawa', array('id' => backup::VAR_ACTIVITYID));
           
           if ($userinfo) {
-              $submissions->set_source_sql('
+              $ishikawa_submissions->set_source_sql('
                   SELECT *
                   FROM {ishikawa_submissions}
                   WHERE ishikawaid = ?', array(backup::VAR_PARENTID));
              
-             $axis->set_source_table('ishikawa_axis_blocks', array('submissionid' => backup::VAR_PARENTID));
-             $causes->set_source_table('ishikawa_causes_blocks', array('submissionid' => backup::VAR_PARENTID));
-             $consequences->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
-             $grades->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
-             $connections->set_source_table('wiki_versions', array('submissionid' => backup::VAR_PARENTID));
+             $ishikawa_axis_block->set_source_table('ishikawa_axis_blocks', array('submissionid' => backup::VAR_PARENTID));
+             $ishikawa_causes_block->set_source_table('ishikawa_causes_blocks', array('submissionid' => backup::VAR_PARENTID));
+             $ishikawa_consequences_block->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
+             $ishikawa_grades->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
+             $ishikawa_connections->set_source_table('wiki_versions', array('submissionid' => backup::VAR_PARENTID));
           }
                       
           // Define id annotations
-          $submission->annotate_ids('user', 'userid');
+          $ishikawa_submission->annotate_ids('user', 'userid');
           // Define file annotations
           $ishikawa->annotate_files('mod_ishikawa', 'intro', null);
           // Return the root element (ishikawa), wrapped into standard activity structure
