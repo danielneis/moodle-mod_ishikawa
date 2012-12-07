@@ -66,7 +66,7 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
           $ishikawa->set_source_table('ishikawa', array('id' => backup::VAR_ACTIVITYID));
           
           if ($userinfo) {
-              $ishikawa_submissions->set_source_sql('
+              $ishikawa_submission->set_source_sql('
                   SELECT *
                   FROM {ishikawa_submissions}
                   WHERE ishikawaid = ?', array(backup::VAR_PARENTID));
@@ -74,8 +74,8 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
              $ishikawa_axis_block->set_source_table('ishikawa_axis_blocks', array('submissionid' => backup::VAR_PARENTID));
              $ishikawa_causes_block->set_source_table('ishikawa_causes_blocks', array('submissionid' => backup::VAR_PARENTID));
              $ishikawa_consequences_block->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
-             $ishikawa_grades->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
-             $ishikawa_connections->set_source_table('wiki_versions', array('submissionid' => backup::VAR_PARENTID));
+             $ishikawa_grade->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
+             $ishikawa_connection->set_source_table('ishikawa_connections', array('submissionid' => backup::VAR_PARENTID));
           }
                       
           // Define id annotations
