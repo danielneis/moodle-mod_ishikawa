@@ -26,6 +26,18 @@ class backup_ishikawa_activity_task extends backup_activity_task {
    * order to get transportable (encoded) links
    */
    static public function encode_content_links($content) {
+       global $CFG;
+
+       $base = preg_quote($CFG->wwwroot,"/");
+
+       // Link to the list of ishikawa
+       $search="/(".$base."\/mod\/ishikawa\/index.php\?id\=)([0-9]+)/";
+       $content= preg_replace($search, '$@CHOICEINDEX*$2@$', $content);
+
+       // Link to choice view by moduleid
+       $search="/(".$base."\/mod\/ishikawa\/view.php\?id\=)([0-9]+)/";
+       $content= preg_replace($search, '$@CHOICEVIEWBYID*$2@$', $content);
+
        return $content;
    }
 }

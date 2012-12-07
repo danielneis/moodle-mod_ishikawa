@@ -6,7 +6,7 @@
  * Define the complete choice structure for backup, with file and id annotations
  */     
 
-class backup_choice_activity_structure_step extends backup_activity_structure_step {
+class backup_ishikawa_activity_structure_step extends backup_activity_structure_step {
        
       protected function define_structure() {
           // To know if we are including userinfo
@@ -27,7 +27,7 @@ class backup_choice_activity_structure_step extends backup_activity_structure_st
                                               'submissionid', 'nivel_x', 'nivel_y', 'texto' ,'cor'));
 
           $ishikawa_connections = new backup_nested_element('ishikawa_connections');
-          $ishikwa_connection = new backup_nested_element('ishikawa_connection', array('id'), array(
+          $ishikawa_connection = new backup_nested_element('ishikawa_connection', array('id'), array(
                                               'submissionid', 'src_id', 'src_type', 'dst_id' ,'dst_type'));
           
           $ishikawa_consequences_blocks = new backup_nested_element('ishikawa_consequences_blocks');
@@ -76,22 +76,13 @@ class backup_choice_activity_structure_step extends backup_activity_structure_st
              $consequences->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
              $grades->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
              $connections->set_source_table('wiki_versions', array('submissionid' => backup::VAR_PARENTID));
-             /*
-             $tag->set_source_sql('SELECT t.id, t.name, t.rawname
-                                   FROM {tag} t
-                                   JOIN {tag_instance} ti ON ti.tagid = t.id
-                                   WHERE ti.itemtype = ?
-                                   AND ti.itemid = ?', array(
-                                   backup_helper::is_sqlparam('wiki_pages'),
-                                   backup::VAR_PARENTID));
-             */
           }
                       
           // Define id annotations
-          
+          $submission->annotate_ids('user', 'userid');
           // Define file annotations
-          
-          // Return the root element (choice), wrapped into standard activity structure
+          $ishikawa->annotate_files('mod_ishikawa', 'intro', null);
+          // Return the root element (ishikawa), wrapped into standard activity structure
           return $this->prepare_activity_structure($ishikawa); 
-         }
-
+      } 
+}
