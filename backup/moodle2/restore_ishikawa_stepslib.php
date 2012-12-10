@@ -30,10 +30,10 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $oldid = $data->id;
          $data->course = $this->get_courseid();
                                                                                                                                                  
-         $data->timeopen = $this->apply_date_offset($data->timeopen);
-         $data->timeclose = $this->apply_date_offset($data->timeclose);
+         $data->timedue = $this->apply_date_offset($data->timedue);
+         $data->timeavailable = $this->apply_date_offset($data->timeavailable);
          $data->timemodified = $this->apply_date_offset($data->timemodified);
-                                                                                                                                                            // insert the choice record
+         // insert the ishikawa record
          $newitemid = $DB->insert_record('ishikawa', $data);
          // immediately after inserting "activity" record, call this
          $this->apply_activity_instance($newitemid);
@@ -44,9 +44,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
 
          $data = (object)$data;
          $oldid = $data->id;
-                    
-         $data->ishikawaid = $this->get_new_parentid('ishikawa');
-         $data->timemodified = $this->apply_date_offset($data->timemodified);
+         $data->submissionid = $this->get_new_parentid('ishikawa_submission');
                                       
          $newitemid = $DB->insert_record('ishikawa_axis_blocks', $data);
          $this->set_mapping('ishikawa_axis_block', $oldid, $newitemid);
@@ -56,31 +54,63 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          global $DB;
 
          $data = (object)$data;
-
-         $data->ishikawaid = $this->get_new_parentid('ishikawa');
-         $data->submissionid = $this->get_mappingid('ishikawa_axis_block', $data->optionid);
-         $data->userid = $this->get_mappingid('user', $data->userid);
-         $data->timemodified = $this->apply_date_offset($data->timemodified);
+         $oldid = $data->id;
+         $data->submissionid = $this->get_new_parentid('ishikawa_submission');
 
          $newitemid = $DB->insert_record('ishikawa_causes_blocks', $data);
-         // No need to save this mapping as far as nothing depend on it
-         // (child paths, file areas nor links decoder)
+         $this->set_mapping('ishikawa_causes_block', $oldid, $newitemid);
      }
      
      protected function process_ishikawa_consequences($data) {
          global $DB;
-     }
+
+         $data = (object)$data;
+         $oldid = $data->id;
+         $data->submissionid = $this->get_new_parentid('ishikawa_submission');
+
+         $newitemid = $DB->insert_record('ishikawa_consequences_blocks', $data);
+         $this->set_mapping('ishikawa_consequences_block', $oldid, $newitemid);
+     }  
      
      protected function process_ishikawa_connections($data) {
          global $DB;
+ 
+         $data = (object)$data;
+         $oldid = $data->id;
+         $data->submissionid = $this->get_new_parentid('ishikawa_submissionid');
+         
+         $newitemid = $DB->insert_record('ishikawa_connections', $data);
+         $this->set_mapping('ishikawa_connection', $oldid, $newitemid);
      }
      
      protected function process_ishikawa_grades($data) {
          global $DB;
+
+         $data = (object)$data;
+         $oldid = $data->id;
+                  
+         $data->ishikawaid = $this->get_new_parentid('ishikawa');
+         $data->userid = $this->get_mappingid('user', $data->userid);
+         $data->timemodified = $this->apply_date_offset($data->timemodified);
+         $data->timecreated = $this->apply_date_offset($data->timecreated);
+                                   
+         $newitemid = $DB->insert_record('ishikawa_grades', $data);
+         $this->set_mapping('ishikawa_grade', $oldid, $newitemid);
      }
      
      protected function process_ishikawa_submissions($data) {
          global $DB;
+         $data = (object)$data;                                            
+         $oldid = $data->id;                                               
+                                                                                      
+         $data->ishikawaid = $this->get_new_parentid('ishikawa');          
+         $data->userid = $this->get_mappingid('user', $data->userid);      
+         $data->timemodified = $this->apply_date_offset($data->timemodified);
+         $data->timecreated = $this->apply_date_offset($data->timecreated);
+                                                                                            
+         $newitemid = $DB->insert_record('ishikawa_submissions', $data);        
+         $this->set_mapping('ishikawa_submission', $oldid, $newitemid);         
+                                                                                  
      }
      
      protected function after_execute() {

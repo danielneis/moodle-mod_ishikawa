@@ -3,7 +3,7 @@
   * Define all the backup steps that will be used by the backup_ishikawa_activity_task
   */
 /**
- * Define the complete choice structure for backup, with file and id annotations
+ * Define the complete ishikawa structure for backup, with file and id annotations
  */     
 
 class backup_ishikawa_activity_structure_step extends backup_activity_structure_step {
@@ -16,7 +16,7 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
           $ishikawa = new backup_nested_element('ishikawa', array('id'), array(
                                               'name', 'intro', 'maxchar', 'maxlines',
                                               'maxcolumns', 'grade', 'preventlate', 'timedue',
-                                              'timeavaliable', 'introformat', 'timemodified'));
+                                              'timeavailable', 'introformat', 'timemodified'));
           
           $ishikawa_axis_blocks = new backup_nested_element('ishikawa_axis_blocks');
           $ishikawa_axis_block = new backup_nested_element('ishikawa_axis_block', array('id'), array(

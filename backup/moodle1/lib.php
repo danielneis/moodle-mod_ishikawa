@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Choice conversion handler
  */
-class moodle1_mod_choice_handler extends moodle1_mod_handler {
+class moodle1_mod_ishikawa_handler extends moodle1_mod_handler {
 
     /** @var moodle1_file_manager */
     protected $fileman = null;
@@ -51,7 +51,7 @@ class moodle1_mod_choice_handler extends moodle1_mod_handler {
     public function get_paths() {
         return array(
             new convert_path(
-                'choice', '/MOODLE_BACKUP/COURSE/MODULES/MOD/ISHIKAWA',
+                'ishikawa', '/MOODLE_BACKUP/COURSE/MODULES/MOD/ISHIKAWA',
                 array(
                     'renamefields' => array(
                         'text' => 'intro',
@@ -74,7 +74,7 @@ class moodle1_mod_choice_handler extends moodle1_mod_handler {
      * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/ISHIKAWA
      * data available
      */
-    public function process_choice($data) {
+    public function process_ishikawa($data) {
 
         // get the course module id and context id
         $instanceid     = $data['id'];
@@ -90,7 +90,7 @@ class moodle1_mod_choice_handler extends moodle1_mod_handler {
         $this->fileman->itemid   = 0;
         $data['intro'] = moodle1_converter::migrate_referenced_files($data['intro'], $this->fileman);
 
-        // start writing choice.xml
+        // start writing ishikawa.xml
         $this->open_xml_writer("activities/ishikawa_{$this->moduleid}/ishikawa.xml");
         $this->xmlwriter->begin_tag('activity', array('id' => $instanceid, 'moduleid' => $this->moduleid,
             'modulename' => 'ishikawa', 'contextid' => $contextid));
@@ -128,7 +128,7 @@ class moodle1_mod_choice_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed when we reach the closing </MOD> tag of our 'choice' path
+     * This is executed when we reach the closing </MOD> tag of our 'ishikawa' path
      */
     public function on_ishikawa_end() {
         // finalize ishikawa.xml

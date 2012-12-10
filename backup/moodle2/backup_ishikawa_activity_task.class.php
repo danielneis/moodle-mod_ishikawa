@@ -4,9 +4,9 @@
  require_once($CFG->dirroot . '/mod/ishikawa/backup/moodle2/backup_ishikawa_settingslib.php'); // Because it exists (optional)
   
 /**
-* choice backup task that provides all the settings and steps to perform one
-* complete backup of the activity
-*/
+ * ishikawa backup task that provides all the settings and steps to perform one
+ * complete backup of the activity
+ */
 class backup_ishikawa_activity_task extends backup_activity_task {
    /**
    * Define (add) particular settings this activity can have
@@ -34,7 +34,7 @@ class backup_ishikawa_activity_task extends backup_activity_task {
        $search="/(".$base."\/mod\/ishikawa\/index.php\?id\=)([0-9]+)/";
        $content= preg_replace($search, '$@CHOICEINDEX*$2@$', $content);
 
-       // Link to choice view by moduleid
+       // Link to ishikawa view by moduleid
        $search="/(".$base."\/mod\/ishikawa\/view.php\?id\=)([0-9]+)/";
        $content= preg_replace($search, '$@CHOICEVIEWBYID*$2@$', $content);
 
