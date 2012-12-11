@@ -95,7 +95,8 @@ if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being use
 $course_ctx = get_context_instance(CONTEXT_COURSE, $course->id);
 $grade_item = $DB->get_record('grade_items', array('itemmodule' => 'ishikawa', 'iteminstance' => $ishikawa->id, 'courseid' => $course->id));
 
-$sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
+$userfields = user_picture::fields('u', array('id', 'picture' ,'firstname', 'lastname' , 'username'));
+$sql = "SELECT  $userfields,
                 s.id as submission_id, s.timecreated,
                 g.id as grade_id, g.grade, g.feedback,
                 gg.id as grade_grades_id, gg.rawgrade, gg.finalgrade, gg.locked, gg.overridden
@@ -141,9 +142,9 @@ $sql = "SELECT  u.id,u.picture, u.firstname, u.lastname, u.username,
                 $tabindex = 0;
                 foreach ($students as $s) {
                 echo '<tr>',
-                   '<td>', $OUTPUT->user_picture($s, array('courseid' => $course->id)),'</td>',
-                   '<td>', fullname($s),'</td>',
-                   '<td>';
+                     '<td>', $OUTPUT->user_picture($s, array('courseid' => $course->id)), '</td>',
+                     '<td>', fullname($s),'</td>',
+                     '<td>';
                         if ($s->timecreated > 0) {
                             echo userdate($s->timecreated), '&nbsp;',
                             '<a href="image.php?id=',$cm->id,'&amp;userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
