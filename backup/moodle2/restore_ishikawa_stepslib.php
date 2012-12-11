@@ -39,7 +39,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $this->apply_activity_instance($newitemid);
      }
 
-     protected function process_ishikawa_axis($data) {
+     protected function process_ishikawa_axis_block($data) {
          global $DB;
 
          $data = (object)$data;
@@ -50,7 +50,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $this->set_mapping('ishikawa_axis_block', $oldid, $newitemid);
      }
                                                            
-     protected function process_ishikawa_causes($data) {
+     protected function process_ishikawa_causes_block($data) {
          global $DB;
 
          $data = (object)$data;
@@ -61,7 +61,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $this->set_mapping('ishikawa_causes_block', $oldid, $newitemid);
      }
      
-     protected function process_ishikawa_consequences($data) {
+     protected function process_ishikawa_consequences_block($data) {
          global $DB;
 
          $data = (object)$data;
@@ -72,7 +72,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $this->set_mapping('ishikawa_consequences_block', $oldid, $newitemid);
      }  
      
-     protected function process_ishikawa_connections($data) {
+     protected function process_ishikawa_connection($data) {
          global $DB;
  
          $data = (object)$data;
@@ -83,7 +83,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $this->set_mapping('ishikawa_connection', $oldid, $newitemid);
      }
      
-     protected function process_ishikawa_grades($data) {
+     protected function process_ishikawa_grade($data) {
          global $DB;
 
          $data = (object)$data;
@@ -98,7 +98,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
          $this->set_mapping('ishikawa_grade', $oldid, $newitemid);
      }
      
-     protected function process_ishikawa_submissions($data) {
+     protected function process_ishikawa_submission($data) {
          global $DB;
          $data = (object)$data;                                            
          $oldid = $data->id;                                               
