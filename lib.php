@@ -44,18 +44,26 @@ function ishikawa_update_instance($ishi) {
 
 function ishikawa_delete_instance($ishi) {
     global $DB;
-
-    $submissions = (array) $DB->get_record('ishikawa_submissions', array('ishikawaid' => $ishi));
-    foreach ($submissions as $sub) {
-        $DB->delete_records('ishikawa_axis_blocks', array('submissionid' => $sub['id']));
-        $DB->delete_records('ishikawa_causes_blocks', array('submissionid' => $sub['id']));
-        $DB->delete_records('ishikawa_connections', array('submissionid' => $sub['id']));
-        $DB->delete_records('ishikawa_consequences_blocks', array('submissionid' => $sub['id']));
-        $DB->delete_records('ishikawa_submissions', array('id' => $sub['id']));
+    ishikawa_grade_item_delete($ishi);
+    if ($submissions = $DB->get_records('ishikawa_submissions', array('ishikawaid' => $ishi))){
+        foreach ($submissions as $sub) {
+            $DB->delete_records('ishikawa_axis_blocks', array('submissionid' => $sub->id));
+            $DB->delete_records('ishikawa_causes_blocks', array('submissionid' => $sub->id));
+            $DB->delete_records('ishikawa_connections', array('submissionid' => $sub->id));
+            $DB->delete_records('ishikawa_consequences_blocks', array('submissionid' => $sub->id));
+            $DB->delete_records('ishikawa_grades', array('ishikawaid' => $sub->id));
+            $DB->delete_records('ishikawa_submissions', array('id' => $sub->id));
+        }
     }
-    $DB->delete_records('ishikawa', array('id' => $ishi));
+    return $DB->delete_records('ishikawa', array('id' => $ishi));
 }
-
+function ishikawa_grade_item_delete($ishi) {
+    global $CFG, $DB;
+    require_once($CFG->libdir.'/gradelib.php');
+    $ishikawa = $DB->get_record('ishikawa', array('id' => $ishi));
+    return grade_update('mod/ishikawa', $ishikawa->course, 'mod', 'ishikawa', $ishi, 0, NULL, array('deleted'=>1));
+}
+    
 function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
     global $CFG, $DB;
 
