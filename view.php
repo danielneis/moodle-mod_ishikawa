@@ -27,15 +27,15 @@
     $id = required_param('id', PARAM_INT);  // Course Module ID
 
     if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
-        error("Course Module ID was incorrect");
+        print_error("Course Module ID was incorrect");
     }
 
     if (! $ishikawa = $DB->get_record("ishikawa", array('id' => $cm->instance))) {
-        error("ishikawa ID was incorrect");
+        print_error("ishikawa ID was incorrect");
     }
 
     if (! $course = $DB->get_record("course", array('id' => $ishikawa->course))) {
-        error("Course is misconfigured");
+        print_error("Course is misconfigured");
     }
 
     require_login($course, true, $cm);
@@ -51,7 +51,6 @@
     if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
         notice(get_string("activityiscurrentlyhidden"));
     }
-
     $submission = ishikawa_get_submission($USER->id, $ishikawa->id);
     $strishikawa = get_string('modulename', 'ishikawa');
     $navigation = build_navigation('', $cm);
@@ -85,11 +84,9 @@
     ishikawa_view_submission_feedback($ishikawa, $submission, $course);
 
     $now = time();
-
     if ($submission) {
         if (ishikawa_isopen($ishikawa)) {
-            echo '<p><a href="view.php?id=',$cm->id,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
-                 '<p><a href="edit.php?id=',$cm->id,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
+           echo  '<p><a href="edit.php?id=',$cm->id,'" >',get_string('edit_blocks', 'ishikawa'),'</a></p>',
                  '<p><a href="connections.php?id=',$cm->id,'" >',get_string('edit_connections', 'ishikawa'),'</a></p>';
         }
         echo '<p><a href="image.php?id=',$cm->id,'&amp;userid=',$USER->id,'&amp;download=1">',get_string('save_image', 'ishikawa'), '</a></p>',
