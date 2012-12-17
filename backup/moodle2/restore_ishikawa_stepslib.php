@@ -15,7 +15,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
              $paths[] = new restore_path_element('ishikawa_axis_block', '/activity/ishikawa/ishikawa_axis_blocks/ishikawa_axis_block');
              $paths[] = new restore_path_element('ishikawa_causes_block', '/activity/ishikawa/ishikawa_causes_blocks/ishikawa_causes_block');
              $paths[] = new restore_path_element('ishikawa_consequences_block', '/activity/ishikawa/ishikawa_consequences_blocks/ishikawa_consequences_block');
-             $paths[] = new restore_path_element('ishikawa_grade', '/activity/ishikawa/ishikawa_grades/ishikawa_grades');
+             $paths[] = new restore_path_element('ishikawa_grade', '/activity/ishikawa/ishikawa_grades/ishikawa_grade');
              $paths[] = new restore_path_element('ishikawa_connection', '/activity/ishikawa/ishikawa_connections/ishikawa_connection');
          }
                                                                           
@@ -77,7 +77,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
  
          $data = (object)$data;
          $oldid = $data->id;
-         $data->submissionid = $this->get_new_parentid('ishikawa_submissionid');
+         $data->submissionid = $this->get_new_parentid('ishikawa_submission');
          
          $newitemid = $DB->insert_record('ishikawa_connections', $data);
          $this->set_mapping('ishikawa_connection', $oldid, $newitemid);

@@ -51,7 +51,7 @@ function ishikawa_delete_instance($ishi) {
             $DB->delete_records('ishikawa_causes_blocks', array('submissionid' => $sub->id));
             $DB->delete_records('ishikawa_connections', array('submissionid' => $sub->id));
             $DB->delete_records('ishikawa_consequences_blocks', array('submissionid' => $sub->id));
-            $DB->delete_records('ishikawa_grades', array('ishikawaid' => $sub->id));
+            $DB->delete_records('ishikawa_grades', array('ishikawaid' => $ishi));
             $DB->delete_records('ishikawa_submissions', array('id' => $sub->id));
         }
     }
