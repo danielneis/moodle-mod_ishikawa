@@ -29,6 +29,12 @@ class restore_ishikawa_activity_task extends restore_activity_task {
     static public function define_decode_contents() {
         $contents = array();
         $contents[] = new restore_decode_content('ishikawa', array('intro'), 'ishikawa');
+        $contents[] = new restore_decode_content('ishikawa_axis_blocks', array('texto'), 'ishikawa_axis_block');
+        $contents[] = new restore_decode_content('ishikawa_causes_blocks', array('texto'), 'ishikawa_causes_block');
+        $contents[] = new restore_decode_content('ishikawa_consequences_blocks', array('texto'), 'ishikawa_consequences_block');
+        $contents[] = new restore_decode_content('ishikawa_grades', array('feedback'), 'ishikawa_grade');
+        $contents[] = new restore_decode_content('ishikawa_submissions', array('tail_text'), 'ishikawa_submission');
+        $contents[] = new restore_decode_content('ishikawa_submissions', array('head_text'), 'ishikawa_submission');
         return $contents;
     }
 
@@ -51,13 +57,13 @@ class restore_ishikawa_activity_task extends restore_activity_task {
  */
     static public function define_restore_log_rules() {
         $rules = array();
-        $rules[] = new restore_log_rule('ishikawa', 'add', 'view.php?id={course_module}', '{ishikawa}');
+     /* $rules[] = new restore_log_rule('ishikawa', 'add', 'view.php?id={course_module}', '{ishikawa}');
         $rules[] = new restore_log_rule('ishikawa', 'update', 'view.php?id={course_module}', '{ishikawa}');
         $rules[] = new restore_log_rule('ishikawa', 'view', 'view.php?id={course_module}', '{ishikawa}');
         $rules[] = new restore_log_rule('ishikawa', 'choose', 'view.php?id={course_module}', '{ishikawa}');
         $rules[] = new restore_log_rule('ishikawa', 'choose again', 'view.php?id={course_module}', '{ishikawa}');
         $rules[] = new restore_log_rule('ishikawa', 'report', 'report.php?id={course_module}', '{ishikawa}');
-        return $rules;
+      */return $rules; 
     }
 
 /**

@@ -55,11 +55,10 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
 
      protected function process_ishikawa_axis_block($data) {
          global $DB;
-
+         die('here');
          $data = (object)$data;
          $oldid = $data->id;
          $data->submissionid = $this->get_new_parentid('ishikawa_submission');
-                                      
          $newitemid = $DB->insert_record('ishikawa_axis_blocks', $data);
          $this->set_mapping('ishikawa_axis_block', $oldid, $newitemid);
      }
@@ -67,6 +66,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
      protected function process_ishikawa_causes_block($data) {
          global $DB;
 
+         die('here');
          $data = (object)$data;
          $oldid = $data->id;
          $data->submissionid = $this->get_new_parentid('ishikawa_submission');
@@ -78,6 +78,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
      protected function process_ishikawa_consequences_block($data) {
          global $DB;
 
+         die('here');
          $data = (object)$data;
          $oldid = $data->id;
          $data->submissionid = $this->get_new_parentid('ishikawa_submission');
@@ -89,6 +90,7 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
      protected function process_ishikawa_connection($data) {
          global $DB;
  
+         die('here');
          $data = (object)$data;
          $oldid = $data->id;
          $data->submissionid = $this->get_new_parentid('ishikawa_submission');

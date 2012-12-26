@@ -82,8 +82,10 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
                       
           // Define id annotations
           $ishikawa_submission->annotate_ids('user', 'userid');
+          $ishikawa_grade->annotate_ids('user', 'userid');
           // Define file annotations
           $ishikawa->annotate_files('mod_ishikawa', 'intro', null);
+          $ishikawa->annotate_files('mod_ishikawa', 'attachment', 'id');
           // Return the root element (ishikawa), wrapped into standard activity structure
           return $this->prepare_activity_structure($ishikawa); 
       } 

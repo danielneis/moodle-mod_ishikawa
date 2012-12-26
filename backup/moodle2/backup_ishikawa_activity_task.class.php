@@ -32,11 +32,11 @@ class backup_ishikawa_activity_task extends backup_activity_task {
 
        // Link to the list of ishikawa
        $search="/(".$base."\/mod\/ishikawa\/index.php\?id\=)([0-9]+)/";
-       $content= preg_replace($search, '$@CHOICEINDEX*$2@$', $content);
+       $content= preg_replace($search, '$@ISHIKAWAINDEX*$2@$', $content);
 
        // Link to ishikawa view by moduleid
        $search="/(".$base."\/mod\/ishikawa\/view.php\?id\=)([0-9]+)/";
-       $content= preg_replace($search, '$@CHOICEVIEWBYID*$2@$', $content);
+       $content= preg_replace($search, '$@ISHIKAWAVIEWBYID*$2@$', $content);
 
        return $content;
    }
