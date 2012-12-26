@@ -75,7 +75,6 @@ function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
     }
     $users = get_role_users($gradebookroles, $context, true, '', 'u.lastname ASC', true, $groupid);
 
-
     if ($users) {
         $users = array_keys($users);
         // if groupmembersonly used, remove users who are not in any group
@@ -92,8 +91,9 @@ function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
 
     $userlists = implode(',', $users);
     $sql = "SELECT COUNT(*) as count
-              FROM {$CFG->dbname}.{ishikawa_submissions} s
-             WHERE userid IN ({$userlists})";
+              FROM {ishikawa_submissions} s
+             WHERE userid IN ({$userlists})
+               AND s.ishikawaid = {$ishikawaid}";
 
     $record = $DB->get_record_sql($sql);
     return $record->count;
