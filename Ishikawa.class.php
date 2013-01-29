@@ -141,6 +141,7 @@ class Ishikawa  {
     }
 
     private function generate_connections() {
+        global $DB;
         foreach ($this->connections as $id => $connection) {
             $src_text = $this->retangulos[$connection->src_type][$connection->src_id]->text();
             $dst_text = $this->retangulos[$connection->dst_type][$connection->dst_id]->text();

@@ -70,7 +70,6 @@ if (!$groups = $DB->get_records_sql($sql, $params)) {
 } else {
     $footer .= ' - ';
 }
-
 // aí conhece! ou não ...
 $footer .= implode(array_map(create_function('$a', 'return $a->name;'), $groups), ', ');
 $ishikawa = new Ishikawa($blocks, $connections, $src, $src_type, $ishikawa->name, $footer);
