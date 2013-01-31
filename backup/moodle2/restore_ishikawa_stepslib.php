@@ -88,26 +88,19 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
     protected function process_ishikawa_connection($data) {
         global $DB;
         $data = (object)$data;
-        $sql = 'select max(id) from ishikawa_causes_blocks';
-        $maxId = $DB->get_field_sql($sql);
-        $sqlAxis = 'select max(id) from ishikawa_axis_blocks';
-        $maxIdAxis = $DB->get_field_sql($sqlAxis);
-        
-        $dif = $maxId - (4*3); // 4x3 é o numero de linhas e colunas (default) do diagrama, precisa fazer a pesquisa dos valores corretos ainda
-        $difAxis = $maxIdAxis - 4; 
-        if ($data->src_type == 'axis'){
-            $data->src_id = $data->src_id + $difAxis; 
-        }else
-            $data->src_id = $data->src_id + $dif;        
-        
-        if ($data->dst_type == 'axis'){
-            $data->dst_id = $data->dst_id + $difAxis;
-        }else
-        $data->dst_id = $data->dst_id + $dif;        
-       
         $oldid = $data->id;
         $data->submissionid = $this->get_new_parentid('ishikawa_submission');
-
+        
+        if ($data->src_type == 'axis'){
+            $data->src_id = $data->src_id + $this->verifies_difference_axis($data); 
+        }else
+            $data->src_id = $data->src_id + $this->verifies_difference($data);        
+        
+        if ($data->dst_type == 'axis'){
+            $data->dst_id = $data->dst_id + $this->verifies_difference_axis($data);
+        }else
+            $data->dst_id = $data->dst_id + $this->verifies_difference($data);
+         
         $newitemid = $DB->insert_record('ishikawa_connections', $data);
         $this->set_mapping('ishikawa_connection', $oldid, $newitemid);
     }
@@ -126,7 +119,42 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
         $newitemid = $DB->insert_record('ishikawa_grades', $data);
         $this->set_mapping('ishikawa_grade', $oldid, $newitemid);
     }
+    protected function verifies_difference($data){
+        global $DB;
+   
+        $sql = 'select max(id) from ishikawa_causes_blocks';
+        $max_id = $DB->get_field_sql($sql);
+        $max_lines = $this->select_max_lines($data);
+        $max_columns = $this->select_max_columns($data);
+        $dif = $max_id - ($max_lines * $max_columns); 
+        return $dif;
+    }
+    protected function verifies_difference_axis($data){
+        global $DB;
+        
+        $sqlAxis = 'select max(id) from ishikawa_axis_blocks';
+        $maxIdAxis = $DB->get_field_sql($sqlAxis);
+        $difAxis = $maxIdAxis - 4; 
+        return $difAxis;
+    }
+    protected function select_max_lines($data){
+        global $DB;
 
+        $sql_max_lines = "select distinct i.maxlines
+                         from   ishikawa as i, ishikawa_submissions as s
+                         where  i.id = s.ishikawaid and
+                                s.id = {$data->submissionid}"; 
+        return $DB->get_field_sql($sql_max_lines);
+    }
+    protected function select_max_columns($data){
+        global $DB;
+
+        $sql_max_columns = "select distinct i.maxcolumns
+                           from   ishikawa as i, ishikawa_submissions as s
+                           where  i.id = s.ishikawaid and
+                                  s.id = {$data->submissionid}"; 
+        return $DB->get_field_sql($sql_max_columns);
+    }
     protected function after_execute() {
         // Add ishikawa related files, no need to match by itemname (just internally handled context)
         $this->add_related_files('mod_ishikawa', 'intro', null);
