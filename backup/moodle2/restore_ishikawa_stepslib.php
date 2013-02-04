@@ -119,70 +119,37 @@ class restore_ishikawa_activity_structure_step extends restore_activity_structur
 
     protected function process_ishikawa_connection($data) {
         global $DB;
+
         $data = (object)$data;
         $oldid = $data->id;
         $data->submissionid = $this->get_new_parentid('ishikawa_submission');
 
-        if ($data->src_type == 'axis'){
-            $data->src_id = $data->src_id + $this->verifies_difference_axis($data);
-        } else {
-            $data->src_id = $data->src_id + $this->verifies_difference($data);
+        switch ($data->src_type) {
+            case 'axis':
+                $data->src_id = $this->get_mappingid('ishikawa_axis_block', $data->src_id);
+                break;
+            case 'causes':
+                $data->src_id = $this->get_mappingid('ishikawa_causes_block', $data->src_id);
+                break;
+            case 'consequences':
+                $data->src_id = $this->get_mappingid('ishikawa_consequences_block', $data->src_id);
+                break;
         }
 
-        if ($data->dst_type == 'axis'){
-            $data->dst_id = $data->dst_id + $this->verifies_difference_axis($data);
-        } else {
-            $data->dst_id = $data->dst_id + $this->verifies_difference($data);
+        switch ($data->dst_type) {
+            case 'axis':
+                $data->dst_id = $this->get_mappingid('ishikawa_axis_block', $data->dst_id);
+                break;
+            case 'causes':
+                $data->dst_id = $this->get_mappingid('ishikawa_causes_block', $data->dst_id);
+                break;
+            case 'consequences':
+                $data->dst_id = $this->get_mappingid('ishikawa_consequences_block', $data->dst_id);
+                break;
         }
 
         $newitemid = $DB->insert_record('ishikawa_connections', $data);
         $this->set_mapping('ishikawa_connection', $oldid, $newitemid);
-    }
-
-    protected function verifies_difference($data){
-        global $DB;
-
-        $sql = "select max(id)
-                  from ishikawa_causes_blocks as c
-                 where c.submissionid = :sid";
-
-        $max_id = $DB->get_field_sql($sql, array('sid' => $data->submissionid));
-        return $max_id - ($this->select_max_lines($data) * $this->select_max_columns($data));
-    }
-
-    protected function verifies_difference_axis($data){
-        global $DB;
-
-        $sql = "SELECT max(id)
-                  FROM ishikawa_axis_blocks as c
-                 WHERE c.submissionid = :sid";
-
-        $max_id = $DB->get_field_sql($sql, array('sid' => $data->submissionid));
-        return $max_id - $this->select_max_columns($data);
-    }
-
-    protected function select_max_lines($data){
-        global $DB;
-
-        $sql = "SELECT distinct i.maxlines
-                  FROM ishikawa as i
-                  JOIN ishikawa_submissions as s
-                    ON (i.id = s.ishikawaid)
-                 WHERE s.id = :sid";
-
-        return $DB->get_field_sql($sql, array('sid' => $data->submissionid));
-    }
-
-    protected function select_max_columns($data){
-        global $DB;
-
-        $sql = "SELECT distinct i.maxcolumns
-                  FROM ishikawa as i
-                  JOIN ishikawa_submissions as s
-                    ON (i.id = s.ishikawaid)
-                 WHERE s.id = :sid";
-
-        return $DB->get_field_sql($sql, array('sid' => $data->submissionid));
     }
 
     protected function after_execute() {
