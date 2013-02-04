@@ -56,7 +56,8 @@ $string['required_tail_head'] = 'Problema e Imagem-objetivo são campos obrigat�
 $string['save_image'] = 'Salvar imagem';
 $string['second_step'] = 'Segundo passo: definir as conexões entre os campos';
 $string['select_src'] = 'Selecione a origem clicando no campo desejado';
-$string['select_dst'] = 'Selecione o destino ou <a href=\"connections.php?id=$a\">selecione outra origem</a>';
+$string['select_dst'] = 'Selecione o destino ou ';
+$string['other_dst'] = ' selecione outra origem';
 $string['submission'] = 'Data de envio';
 $string['submissions'] = 'Espinhas de peixe enviadas';
 $string['src_equal_dst'] = 'A origem deve ser diferente do destino da conexão';

@@ -17,19 +17,16 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
                                               'name', 'intro', 'maxchar', 'maxlines',
                                               'maxcolumns', 'grade', 'preventlate', 'timedue',
                                               'timeavailable', 'introformat', 'timemodified'));
-
+        var_dump($ishikawa);
         $ishikawa_submissions = new backup_nested_element('ishikawa_submissions');
         $ishikawa_submission = new backup_nested_element('ishikawa_submission', array('id'), array(
                     'ishikawaid', 'userid', 'tail_text', 'head_text' ,'timecreated', 'timemodified'));
-
         $ishikawa_axis_blocks = new backup_nested_element('ishikawa_axis_blocks');
         $ishikawa_axis_block = new backup_nested_element('ishikawa_axis_block', array('id'), array(
                     'submissionid', 'nivel_x', 'texto', 'cor'));
-
         $ishikawa_causes_blocks = new backup_nested_element('ishikawa_causes_blocks');
         $ishikawa_causes_block = new backup_nested_element('ishikawa_causes_block', array('id'), array(
                     'submissionid', 'nivel_x', 'nivel_y', 'texto' ,'cor'));
-
         $ishikawa_consequences_blocks = new backup_nested_element('ishikawa_consequences_blocks');
         $ishikawa_consequences_block = new backup_nested_element('ishikawa_consequences_block', array('id'), array(
                                             'submissionid', 'nivel_x', 'nivel_y', 'texto' ,'cor'));
@@ -52,7 +49,6 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
 
         $ishikawa_submission->add_child($ishikawa_causes_blocks);
         $ishikawa_causes_blocks->add_child($ishikawa_causes_block);
-
         $ishikawa_submission->add_child($ishikawa_consequences_blocks);
         $ishikawa_consequences_blocks->add_child($ishikawa_consequences_block);
 
@@ -75,6 +71,7 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
             $ishikawa_consequences_block->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
             $ishikawa_connection->set_source_table('ishikawa_connections', array('submissionid' => backup::VAR_PARENTID));
             $ishikawa_grade->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
+            var_dump($ishikawa_causes_block);
         }
 
         // Define id annotations
@@ -86,12 +83,17 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
         
         $ishikawa_axis_block->annotate_ids('ishikawa_axis_blocks', 'id');
         $ishikawa_axis_block->annotate_ids('ishikawa_axis_blocks', 'submissionid');
+        $ishikawa_axis_block->annotate_ids('ishikawa_axis_blocks', 'nivel_x');
        
         $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'id');
         $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'submissionid');
+        $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'nivel_x');
+        $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'nivel_y');
        
         $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'id');
         $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'submissionid');
+        $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'nivel_x');
+        $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'nivel_y');
         // Define file annotations
         $ishikawa->annotate_files('mod_ishikawa', 'intro', null);
         // Return the root element (ishikawa), wrapped into standard activity structure

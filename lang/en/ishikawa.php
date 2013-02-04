@@ -56,7 +56,8 @@ $string['required_tail_head'] = 'Problem and Image-objective  are required field
 $string['save_image'] = 'Save image';
 $string['second_step'] = 'Second step: define connections between fields';
 $string['select_src'] = 'Select the origin by clicking on the desired field';
-$string['select_dst'] = 'Select the destination or <a href=\"connections.php?id=$a\">select other origin</a>';
+$string['select_dst'] = 'Select the destination or ';
+$string['other_dst'] = ' select other origin';
 $string['src_equal_dst'] = 'The origin must be different of the destination of the connection';
 $string['submission'] = 'Deadline';
 $string['submissions'] = 'fishbones sent';

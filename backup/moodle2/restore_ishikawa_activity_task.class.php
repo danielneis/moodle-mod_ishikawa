@@ -29,6 +29,8 @@ class restore_ishikawa_activity_task extends restore_activity_task {
     static public function define_decode_contents() {
         $contents = array();
         $contents[] = new restore_decode_content('ishikawa', array('intro'), 'ishikawa');
+        $contents[] = new restore_decode_content('ishikawa_connections', array('src_type'), 'ishikawa_connection');
+        $contents[] = new restore_decode_content('ishikawa_connections', array('dst_type'), 'ishikawa_connection');
         $contents[] = new restore_decode_content('ishikawa_axis_blocks', array('texto'), 'ishikawa_axis_block');
         $contents[] = new restore_decode_content('ishikawa_causes_blocks', array('texto'), 'ishikawa_causes_block');
         $contents[] = new restore_decode_content('ishikawa_consequences_blocks', array('texto'), 'ishikawa_consequences_block');

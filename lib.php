@@ -337,7 +337,9 @@ function ishikawa_edit_connections($cmid, $blocks, $connections, $submission, $s
     echo '<h2>', get_string('second_step', 'ishikawa'), '</h2>';
 
     if ($src) {
-        echo '<h3>', get_string('select_dst', 'ishikawa', $cmid), '</h3>';
+        echo '<h3>', get_string('select_dst', 'ishikawa'), '  ',
+             '<a href="connections.php?id=',$cmid,'" >',get_string('other_dst', 'ishikawa'), '</a>',
+             '</h3>';
     } else {
         echo '<h3>', get_string('select_src', 'ishikawa'), '</h3>',
              '<p><a href="view.php?id=',$cmid,'" >',get_string('finish_editing', 'ishikawa'), '</a></p>',
