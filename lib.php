@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,14 +17,14 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package     mod_ishikawa
  **/
 
 function ishikawa_add_instance($ishi) {
     global $DB;
-     
+
     $id =  $DB->insert_record('ishikawa', $ishi);
 
     $params = array('itemname'=>$ishi->name);
@@ -63,7 +64,7 @@ function ishikawa_grade_item_delete($ishi) {
     $ishikawa = $DB->get_record('ishikawa', array('id' => $ishi));
     return grade_update('mod/ishikawa', $ishikawa->course, 'mod', 'ishikawa', $ishi, 0, NULL, array('deleted'=>1));
 }
-    
+
 function ishikawa_count_submissions($ishikawaid, $context, $groupid = null) {
     global $CFG, $DB;
 
@@ -324,8 +325,8 @@ function ishikawa_get_link_to_delete_connection($cmid, $connection_id) {
     global $CFG;
 
     if ($connection_id) {
-    return $CFG->wwwroot.'/mod/ishikawa/connections.php?id=' . $cmid . '&delete_connection=' . $connection_id;
-    } 
+        return $CFG->wwwroot.'/mod/ishikawa/connections.php?id=' . $cmid . '&delete_connection=' . $connection_id;
+    }
     return '';
 }
 
@@ -479,5 +480,3 @@ function ishikawa_isopen($ishikawa) {
         return ($ishikawa->timeavailable <= $time);
     }
 }
-
-?>

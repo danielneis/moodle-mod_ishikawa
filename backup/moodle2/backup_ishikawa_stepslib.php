@@ -1,4 +1,27 @@
 <?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package     mod_ishikawa
+ * @category    backup
+ * @copyright   2010 onwards Daniel Neis, Luis Henrique Mulinari, Caio Doneda
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 /**
  * Define all the backup steps that will be used by the backup_ishikawa_activity_task
  */
@@ -9,6 +32,7 @@
 class backup_ishikawa_activity_structure_step extends backup_activity_structure_step {
 
     protected function define_structure() {
+
         // To know if we are including userinfo
         $userinfo = $this->get_setting_value('userinfo');
 
@@ -17,85 +41,75 @@ class backup_ishikawa_activity_structure_step extends backup_activity_structure_
                                               'name', 'intro', 'maxchar', 'maxlines',
                                               'maxcolumns', 'grade', 'preventlate', 'timedue',
                                               'timeavailable', 'introformat', 'timemodified'));
-        var_dump($ishikawa);
-        $ishikawa_submissions = new backup_nested_element('ishikawa_submissions');
-        $ishikawa_submission = new backup_nested_element('ishikawa_submission', array('id'), array(
-                    'ishikawaid', 'userid', 'tail_text', 'head_text' ,'timecreated', 'timemodified'));
-        $ishikawa_axis_blocks = new backup_nested_element('ishikawa_axis_blocks');
-        $ishikawa_axis_block = new backup_nested_element('ishikawa_axis_block', array('id'), array(
-                    'submissionid', 'nivel_x', 'texto', 'cor'));
-        $ishikawa_causes_blocks = new backup_nested_element('ishikawa_causes_blocks');
-        $ishikawa_causes_block = new backup_nested_element('ishikawa_causes_block', array('id'), array(
-                    'submissionid', 'nivel_x', 'nivel_y', 'texto' ,'cor'));
-        $ishikawa_consequences_blocks = new backup_nested_element('ishikawa_consequences_blocks');
-        $ishikawa_consequences_block = new backup_nested_element('ishikawa_consequences_block', array('id'), array(
+
+        $submissions_container = new backup_nested_element('submissions');
+
+        $submissions = new backup_nested_element('ishikawa_submission', array('id'), array(
+                                                 'ishikawaid', 'userid', 'tail_text', 'head_text',
+                                                 'timecreated', 'timemodified'));
+
+        $axis_container = new backup_nested_element('axis_blocks');
+
+        $axis = new backup_nested_element('ishikawa_axis_block', array('id'), array(
+                                          'submissionid', 'nivel_x', 'texto', 'cor'));
+
+        $causes_container = new backup_nested_element('ishikawa_causes_blocks');
+
+        $causes = new backup_nested_element('ishikawa_causes_block', array('id'), array(
                                             'submissionid', 'nivel_x', 'nivel_y', 'texto' ,'cor'));
 
-        $ishikawa_connections = new backup_nested_element('ishikawa_connections');
-        $ishikawa_connection = new backup_nested_element('ishikawa_connection', array('id'), array(
-                                    'submissionid', 'src_id', 'src_type', 'dst_id' ,'dst_type'));
+        $consequences_container = new backup_nested_element('ishikawa_consequences_blocks');
 
-        $ishikawa_grades = new backup_nested_element('ishikawa_grades');
-        $ishikawa_grade = new backup_nested_element('ishikawa_grade', array('id'), array(
-                                    'userid', 'grade', 'feedback', 'timecreated' ,'timemodified'));
+        $consequences = new backup_nested_element('ishikawa_consequences_block', array('id'), array(
+                                                  'submissionid', 'nivel_x', 'nivel_y', 'texto' ,'cor'));
 
+        $connections_container = new backup_nested_element('ishikawa_connections');
+
+        $connections = new backup_nested_element('ishikawa_connection', array('id'), array(
+                                                         'submissionid', 'src_id', 'src_type', 'dst_id' ,'dst_type'));
+
+        $grades_container = new backup_nested_element('ishikawa_grades');
+        $grades = new backup_nested_element('ishikawa_grade', array('id'), array(
+                                            'userid', 'grade', 'feedback', 'timecreated' ,'timemodified'));
 
         // Build the tree
-        $ishikawa->add_child($ishikawa_submissions);
-        $ishikawa_submissions->add_child($ishikawa_submission);
+        $ishikawa->add_child($submissions_container);
+        $submissions_container->add_child($submissions);
 
-        $ishikawa_submission->add_child($ishikawa_axis_blocks);
-        $ishikawa_axis_blocks->add_child($ishikawa_axis_block);
+        $submissions->add_child($axis_container);
+        $axis_container->add_child($axis);
 
-        $ishikawa_submission->add_child($ishikawa_causes_blocks);
-        $ishikawa_causes_blocks->add_child($ishikawa_causes_block);
-        $ishikawa_submission->add_child($ishikawa_consequences_blocks);
-        $ishikawa_consequences_blocks->add_child($ishikawa_consequences_block);
+        $submissions->add_child($causes_container);
+        $causes_container->add_child($causes);
 
-        $ishikawa_submission->add_child($ishikawa_connections);
-        $ishikawa_connections->add_child($ishikawa_connection);
+        $submissions->add_child($consequences_container);
+        $consequences_container->add_child($consequences);
 
-        $ishikawa->add_child($ishikawa_grades);
-        $ishikawa_grades->add_child($ishikawa_grade);
+        $submissions->add_child($connections_container);
+        $connections_container->add_child($connections);
+
+        $ishikawa->add_child($grades_container);
+        $grades_container->add_child($grades);
 
         // Define sources
         $ishikawa->set_source_table('ishikawa', array('id' => backup::VAR_ACTIVITYID));
 
         if ($userinfo) {
-            $ishikawa_submission->set_source_sql('SELECT *
-                                                    FROM {ishikawa_submissions}
-                                                   WHERE ishikawaid = ?', array(backup::VAR_PARENTID));
+            $submissions->set_source_sql('SELECT *
+                                            FROM {ishikawa_submissions}
+                                           WHERE ishikawaid = :ishikawa',
+                                         array('ishikawa' => backup::VAR_PARENTID));
 
-            $ishikawa_axis_block->set_source_table('ishikawa_axis_blocks', array('submissionid' => backup::VAR_PARENTID));
-            $ishikawa_causes_block->set_source_table('ishikawa_causes_blocks', array('submissionid' => backup::VAR_PARENTID));
-            $ishikawa_consequences_block->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
-            $ishikawa_connection->set_source_table('ishikawa_connections', array('submissionid' => backup::VAR_PARENTID));
-            $ishikawa_grade->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
-            var_dump($ishikawa_causes_block);
+            $axis->set_source_table('ishikawa_axis_blocks', array('submissionid' => backup::VAR_PARENTID));
+            $causes->set_source_table('ishikawa_causes_blocks', array('submissionid' => backup::VAR_PARENTID));
+            $consequences->set_source_table('ishikawa_consequences_blocks', array('submissionid' => backup::VAR_PARENTID));
+            $connections->set_source_table('ishikawa_connections', array('submissionid' => backup::VAR_PARENTID));
+            $grades->set_source_table('ishikawa_grades', array('ishikawaid' => backup::VAR_PARENTID));
         }
 
         // Define id annotations
-        $ishikawa_submission->annotate_ids('user', 'userid');
-       
-        $ishikawa_connection->annotate_ids('ishikawa_connections', 'id');
-        $ishikawa_connection->annotate_ids('ishikawa_connections', 'src_id');
-        $ishikawa_connection->annotate_ids('ishikawa_connections', 'dst_id');
-        
-        $ishikawa_axis_block->annotate_ids('ishikawa_axis_blocks', 'id');
-        $ishikawa_axis_block->annotate_ids('ishikawa_axis_blocks', 'submissionid');
-        $ishikawa_axis_block->annotate_ids('ishikawa_axis_blocks', 'nivel_x');
-       
-        $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'id');
-        $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'submissionid');
-        $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'nivel_x');
-        $ishikawa_causes_block->annotate_ids('ishikawa_causes_blocks', 'nivel_y');
-       
-        $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'id');
-        $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'submissionid');
-        $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'nivel_x');
-        $ishikawa_consequences_block->annotate_ids('ishikawa_consequences_blocks', 'nivel_y');
-        // Define file annotations
-        $ishikawa->annotate_files('mod_ishikawa', 'intro', null);
+        $submissions->annotate_ids('user', 'userid');
+
         // Return the root element (ishikawa), wrapped into standard activity structure
         return $this->prepare_activity_structure($ishikawa);
     }

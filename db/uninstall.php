@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,9 +17,9 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package     mod_ishikawa
  **/
 
 defined('MOODLE_INTERNAL') || die();
@@ -26,12 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 function mod_ishikawa_uninstall() {
      global $DB;
      //$dbman = $DB->get_manager();
-     $param = "SELECT modules.id FROM modules WHERE modules.name = 'ishikawa' ";	
-     $DB->delete_records('course_modules', array('module' => $param));	
+     $param = "SELECT modules.id FROM modules WHERE modules.name = 'ishikawa' ";
+     $DB->delete_records('course_modules', array('module' => $param));
 					$DB->delete_records('grade_items', array('itemmodule' => 'ishikawa'));
 					$DB->delete_records('grade_items_history', array('itemmodule' => 'ishikawa'));
-     
+
 					return true;
 }
-
-

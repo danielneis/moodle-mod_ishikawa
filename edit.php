@@ -1,4 +1,5 @@
-<?php
+o<?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,10 +17,11 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package     mod_ishikawa
  **/
+
 require_once('../../config.php');
 require_once('lib.php');
 
@@ -29,7 +31,7 @@ if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
     print_error("Course Module ID was incorrect");
 }
 
-if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))){ 
+if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))){
     print_error("ishikawa ID was incorrect");
 }
 

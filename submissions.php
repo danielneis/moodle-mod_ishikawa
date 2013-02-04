@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,27 +17,27 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package     mod_ishikawa
  **/
 
 require_once("../../config.php");
 require_once($CFG->libdir.'/gradelib.php');
 require_once("lib.php");
 
-$id         = required_param('id', PARAM_INT);// Course module ID
-$group      = optional_param('group', 0, PARAM_INT);
+$id    = required_param('id', PARAM_INT);// Course module ID
+$group = optional_param('group', 0, PARAM_INT);
 
-if (! $cm = get_coursemodule_from_id('ishikawa', $id)) {
+if (!$cm = get_coursemodule_from_id('ishikawa', $id)) {
     print_error('invalidcoursemodule');
 }
 
-if (! $ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))) {
+if (!$ishikawa = $DB->get_record("ishikawa", array("id" => $cm->instance))) {
     print_error('ishikawa ID was incorrect', 'ishikawa');
 }
 
-if (! $course = $DB->get_record("course", array("id" => $ishikawa->course))) {
+if (!$course = $DB->get_record("course", array("id" => $ishikawa->course))) {
     print_error('Course is misconfigured', 'ishikawa');
 }
 
@@ -81,10 +82,10 @@ if ($data = data_submitted()) {
 
 $strishikawa = get_string('modulename', 'ishikawa');
 $PAGE->set_button($OUTPUT->update_module_button($cm->id, 'ishikawa')); //New function update_module_button
-$PAGE->set_url('/mod/ishikawa/submissions.php', array('id'=>$course->id));  
+$PAGE->set_url('/mod/ishikawa/submissions.php', array('id'=>$course->id));
 $PAGE->navbar->add($strishikawa);
 $PAGE->set_title($strishikawa);
-$PAGE->set_heading($course->fullname);      
+$PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 $title = get_string('title', 'ishikawa');
 echo $OUTPUT->heading($title . $ishikawa->name);
@@ -114,59 +115,58 @@ $sql = "SELECT  $userfields,
           LEFT JOIN {grade_grade}s gg
             ON (gg.userid = u.id AND
                gg.itemid = {$grade_item->id})";
- 
- if (!$group) {
+
+if (!$group) {
     $group = groups_get_activity_group($cm, true);
- }
- if ($group > 0) {
+}
+if ($group > 0) {
     $sql .= " JOIN {groups_members} gm
                 ON (gm.userid = u.id AND
-                   gm.groupid = {$group})";
- }
- 
- $sql .= "ORDER BY firstname,lastname,username";
- if (!$students = $DB->get_records_sql($sql)) {
-         echo $OUTPUT->heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
- } else {
-     $act = "submissions.php?id={$cm->id}&group={$group}";
+                    gm.groupid = {$group})";
+}
 
-   echo '<form method="post" action="',$act,'" >',
-            '<table id="ishikawa_submissions" class="generaltable">',
-                '<tr>',
-                    '<th></th>',
-                    '<th>',get_string('fullname'),'</th>',
-                    '<th>',get_string('submission', 'ishikawa'),'</th>',
-                    '<th>',get_string('grade'),'</th>',
-                    '<th>',get_string('feedback'),'</th>',
-                '</tr>';
-                $tabindex = 0;
-                foreach ($students as $s) {
-                echo '<tr>',
-                     '<td>', $OUTPUT->user_picture($s, array('courseid' => $course->id)), '</td>',
-                     '<td>', fullname($s),'</td>',
-                     '<td>';
-                        if ($s->timecreated > 0) {
-                            echo userdate($s->timecreated), '&nbsp;',
-                            '<a href="image.php?id=',$cm->id,'&amp;userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
-                        } else {
-                            echo get_string('never_sent', 'ishikawa');
-                        }
-                   echo '</td>',
-                   '<td>';
-                        if ($s->locked or $s->overridden) {
-                            echo $s->finalgrade;
-                        } else {
-                            $attributes['disabled'] = false;
-                            $attributes['tabindex'] = $tabindex++;
-                            echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade, array(get_string('nograde')), $attributes);
-                        }
-                   echo '</td>',
-                   '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
-                '</tr>';
-                }
-            echo '</table>',
-            '<input type="submit" value="', get_string('confirm'), '" />',
-       '</form>';
+$sql .= "ORDER BY firstname,lastname,username";
+if (!$students = $DB->get_records_sql($sql)) {
+    echo $OUTPUT->heading(get_string('no_users_with_gradebookroles', 'ishikawa'));
+} else {
+    $act = "submissions.php?id={$cm->id}&group={$group}";
+
+  echo '<form method="post" action="',$act,'" >',
+           '<table id="ishikawa_submissions" class="generaltable">',
+               '<tr>',
+                   '<th></th>',
+                   '<th>',get_string('fullname'),'</th>',
+                   '<th>',get_string('submission', 'ishikawa'),'</th>',
+                   '<th>',get_string('grade'),'</th>',
+                   '<th>',get_string('feedback'),'</th>',
+               '</tr>';
+               $tabindex = 0;
+               foreach ($students as $s) {
+               echo '<tr>',
+                    '<td>', $OUTPUT->user_picture($s, array('courseid' => $course->id)), '</td>',
+                    '<td>', fullname($s),'</td>',
+                    '<td>';
+                       if ($s->timecreated > 0) {
+                           echo userdate($s->timecreated), '&nbsp;',
+                           '<a href="image.php?id=',$cm->id,'&amp;userid=',$s->id,'" target="_blank">',get_string('view'), '</a>';
+                       } else {
+                           echo get_string('never_sent', 'ishikawa');
+                       }
+                  echo '</td>',
+                  '<td>';
+                       if ($s->locked or $s->overridden) {
+                           echo $s->finalgrade;
+                       } else {
+                           $attributes['disabled'] = false;
+                           $attributes['tabindex'] = $tabindex++;
+                           echo html_writer::select(make_grades_menu($ishikawa->grade),'student['.$s->id.'][grade]', $s->grade, array(get_string('nograde')), $attributes);
+                       }
+                  echo '</td>',
+                  '<td><textarea name="student[',$s->id,'][feedback]">',$s->feedback,'</textarea></td>',
+               '</tr>';
+               }
+           echo '</table>',
+           '<input type="submit" value="', get_string('confirm'), '" />',
+      '</form>';
 }
 echo $OUTPUT->footer();
-?>

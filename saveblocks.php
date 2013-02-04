@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,9 +17,9 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package     mod_ishikawa
  **/
 
 require_once('../../config.php');
@@ -62,7 +63,7 @@ if (!$subid) {
         $submission->head_text = $data->head_text;
         $submission->timecreated = time();
         $submission->timemodified = $submission->timecreated;
-        
+
         if (!$submissionid = $DB->insert_record('ishikawa_submissions', $submission)) {
             print_error('cant_insert_submit_record');
         }
@@ -163,4 +164,3 @@ if (!$subid) {
         print_error('no_data_submitted');
     }
 }
-?>

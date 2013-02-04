@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,9 +17,9 @@
 //
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
+
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package     mod_ishikawa
  **/
 
 $string['axis'] = 'Descriptors';
@@ -43,7 +44,7 @@ $string['finish_editing'] = 'Finish editing and return to the beginning';
 $string['foo'] = 'foo';
 $string['head'] = 'Image-Objective';
 $string['helpbutton'] = 'editor';
-$string['helpbutton_help'] = 'Help with html editor'; 
+$string['helpbutton_help'] = 'Help with html editor';
 $string['modulename'] = 'Fishbone';
 $string['modulenameplural'] = 'Fishbones';
 $string['never_sent'] = 'Never sent';
