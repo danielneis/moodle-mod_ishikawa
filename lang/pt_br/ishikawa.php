@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
-// this file contains all the functions that aren't needed by core moodle
-// but start becoming required once we're actually inside the ishikawa module.
 /**
- * @package     mod
- * @subpackage  ishikawa
+ * @package mod_ishikawa
+ *
+ * @author Luis Henrique Mulinari
+ * @author Daniel Neis Araujo
+ * @upgrade moodle 2.0+ Caio Bressan Doneda
  **/
-
+      
 $string['axis'] = 'Descritores';
 $string['availabledate'] = 'Disponível a partir de';
 $string['cannot_add_connection'] = 'Não foi possível adicionar conexão. É provável que ela já exista.';

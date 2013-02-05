@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
-// this file contains all the functions that aren't needed by core moodle
-// but start becoming required once we're actually inside the ishikawa module.
-
 /**
- * @package     mod_ishikawa
+ * @package mod_ishikawa
+ *
+ * @author Luis Henrique Mulinari
+ * @author Daniel Neis Araujo
+ * @upgrade moodle 2.0+ Caio Bressan Doneda
  **/
-
+      
 $string['axis'] = 'Descriptors';
 $string['availabledate'] = 'Avaliable from';
 $string['cannot_add_connection'] = 'Impossible to add a connection, probably it already exists';

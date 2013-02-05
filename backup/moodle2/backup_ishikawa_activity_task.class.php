@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,16 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 /**
- * Defines backup_ishikawa_activity_task class
+ * @package mod_ishikawa
  *
- * @package     mod_ishikawa
- * @category    backup
- * @copyright   2010 onwards Daniel Neis, Luis Henrique Mulinari, Caio Doneda
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
+ * @author Luis Henrique Mulinari
+ * @author Daniel Neis Araujo
+ * @upgrade moodle 2.0+ Caio Bressan Doneda
+ **/
+      
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/ishikawa/backup/moodle2/backup_ishikawa_stepslib.php'); // Because it exists (must)

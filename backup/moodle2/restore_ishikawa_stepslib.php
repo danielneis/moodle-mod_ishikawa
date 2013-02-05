@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,10 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 /**
- * Structure step to restore one ishikawa activity
- */
+ * @package mod_ishikawa
+ *
+ * @author Luis Henrique Mulinari
+ * @author Daniel Neis Araujo
+ * @upgrade moodle 2.0+ Caio Bressan Doneda
+ **/
+      
 class restore_ishikawa_activity_structure_step extends restore_activity_structure_step {
 
     protected function define_structure() {

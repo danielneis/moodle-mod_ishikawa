@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,14 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 /**
- * Provides support for the conversion of moodle1 backup to the moodle2 format
+ * @package mod_ishikawa
  *
- * @package    mod
- * @subpackage ishikawa
- */
-
+ * @author Luis Henrique Mulinari
+ * @author Daniel Neis Araujo
+ * @upgrade moodle 2.0+ Caio Bressan Doneda
+ **/
+      
 defined('MOODLE_INTERNAL') || die();
 
 /**

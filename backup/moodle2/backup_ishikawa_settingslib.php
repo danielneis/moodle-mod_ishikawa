@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,14 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 /**
- * @package     mod_ishikawa
- * @category    backup
- * @copyright   2010 onwards Daniel Neis, Luis Henrique Mulinari, Caio Doneda
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
+ * @package mod_ishikawa
+ *
+ * @author Luis Henrique Mulinari
+ * @author Daniel Neis Araujo
+ * @upgrade moodle 2.0+ Caio Bressan Doneda
+ **/
+      
 // This activity has not particular settings but the inherited from the generic
 // backup_activity_task so here there isn't any class definition, like the ones
 // existing in /backup/moodle2/backup_settingslib.php (activities section)
