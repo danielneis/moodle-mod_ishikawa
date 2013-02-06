@@ -35,7 +35,6 @@ if (! $course = $DB->get_record("course", array("id" => $id))) {
 }
 
 require_course_login($course);
-$PAGE->set_pagelayout('ishikawa');
 
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('mod/ishikawa:view', $context);

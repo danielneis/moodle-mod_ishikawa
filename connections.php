@@ -53,7 +53,6 @@ require_login($course, true, $cm);
 
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 require_capability('mod/ishikawa:submit', $context);
-$PAGE->set_pagelayout('ishikawa');
 /// Some capability checks.
 if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
     notice(get_string("activityiscurrentlyhidden"));
