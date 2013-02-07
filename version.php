@@ -27,6 +27,7 @@
 //  This fragment is called by /admin/index.php
 ////////////////////////////////////////////////////////////////////////////////
 
-$module->version  = 2012102400;
-$module->requires = 2010000000;  // Requires this Moodle version
-?>
+$module->version  = 2013020700;
+$module->requires = 2012062500;  // Requires this Moodle version
+$module->maturity = MATURITY_STABLE;
+$module->release  = 1.0;
