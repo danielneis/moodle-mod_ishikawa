@@ -405,7 +405,6 @@ function ishikawa_supports($feature) {
 }
 function ishikawa_view_submission_feedback($ishikawa, $submission, $course) {
     global $USER,$DB, $CFG, $OUTPUT;
-    require($CFG->libdir.'/gradelib.php');
 
     $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
