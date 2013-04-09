@@ -17,8 +17,11 @@
 // this file contains all the functions that aren't needed by core moodle
 // but start becoming required once we're actually inside the ishikawa module.
 /**
+ * Upgrade code for install
+ *
  * @package     mod
  * @subpackage  ishikawa
  **/
-
-?>
+function xmldb_ishikawa_upgrade($oldversion) {
+    return true;
+}

@@ -93,7 +93,7 @@ if ($submission) {
 
 } else {
     if (ishikawa_isopen($ishikawa)) {
-        echo "<a href='edit.php?id={$id}'>Criar novo diagrama</a>";
+        echo "<a href='edit.php?id={$id}'>",get_string('create_diagram', 'mod_ishikawa'),'</a>';
     }
 }
 

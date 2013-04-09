@@ -274,7 +274,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         echo "<p><input type='hidden' name='subid' value='{$submission->id}' /></p>";
     }
 
-    echo '<p><input type="submit" value="Salvar"/></p>',
+    echo '<p><input type="submit" value="<?php echo get_string("save"); ?>"/></p>',
          '</form>';
 }
 
@@ -312,10 +312,10 @@ function ishikawa_get_link_to_block($block, $cmid,$src, $src_type, $dst, $dst_ty
     if ($src) {
         $src_type = required_param('src_type', PARAM_ALPHA);
         $link .= '&src='.$src.'&dst='.$block->id.'&src_type='.$src_type.'&dst_type='.$dst_type;
-        $nome = 'Destino';
+        $nome = get_string('destination', 'mod_ishikawa');
     } else {
         $link .= '&src='.$block->id.'&src_type='.$src_type;
-        $nome = 'Origem';
+        $nome = get_string('source', 'mod_ishikawa');
     }
 
     return $link;
