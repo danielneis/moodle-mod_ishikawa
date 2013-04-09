@@ -49,6 +49,11 @@ $string['helpbutton'] = 'o editor html';
 $string['helpbutton_help'] = 'Ajuda com o editor html';
 $string['modulename'] = 'Espinha de Peixe';
 $string['modulenameplural'] = 'Espinhas de Peixe';
+$string['modulename_help'] = 'Este módulo permite que os estudantes criem Diagramas de Ishikawa para resolver problemas propostos pelos professores. 
+Entre os usos comuns do Diagrama de Ishikawa estão "product desing" e "quality defect prevention",
+para identificar possíveis fatores causando um efeito global. Cada causa ou razão para imperfeição
+é uma fonte de variação. Causas geralmente são agrupadas em categorias maiores para identificar essas
+fontes de variação. [Wikipedia]';
 $string['never_sent'] = 'Nunca enviado';
 $string['noattempts'] = 'Nenhuma tentativa foi feita nesta tarefa';
 $string['no_users_with_gradebookroles'] = 'Ninguém inscrito com papel apto a receber nota';

@@ -49,6 +49,11 @@ $string['helpbutton'] = 'editor';
 $string['helpbutton_help'] = 'Help with html editor';
 $string['modulename'] = 'Fishbone';
 $string['modulenameplural'] = 'Fishbones';
+$string['modulename_help'] = 'This module enable students to create Ishikawa Diagrams to solve problems proposed by the teacher. 
+Common uses of the Ishikawa diagram are product design and quality defect prevention,
+to identify potential factors causing an overall effect. Each cause or reason for imperfection
+is a source of variation. Causes are usually grouped into major categories to identify these
+sources of variation. [Wikipedia]';
 $string['never_sent'] = 'Never sent';
 $string['noattempts'] = 'No attempts have been made on this assignment';
 $string['no_users_with_gradebookroles'] = 'Nobody inscribed with role ready to receive evaluation';

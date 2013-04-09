@@ -21,8 +21,3 @@
  * @author Daniel Neis Araujo
  * @upgrade moodle 2.0+ Caio Bressan Doneda
  **/
-      
-$settings->add(new admin_setting_configcheckbox('ishikawa_foo', get_string('foo', 'ishikawa'),
-                   get_string('configfoo', 'ishikawa'), 1));
-
-?>
