@@ -274,7 +274,7 @@ function ishikawa_edit_blocks($cmid, $blocks, $submission) {
         echo "<p><input type='hidden' name='subid' value='{$submission->id}' /></p>";
     }
 
-    echo '<p><input type="submit" value="<?php echo get_string("save"); ?>"/></p>',
+    echo '<p><input type="submit" value="', get_string("save", 'mod_ishikawa'), '"/></p>',
          '</form>';
 }
 
